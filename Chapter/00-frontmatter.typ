@@ -4,7 +4,7 @@
 // Authors and affiliations
 #v(0.5em)
 #text(size: 10pt)[
-  Flavia Villani#super[1],~...~Pjotr Prins#super[2], Andrea Guarracino#super[1,\*]
+  Flavia Villani#super[1], Pjotr Prins#super[2], Andrea Guarracino#super[1,\*]
 ]
 #v(0.3em)
 #text(size: 9pt)[

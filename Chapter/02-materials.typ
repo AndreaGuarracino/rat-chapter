@@ -4,11 +4,11 @@
 
 + Reference genome: mRatBN7.2 (rn7), available from NCBI @dejong2024.
 
-+ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ Note 1).
++ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @dejong2024. Note that 10x Genomics has discontinued the Chromium Linked-Read product; however, equivalent barcode-based approaches from other vendors are becoming available. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
 
 + Gene annotations from Ensembl for the mRatBN7.2 assembly @martin2023.
 
-+ Phenotype data from GeneNetwork (#link("https://genenetwork.org")[genenetwork.org]), comprising quantitative molecular and physiological phenotypes collected over more than 25 years across the HXB/BXH panel @mulligan2017.
++ Phenotype data from GeneNetwork (#link("https://genenetwork.org")[genenetwork.org]), comprising quantitative molecular and physiological phenotypes collected over more than three decades across the HXB/BXH panel @mulligan2017.
 
 == PGGB pipeline components
 
@@ -28,21 +28,23 @@ Singularity and Guix containers are also available. The individual module versio
 + *WFMASH* (v0.14.0): All-to-all whole-genome alignment. #link("https://github.com/waveygang/wfmash") @guarracino2021wfmash.
 + *SEQWISH* (v0.7.11): Graph induction from pairwise alignments. #link("https://github.com/ekg/seqwish") @garrison2023.
 + *SMOOTHXG* (v0.8.0): Graph normalization via partial order alignment. #link("https://github.com/pangenome/smoothxg").
-+ *GFAFFIX* (v0.1.6): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix").
++ *GFAFFIX* (v0.1.5b): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix").
 
 == Downstream analysis tools
 
-Install the downstream tools in a single Bioconda environment:
+Install the downstream tools in a Bioconda environment. Note that the PGGB Bioconda package is Linux-only; macOS users should use Docker.
 
 ```bash
 conda create -n pangenome-tools -c bioconda -c conda-forge \
-    vg odgi samtools bcftools htslib rtg-tools \
-    seqtk minimap2 snpeff snpsift survivor vcflib \
-    fastix meryl mummer4 compleasm
+    samtools bcftools rtg-tools snpeff snpsift \
+    seqtk minimap2 survivor vcflib vcfbub \
+    svim-asm repeatmasker meryl mummer4
 conda activate pangenome-tools
 ```
 
-Tools not available via Bioconda (PAV, SVIM-asm, Hall-lab pipeline, RepeatMasker) should be installed from their respective GitHub repositories listed below.
+vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in its own environment (Section 3.1).
+
+PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bioconda and should be installed from their respective GitHub repositories. The `fastix` utility for sequence renaming is included in the PGGB Docker image; when using Bioconda, install it via `cargo install fastix` (requires a Rust toolchain) or use `sed` for header renaming (see Section 3.2.1).
 
 + ODGI @guarracino2022odgi: for computing graph statistics (node count, edge count, base content, path coverage) and for generating visualizations. ODGI provides both one-dimensional (1D) visualizations that show how paths align into the graph structure and two-dimensional (2D) visualizations that reveal graph topology. It can also produce pairwise distance matrices suitable for phylogenetic analysis.
 
@@ -50,19 +52,19 @@ Tools not available via Bioconda (PAV, SVIM-asm, Hall-lab pipeline, RepeatMasker
 
 + BCFtools @danecek2021: for VCF normalization, decomposition, filtering, and statistics.
 
-+ vt (Variant Tool) @tan2015: for variant classification into simple (SNPs, MNPs, indels) and complex categories. A variant is classified as complex when its reference and alternate alleles overlap positionally but do not span the same range, indicating a compound event that cannot be decomposed into a single SNP or indel.
-
 + RTG Tools @cleary2015: for precision/recall analysis of variant call sets using vcfeval.
 
 + SnpEff (v5.1) @cingolani2012: for functional annotation and effect prediction of variants on genes and proteins.
 
-+ GEMMA @zhou2012 or GeneNetwork/BXDtools @arends_bxdtools: for kinship-corrected linear mixed model association analysis (PheWAS).
++ GEMMA @zhou2012 (available via Bioconda: `conda install -c bioconda gemma`) or GeneNetwork/BXDtools @arends_bxdtools (R package: `devtools::install_github("DannyArends/BXDtools")`): for kinship-corrected linear mixed model association analysis (PheWAS). R (≥ 4.0) is required for the PheWAS analysis in Section 3.7.
 
 + Assembly-based SV callers: PAV @ebert2021, SVIM-asm @heller2020, and Hall-lab pipeline @hall_lab, used in combination with vg to produce a multi-method high-confidence SV call set.
 
 + SURVIVOR @jeffares2017: for merging structural variant calls across multiple callers.
 
-+ vcfbub and vcfwave (from vcflib; #link("https://github.com/vcflib/vcflib")): for removing nested alleles and decomposing complex variants using the BiWFA algorithm, respectively.
++ vcfbub (#link("https://github.com/pangenome/vcfbub")): for removing nested alleles from multi-allelic VCF records.
+
++ vcfwave (from vcflib; #link("https://github.com/vcflib/vcflib")): for decomposing complex variants using the BiWFA algorithm.
 
 + RepeatMasker @tarailo2009: for masking low-complexity and repetitive regions.
 

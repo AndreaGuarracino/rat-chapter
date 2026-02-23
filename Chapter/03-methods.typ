@@ -1,6 +1,6 @@
 = Methods
 
-All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores.
+All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script (requires Python 3) for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, `odgi`, or `vcfbub` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`) require the `pangenome-tools` environment. When using Docker, all tools are available in a single container.
 
 == Assembly quality assessment
 
@@ -42,11 +42,11 @@ meryl count k=21 reads.fq.gz output sample.meryl
 meryl histogram sample.meryl > sample.hist
 ```
 
-Upload the histogram file to GenomeScope (#link("https://qb.cshl.edu/genomescope/")) to visualize the results.
+Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomescope/genomescope2.0/")) to visualize the results.
 
-*4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ Note 2).
+*4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
 
-*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) provides a standardized approach. For simplicity, remove contigs shorter than 100 kb:
+*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
 
 ```bash
 samtools faidx assembly.fasta
@@ -58,14 +58,16 @@ samtools faidx assembly.clean.fasta
 *6. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
 
 ```bash
-seqtk telo assembly.fasta > assembly.telo
+seqtk telo assembly.fasta > assembly.telo.bed 2> assembly.telo.counts
 ```
+
+The BED output (stdout) lists telomeric repeat intervals; the count summary (stderr) reports the number and total length of detected telomeres per sequence.
 
 == PGGB pangenome construction
 
 === Input preparation
 
-The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include the reference genome in the graph (_see_ Note 3). Although PGGB is reference-free, including the reference is essential for downstream variant calling relative to an established coordinate system and for comparison with existing datasets.
+The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include the reference genome in the graph (_see_ *Note 3*). Although PGGB is reference-free, including the reference is essential for downstream variant calling relative to an established coordinate system and for comparison with existing datasets.
 
 *1. Combine all haploid assemblies and the mRatBN7.2 reference* into a single multi-FASTA file:
 
@@ -83,14 +85,17 @@ done
 rm -f in.fa
 ls *.fa.gz | cut -f 1 -d '.' | uniq | while read f; do
     echo "${f}"
+    # Using fastix (available in PGGB Docker image):
     zcat "${f}".fa.gz | fastix -p "${f}#1#" >> in.fa
+    # Alternative without fastix:
+    # zcat "${f}".fa.gz | sed "s/^>/>""${f}""#1#/" >> in.fa
 done
 ```
 
 *3. Compress and index:*
 
 ```bash
-bgzip -@ 4 in.fa
+bgzip -@ 48 in.fa
 samtools faidx in.fa.gz
 ```
 
@@ -108,7 +113,7 @@ pggb -i in.fa.gz \
     -o output_dir
 ```
 
-The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ Notes 5--6 for parameter selection guidance):
+The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5--6* for parameter selection guidance):
 
 - `-p 98`: percent identity threshold for mapping. Set to 98% because the HXB/BXH strains are closely related inbred strains derived from two parental strains. For more divergent comparisons, lower values (e.g., 90--95%) are appropriate.
 
@@ -116,7 +121,7 @@ The main parameters passed to WFMASH are the mapping identity minimum `-p` and t
 
 - `-n 32`: number of haplotypes in the input (31 RI strains + 1 reference).
 
-- `-F 0.001`: k-mer frequency filter threshold. Ignores the top 0.1% most frequent k-mers in the MinHash sketches, reducing spurious alignments in repetitive regions. For scaling the number of pairwise comparisons with large inputs, see the `-x` sparsification option (_see_ Note 7).
+- `-F 0.001`: k-mer frequency filter threshold. Ignores the top 0.1% most frequent k-mers in the MinHash sketches, reducing spurious alignments in repetitive regions. For scaling the number of pairwise comparisons with large inputs, see the `-x` sparsification option (_see_ *Note 7*).
 
 WFMASH outputs alignments in PAF format. Each sequence is aligned directly against every other sequence, so that no single genome is privileged. The BiWFA algorithm computes base-level alignments from the segment-level mappings.
 
@@ -144,7 +149,7 @@ GFAFFIX collapses walk-preserving redundant nodes---nodes that share identical s
 
 === Running PGGB chromosome by chromosome
 
-For large genomes, it is practical to partition the input by chromosome and run PGGB independently on each chromosome (_see_ Note 8). Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately. This reduces memory requirements and allows parallel execution on a cluster.
+For large genomes, it is practical to partition the input by chromosome and run PGGB independently on each chromosome (_see_ *Note 8*). Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately. This reduces memory requirements and allows parallel execution on a cluster.
 
 *Sequence partitioning.* Map each assembly against the reference genome using WFMASH:
 
@@ -201,7 +206,7 @@ for CHR in $(seq 1 20) X Y; do
 done
 ```
 
-The output is a set of bgzip-compressed, indexed per-chromosome FASTAs (`chr${CHR}.pan+ref.fa.gz`), each containing all strain contigs mapping to that chromosome plus the corresponding reference sequence.
+The output is a set of bgzip-compressed, indexed per-chromosome FASTAs (`chr${CHR}.pan+ref.fa.gz`), each containing all strain contigs mapping to that chromosome plus the corresponding reference sequence. Contigs that do not map to any chromosome (e.g., unplaced scaffolds) are excluded from this partitioning; if retaining them is important, they can be collected separately and processed as an additional partition.
 
 *Run PGGB per chromosome:*
 
@@ -262,11 +267,11 @@ odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
     -o subgraph.og
 ```
 
-The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control---for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view. For further discussion of visualization challenges and limitations, _see_ Note 13.
+The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path (Fig. 2A). The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns (Fig. 2B). Both views are useful for quality control---for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view. For further discussion of visualization challenges and limitations, _see_ *Note 13*.
 
 == Read mapping to the pangenome
 
-Once the pangenome graph is constructed, it can serve as a reference for aligning short reads using vg Giraffe @hickey2024, which maps reads to a graph index:
+Once the pangenome graph is constructed, it can serve as a reference for aligning short reads using vg Giraffe @siren2021, which maps reads to a graph index:
 
 *1. Build graph indexes.* Convert the GFA to the formats required by vg Giraffe:
 
@@ -297,13 +302,13 @@ The output is in GAF (Graph Alignment Format). To convert to BAM for use with st
 
 ```bash
 vg surject -x graph_index.giraffe.gbz \
-    -t 48 -b -N sample_name -R "sample_name" \
+    -t 48 -b -G -N sample_name -R "sample_name" \
     aligned.gaf > aligned.bam
 samtools sort -@ 48 aligned.bam -o aligned.sorted.bam
 samtools index aligned.sorted.bam
 ```
 
-Note that vg Giraffe requires a graph built by Minigraph-Cactus or autoindexed from GFA. When using a PGGB graph, the `vg autoindex` step handles the necessary conversions. For large-scale read mapping projects, Minigraph-Cactus graphs may offer better Giraffe compatibility (_see_ Note 4).
+vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `vg autoindex` step (shown above) handles all necessary format conversions. Both PGGB and Minigraph-Cactus graphs are fully compatible with vg Giraffe (_see_ *Note 4*).
 
 == Variant calling from the pangenome
 
@@ -317,11 +322,15 @@ Variants are extracted from the pangenome graph relative to the reference path u
 bcftools norm -m -both -f rn7.fa output.vcf.gz | \
     bcftools view -e 'ALT="*"' | \
     bcftools sort -Oz -o normalized.vcf.gz
+tabix normalized.vcf.gz
 ```
 
-Perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.5). Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
+Perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.5). DeepVariant and GLnexus are available as Docker containers and are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
 ```bash
+# Verify the exact database name for mRatBN7.2:
+snpEff databases | grep -i "rattus"
+# Then run annotation (adjust database name as needed):
 snpEff mRatBN7.2 input.vcf > annotated.vcf
 ```
 
@@ -346,7 +355,7 @@ rtg vcfeval \
     -o vcfeval_output/snps
 ```
 
-Here `-b` specifies the baseline (truth) VCF from reference-based joint calling, `-c` is the pangenome-derived call set to evaluate, `-e` restricts evaluation to confidently callable regions (e.g., RepeatMasker-derived easy regions excluding low-complexity repeats), and `-T` sets the number of threads. The output contains precision, recall, F1-score, and partitioned true-positive, false-positive, and false-negative VCFs (_see_ Note 9).
+Here `-b` specifies the baseline (truth) VCF from reference-based joint calling, `-c` is the pangenome-derived call set to evaluate, `-e` restricts evaluation to confidently callable regions (e.g., RepeatMasker-derived easy regions excluding low-complexity repeats), and `-T` sets the number of threads. The output contains precision, recall, F1-score, and partitioned true-positive, false-positive, and false-negative VCFs (_see_ *Note 9*).
 
 === Cross-validation with MUMMER4
 
@@ -390,8 +399,9 @@ for SAMPLE in $(cat samples.list); do
     # assemblies.tsv listing sample paths (see PAV docs)
 
     # Method 3: Hall-lab pipeline
-    # Uses paftools.js call for variant detection from
-    # the minimap2 alignment, followed by VCF conversion
+    # Uses paftools.js call (distributed with minimap2,
+    # requires the k8 JavaScript runtime) for variant
+    # detection from the alignment, followed by VCF conversion
 done
 ```
 
@@ -425,10 +435,11 @@ for SAMPLE in $(cat samples.list); do
         | bcftools view \
             -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
         | bgzip -c > ${SAMPLE}.pggb.vcf.gz
+    tabix ${SAMPLE}.pggb.vcf.gz
 done
 ```
 
-*3. Multi-method merging.* Merge SV calls across all four methods per sample using SURVIVOR @jeffares2017, requiring agreement from at least two callers on type and strand within a 1,000 bp breakpoint distance:
+*3. Multi-method merging.* Merge SV calls across all four methods per sample using SURVIVOR @jeffares2017, requiring agreement from at least two callers on type and strand within a 1,000 bp breakpoint distance. Note that SURVIVOR can over-merge distinct events when the breakpoint distance parameter is set too high; 1,000 bp is a reasonable compromise for mammalian genomes, but users should inspect merged calls in regions with clustered SVs:
 
 ```bash
 for SAMPLE in $(cat samples.list); do
@@ -469,9 +480,9 @@ bcftools sort all_samples.merged.vcf \
 tabix all_samples.merged.vcf.gz
 ```
 
-Note that PGGB's graph-based method typically reports fewer SVs than assembly-based methods (_see_ Note 10).
+Note that PGGB's graph-based method typically reports fewer SVs than assembly-based methods (_see_ *Note 10*).
 
-*5. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ Note 11).
+*5. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage (#link("https://rrwick.github.io/Bandage/")) or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ *Note 11*).
 
 *6.* Annotate SV content with RepeatMasker @tarailo2009 to identify retrotransposon content (LINEs, SINEs) within structural variants.
 
@@ -488,7 +499,7 @@ bcftools query -f '%CHROM\t%POS\t[ %GT]\n' \
     -o validated.gt.txt
 ```
 
-Convert to a genotype matrix in R:
+Convert to a genotype matrix in R (≥ 4.0). Install BXDtools if not already available: `devtools::install_github("DannyArends/BXDtools")` in R.
 
 ```r
 # Read genotype calls and sample names
@@ -552,9 +563,9 @@ plot.phewas(scores, bxd.phenosomes, do.sort = TRUE,
 dev.off()
 ```
 
-The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (LRS > 16) are reported. Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
+The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (LRS > 16) are reported. Note that with only ~30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
 
-*3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012, to account for the RI population structure (_see_ Note 12).
+*3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination---i.e., inflated statistics caused by including the test locus in the kinship estimate. This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
 
 *4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 reference genome @dejong2024.
 
