@@ -11,7 +11,8 @@ For: Springer Methods in Molecular Biology (MiMB).
 ## File structure
 
 ```
-chapter/
+README.md                   # This file (in root)
+Chapter/
   main.typ                    # Master document (includes all sections)
   00-frontmatter.typ          # Title, authors, abstract, keywords
   01-introduction.typ         # Introduction (sections 1.1–1.5)
@@ -23,13 +24,12 @@ chapter/
   springer-basic-brackets.csl # Springer citation style (CSL)
   dois.tsv                    # DOI → citation key mapping (source of truth)
   doi2hayagriva.py            # Script: converts DOIs to Hayagriva YAML
-  README.md                   # This file
 ```
 
 ## Build the PDF
 
 ```bash
-typst compile chapter/main.typ chapter/chapter.pdf
+typst compile Chapter/main.typ Chapter/chapter.pdf
 ```
 
 ## Regenerate references from DOIs
@@ -39,7 +39,7 @@ The `dois.tsv` file maps each citation key to its DOI. Lines marked `MANUAL` hav
 To regenerate the DOI-based entries:
 
 ```bash
-cd chapter
+cd Chapter
 python3 doi2hayagriva.py dois.tsv > references_auto.yml
 ```
 
