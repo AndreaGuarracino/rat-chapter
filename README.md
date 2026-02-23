@@ -8,10 +8,16 @@ For: Springer Methods in Molecular Biology (MiMB).
 - [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`) — only needed to regenerate references
 - Python 3 — only needed to regenerate references
 
+## Build the PDF
+
+```bash
+cd rat-chapter
+typst compile Chapter/main.typ Chapter/chapter.pdf
+```
+
 ## File structure
 
 ```
-README.md                   # This file (in root)
 Chapter/
   main.typ                    # Master document (includes all sections)
   00-frontmatter.typ          # Title, authors, abstract, keywords
@@ -24,12 +30,6 @@ Chapter/
   springer-basic-brackets.csl # Springer citation style (CSL)
   dois.tsv                    # DOI → citation key mapping (source of truth)
   doi2hayagriva.py            # Script: converts DOIs to Hayagriva YAML
-```
-
-## Build the PDF
-
-```bash
-typst compile Chapter/main.typ Chapter/chapter.pdf
 ```
 
 ## Regenerate references from DOIs
@@ -50,13 +50,22 @@ Then review the output for:
 
 After review, append the manual entries (pravenec1989, guarracino2021wfmash, arends_bxdtools, hall_lab, villani2025thesis, guarracino2025impg) to produce the final `references.yml`.
 
-## Adding a new reference
+### Adding a new reference
 
 1. Add a line to `dois.tsv`: `key<TAB>DOI` (or `key<TAB>MANUAL` if no DOI)
 2. Regenerate and review as above
 3. Cite in `.typ` files with `@key`
 4. Rebuild the PDF
 
-## Citation style
+### Citation style
 
 Citations appear as numbered brackets [1], [2], etc., ordered by first appearance in the text, per Springer MiMB guidelines. This is handled automatically by Typst + the `springer-basic-brackets.csl` file.
+
+## To do
+
+- [ ] Check if Flavia can build the chapter.pdf
+- [ ] Do we need the vg giraffe part for read mapping? The "3.4. Read mapping to the pangenome" paragraph" seems out of context. We should focus on all you really did in your paper/thesis. If so, remove the paragraph and related information and references (if any).
+- [ ] Thinking about 1-2 figures
+- [ ] Check installation instructions
+- [ ] Check code instructions, if they make sense, are correct, correct values/flags, and are okay with tool versions
+- [ ] **AT THE VERY END**: Check that references are correct, and that they have correct title, author, year, ...
