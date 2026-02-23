@@ -1,3 +1,20 @@
+siren2021:
+  type: article
+  title: "Pangenomics enables genotyping of known structural variants in 5202 diverse genomes"
+  author:
+    - "Sirén, Jouni"
+    - "Monlong, Jean"
+    - "Chang, Xian"
+  date: 2021
+  serial-number:
+    doi: "10.1126/science.abg8871"
+  page-range: "eabg8871"
+  parent:
+    type: periodical
+    title: "Science"
+    volume: 374
+    issue: 6574
+
 garrison2018:
   type: article
   title: "Variation graph toolkit improves read mapping by representing genetic variation in the reference"
@@ -266,23 +283,6 @@ danecek2021:
     volume: 10
     issue: 2
 
-tan2015:
-  type: article
-  title: "Unified representation of genetic variants"
-  author:
-    - "Tan, Adrian"
-    - "Abecasis, Gonçalo R."
-    - "Kang, Hyun Min"
-  date: 2015
-  serial-number:
-    doi: "10.1093/bioinformatics/btv112"
-  page-range: "2202-2204"
-  parent:
-    type: periodical
-    title: "Bioinformatics"
-    volume: 31
-    issue: 13
-
 cleary2015:
   type: article
   title: "Comparing Variant Call Files for Performance Benchmarking of Next-Generation Sequencing Variant Calling Pipelines"
@@ -299,9 +299,7 @@ cleary2015:
 
 cingolani2012:
   type: article
-  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w
-                    1118
-                    ; iso-2; iso-3"
+  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff"
   author:
     - "Cingolani, Pablo"
     - "Platts, Adrian"
@@ -354,7 +352,7 @@ heller2020:
   author:
     - "Heller, David"
     - "Vingron, Martin"
-  date: 2020
+  date: 2021
   serial-number:
     doi: "10.1093/bioinformatics/btaa1034"
   page-range: "5519-5521"
@@ -518,6 +516,7 @@ smith2020:
   date: 2020
   serial-number:
     doi: "10.1093/nar/gkz1041"
+  page-range: "D731-D742"
   parent:
     type: periodical
     title: "Nucleic Acids Research"
@@ -669,6 +668,3 @@ guarracino2025impg:
     - "Kille, Bryce"
     - "Garrison, Erik"
   date: 2025
-  parent:
-    type: periodical
-    title: "Bioinformatics"

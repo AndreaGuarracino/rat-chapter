@@ -1,7 +1,7 @@
 // Unnumbered sections for backmatter
 #heading(numbering: none, level: 1)[Competing Interests]
 
-The authors declare that they have no competing interests.
+The authors declare no competing interests.
 
 #heading(numbering: none, level: 1)[Acknowledgments]
 
