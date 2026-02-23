@@ -1,0 +1,674 @@
+garrison2018:
+  type: article
+  title: "Variation graph toolkit improves read mapping by representing genetic variation in the reference"
+  author:
+    - "Garrison, Erik"
+    - "Sirén, Jouni"
+    - "Novak, Adam M"
+  date: 2018
+  serial-number:
+    doi: "10.1038/nbt.4227"
+  page-range: "875-879"
+  parent:
+    type: periodical
+    title: "Nature Biotechnology"
+    volume: 36
+    issue: 9
+
+paten2017:
+  type: article
+  title: "Genome graphs and the evolution of genome inference"
+  author:
+    - "Paten, Benedict"
+    - "Novak, Adam M."
+    - "Eizenga, Jordan M."
+  date: 2017
+  serial-number:
+    doi: "10.1101/gr.214155.116"
+  page-range: "665-676"
+  parent:
+    type: periodical
+    title: "Genome Research"
+    volume: 27
+    issue: 5
+
+liao2023:
+  type: article
+  title: "A draft human pangenome reference"
+  author:
+    - "Liao, Wen-Wei"
+    - "Asri, Mobin"
+    - "Ebler, Jana"
+  date: 2023
+  serial-number:
+    doi: "10.1038/s41586-023-05896-x"
+  page-range: "312-324"
+  parent:
+    type: periodical
+    title: "Nature"
+    volume: 617
+    issue: 7960
+
+eizenga2020:
+  type: article
+  title: "Pangenome Graphs"
+  author:
+    - "Eizenga, Jordan M."
+    - "Novak, Adam M."
+    - "Sibbesen, Jonas A."
+  date: 2020
+  serial-number:
+    doi: "10.1146/annurev-genom-120219-080406"
+  page-range: "139-162"
+  parent:
+    type: periodical
+    title: "Annual Review of Genomics and Human Genetics"
+    volume: 21
+    issue: 1
+
+secomandi2025:
+  type: article
+  title: "Pangenome graphs and their applications in biodiversity genomics"
+  author:
+    - "Secomandi, Simona"
+    - "Gallo, Guido Roberto"
+    - "Rossi, Riccardo"
+  date: 2025
+  serial-number:
+    doi: "10.1038/s41588-024-02029-6"
+  page-range: "13-26"
+  parent:
+    type: periodical
+    title: "Nature Genetics"
+    volume: 57
+    issue: 1
+
+wang2022:
+  type: article
+  title: "The Human Pangenome Project: a global resource to map genomic diversity"
+  author:
+    - "Wang, Ting"
+    - "Antonacci-Fulton, Lucinda"
+    - "Howe, Kerstin"
+  date: 2022
+  serial-number:
+    doi: "10.1038/s41586-022-04601-8"
+  page-range: "437-446"
+  parent:
+    type: periodical
+    title: "Nature"
+    volume: 604
+    issue: 7906
+
+garrison2023:
+  type: article
+  title: "Unbiased pangenome graphs"
+  author:
+    - "Garrison, Erik"
+    - "Guarracino, Andrea"
+  date: 2023
+  serial-number:
+    doi: "10.1093/bioinformatics/btac743"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 39
+    issue: 1
+
+garrison2024:
+  type: article
+  title: "Building pangenome graphs"
+  author:
+    - "Garrison, Erik"
+    - "Guarracino, Andrea"
+    - "Heumos, Simon"
+  date: 2024
+  serial-number:
+    doi: "10.1038/s41592-024-02430-3"
+  page-range: "2008-2012"
+  parent:
+    type: periodical
+    title: "Nature Methods"
+    volume: 21
+    issue: 11
+
+shoer2024:
+  type: article
+  title: "Pangenomes of human gut microbiota uncover links between genetic diversity and stress response"
+  author:
+    - "Shoer, Saar"
+    - "Reicher, Lee"
+    - "Zhao, Chunyu"
+  date: 2024
+  serial-number:
+    doi: "10.1016/j.chom.2024.08.017"
+  page-range: "1744-1757.e2"
+  parent:
+    type: periodical
+    title: "Cell Host & Microbe"
+    volume: 32
+    issue: 10
+
+schreiber2024:
+  type: article
+  title: "Plant pangenomes for crop improvement, biodiversity and evolution"
+  author:
+    - "Schreiber, Mona"
+    - "Jayakodi, Murukarthick"
+    - "Stein, Nils"
+  date: 2024
+  serial-number:
+    doi: "10.1038/s41576-024-00691-4"
+  page-range: "563-577"
+  parent:
+    type: periodical
+    title: "Nature Reviews Genetics"
+    volume: 25
+    issue: 8
+
+bolognini2024:
+  type: article
+  title: "Recurrent evolution and selection shape structural diversity at the amylase locus"
+  author:
+    - "Bolognini, Davide"
+    - "Halgren, Alma"
+    - "Lou, Runyang Nicolas"
+  date: 2024
+  serial-number:
+    doi: "10.1038/s41586-024-07911-1"
+  page-range: "617-625"
+  parent:
+    type: periodical
+    title: "Nature"
+    volume: 634
+    issue: 8034
+
+printz2003:
+  type: article
+  title: "Invited Review: HXB/BXH rat recombinant inbred strain platform: a newly enhanced tool for cardiovascular, behavioral, and developmental genetics and genomics"
+  author:
+    - "Printz, Morton P."
+    - "Jirout, Martin"
+    - "Jaworski, Rebecca"
+  date: 2003
+  serial-number:
+    doi: "10.1152/japplphysiol.00064.2003"
+  page-range: "2510-2522"
+  parent:
+    type: periodical
+    title: "Journal of Applied Physiology"
+    volume: 94
+    issue: 6
+
+mulligan2017:
+  type: article
+  title: "GeneNetwork: A Toolbox for Systems Genetics"
+  author:
+    - "Mulligan, Megan K."
+    - "Mozhui, Khyobeni"
+    - "Prins, Pjotr"
+  date: 2017
+  serial-number:
+    doi: "10.1007/978-1-4939-6427-7_4"
+  page-range: "75-120"
+  parent:
+    type: periodical
+    title: "Methods in Molecular Biology"
+    volume: 1488
+
+dejong2024:
+  type: article
+  title: "A revamped rat reference genome improves the discovery of genetic diversity in laboratory rats"
+  author:
+    - "de Jong, Tristan V."
+    - "Pan, Yanchao"
+    - "Rastas, Pasi"
+  date: 2024
+  serial-number:
+    doi: "10.1016/j.xgen.2024.100527"
+  page-range: "100527"
+  parent:
+    type: periodical
+    title: "Cell Genomics"
+    volume: 4
+    issue: 4
+
+martin2023:
+  type: article
+  title: "Ensembl 2023"
+  author:
+    - "Martin, Fergal J"
+    - "Amode, M Ridwan"
+    - "Aneja, Alisha"
+  date: 2023
+  serial-number:
+    doi: "10.1093/nar/gkac958"
+  page-range: "D933-D941"
+  parent:
+    type: periodical
+    title: "Nucleic Acids Research"
+    volume: 51
+    issue: D1
+
+danecek2021:
+  type: article
+  title: "Twelve years of SAMtools and BCFtools"
+  author:
+    - "Danecek, Petr"
+    - "Bonfield, James K"
+    - "Liddle, Jennifer"
+  date: 2021
+  serial-number:
+    doi: "10.1093/gigascience/giab008"
+  parent:
+    type: periodical
+    title: "GigaScience"
+    volume: 10
+    issue: 2
+
+tan2015:
+  type: article
+  title: "Unified representation of genetic variants"
+  author:
+    - "Tan, Adrian"
+    - "Abecasis, Gonçalo R."
+    - "Kang, Hyun Min"
+  date: 2015
+  serial-number:
+    doi: "10.1093/bioinformatics/btv112"
+  page-range: "2202-2204"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 31
+    issue: 13
+
+cleary2015:
+  type: article
+  title: "Comparing Variant Call Files for Performance Benchmarking of Next-Generation Sequencing Variant Calling Pipelines"
+  author:
+    - "Cleary, John G."
+    - "Braithwaite, Ross"
+    - "Gaastra, Kurt"
+  date: 2015
+  serial-number:
+    doi: "10.1101/023754"
+  parent:
+    type: periodical
+    title: "bioRxiv"
+
+cingolani2012:
+  type: article
+  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w
+                    1118
+                    ; iso-2; iso-3"
+  author:
+    - "Cingolani, Pablo"
+    - "Platts, Adrian"
+    - "Wang, Le Lily"
+  date: 2012
+  serial-number:
+    doi: "10.4161/fly.19695"
+  page-range: "80-92"
+  parent:
+    type: periodical
+    title: "Fly"
+    volume: 6
+    issue: 2
+
+zhou2012:
+  type: article
+  title: "Genome-wide efficient mixed-model analysis for association studies"
+  author:
+    - "Zhou, Xiang"
+    - "Stephens, Matthew"
+  date: 2012
+  serial-number:
+    doi: "10.1038/ng.2310"
+  page-range: "821-824"
+  parent:
+    type: periodical
+    title: "Nature Genetics"
+    volume: 44
+    issue: 7
+
+ebert2021:
+  type: article
+  title: "Haplotype-resolved diverse human genomes and integrated analysis of structural variation"
+  author:
+    - "Ebert, Peter"
+    - "Audano, Peter A."
+    - "Zhu, Qihui"
+  date: 2021
+  serial-number:
+    doi: "10.1126/science.abf7117"
+  parent:
+    type: periodical
+    title: "Science"
+    volume: 372
+    issue: 6537
+
+heller2020:
+  type: article
+  title: "SVIM-asm: structural variant detection from haploid and diploid genome assemblies"
+  author:
+    - "Heller, David"
+    - "Vingron, Martin"
+  date: 2020
+  serial-number:
+    doi: "10.1093/bioinformatics/btaa1034"
+  page-range: "5519-5521"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 36
+    issue: 22–23
+
+jeffares2017:
+  type: article
+  title: "Transient structural variations have strong effects on quantitative traits and reproductive isolation in fission yeast"
+  author:
+    - "Jeffares, Daniel C."
+    - "Jolly, Clemency"
+    - "Hoti, Mimoza"
+  date: 2017
+  serial-number:
+    doi: "10.1038/ncomms14061"
+  parent:
+    type: periodical
+    title: "Nature Communications"
+    volume: 8
+    issue: 1
+
+tarailo2009:
+  type: article
+  title: "Using RepeatMasker to Identify Repetitive Elements in Genomic Sequences"
+  author:
+    - "Tarailo‐Graovac, Maja"
+    - "Chen, Nansheng"
+  date: 2009
+  serial-number:
+    doi: "10.1002/0471250953.bi0410s25"
+  parent:
+    type: periodical
+    title: "Current Protocols in Bioinformatics"
+    volume: 25
+    issue: 1
+
+huang2023:
+  type: article
+  title: "compleasm: a faster and more accurate reimplementation of BUSCO"
+  author:
+    - "Huang, Neng"
+    - "Li, Heng"
+  date: 2023
+  serial-number:
+    doi: "10.1093/bioinformatics/btad595"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 39
+    issue: 10
+
+li2018:
+  type: article
+  title: "Minimap2: pairwise alignment for nucleotide sequences"
+  author:
+    - "Li, Heng"
+  date: 2018
+  serial-number:
+    doi: "10.1093/bioinformatics/bty191"
+  page-range: "3094-3100"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 34
+    issue: 18
+
+heumos2024:
+  type: article
+  title: "Cluster-efficient pangenome graph construction with nf-core/pangenome"
+  author:
+    - "Heumos, Simon"
+    - "Heuer, Michael L"
+    - "Hanssen, Friederike"
+  date: 2024
+  serial-number:
+    doi: "10.1093/bioinformatics/btae609"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 40
+    issue: 11
+
+rhie2020:
+  type: article
+  title: "Merqury: reference-free quality, completeness, and phasing assessment for genome assemblies"
+  author:
+    - "Rhie, Arang"
+    - "Walenz, Brian P."
+    - "Koren, Sergey"
+  date: 2020
+  serial-number:
+    doi: "10.1186/s13059-020-02134-9"
+  parent:
+    type: periodical
+    title: "Genome Biology"
+    volume: 21
+    issue: 1
+
+vurture2017:
+  type: article
+  title: "GenomeScope: fast reference-free genome profiling from short reads"
+  author:
+    - "Vurture, Gregory W"
+    - "Sedlazeck, Fritz J"
+    - "Nattestad, Maria"
+  date: 2017
+  serial-number:
+    doi: "10.1093/bioinformatics/btx153"
+  page-range: "2202-2204"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 33
+    issue: 14
+
+yun2021:
+  type: article
+  title: "Accurate, scalable cohort variant calls using DeepVariant and GLnexus"
+  author:
+    - "Yun, Taedong"
+    - "Li, Helen"
+    - "Chang, Pi-Chuan"
+  date: 2021
+  serial-number:
+    doi: "10.1093/bioinformatics/btaa1081"
+  page-range: "5582-5589"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 36
+    issue: 24
+
+marcais2018:
+  type: article
+  title: "MUMmer4: A fast and versatile genome alignment system"
+  author:
+    - "Marçais, Guillaume"
+    - "Delcher, Arthur L."
+    - "Phillippy, Adam M."
+  date: 2018
+  serial-number:
+    doi: "10.1371/journal.pcbi.1005944"
+  page-range: "e1005944"
+  parent:
+    type: periodical
+    title: "PLOS Computational Biology"
+    volume: 14
+    issue: 1
+
+smith2020:
+  type: article
+  title: "The Year of the Rat: The Rat Genome Database at 20: a multi-species knowledgebase and analysis platform"
+  author:
+    - "Smith, Jennifer R"
+    - "Hayman, G Thomas"
+    - "Wang, Shur-Jen"
+  date: 2020
+  serial-number:
+    doi: "10.1093/nar/gkz1041"
+  parent:
+    type: periodical
+    title: "Nucleic Acids Research"
+    volume: 48
+    issue: D1
+
+hickey2024:
+  type: article
+  title: "Pangenome graph construction from genome alignments with Minigraph-Cactus"
+  author:
+    - "Hickey, Glenn"
+    - "Monlong, Jean"
+    - "Ebler, Jana"
+  date: 2024
+  serial-number:
+    doi: "10.1038/s41587-023-01793-w"
+  page-range: "663-673"
+  parent:
+    type: periodical
+    title: "Nature Biotechnology"
+    volume: 42
+    issue: 4
+
+villani2025:
+  type: article
+  title: "Pangenome reconstruction in rats enhances genotype-phenotype mapping and variant discovery"
+  author:
+    - "Villani, Flavia"
+    - "Guarracino, Andrea"
+    - "Ward, Rachel R."
+  date: 2025
+  serial-number:
+    doi: "10.1016/j.isci.2025.111835"
+  page-range: "111835"
+  parent:
+    type: periodical
+    title: "iScience"
+    volume: 28
+    issue: 2
+
+li2025:
+  type: article
+  title: "Genetic modulation of protein expression in rat brain"
+  author:
+    - "Li, Ling"
+    - "Wu, Zhiping"
+    - "Guarracino, Andrea"
+  date: 2025
+  serial-number:
+    doi: "10.1016/j.isci.2025.112079"
+  page-range: "112079"
+  parent:
+    type: periodical
+    title: "iScience"
+    volume: 28
+    issue: 3
+
+helmy2026:
+  type: article
+  title: "High-quality mouse reference genomes reveal the structural complexity of the murine protein-coding landscape"
+  author:
+    - "Helmy, Mohab"
+    - "Li, Jin U."
+    - "Yan, Xinyu F."
+  date: 2026
+  serial-number:
+    doi: "10.1016/j.xgen.2025.101074"
+  page-range: "101074"
+  parent:
+    type: periodical
+    title: "Cell Genomics"
+    volume: 6
+    issue: 2
+
+# --- Entry recovered from timeout ---
+guarracino2022odgi:
+  type: article
+  title: "ODGI: understanding pangenome graphs"
+  author:
+    - "Guarracino, Andrea"
+    - "Heumos, Simon"
+    - "Nahnsen, Sven"
+  date: 2022
+  serial-number:
+    doi: "10.1093/bioinformatics/btac308"
+  page-range: "3319-3326"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 38
+    issue: 13
+
+# --- Manual entries (no DOI available) ---
+pravenec1989:
+  type: article
+  title: "An analysis of spontaneous hypertension in spontaneously hypertensive rats by means of new recombinant inbred strains"
+  author:
+    - "Pravenec, Michal"
+    - "Klir, Petr"
+    - "Kren, Vladimir"
+  date: 1989
+  page-range: "217-221"
+  parent:
+    type: periodical
+    title: "Journal of Hypertension"
+    volume: 7
+    issue: 3
+
+guarracino2021wfmash:
+  type: web
+  title: "wfmash: whole-chromosome pairwise alignment using the hierarchical wavefront algorithm"
+  author:
+    - "Guarracino, Andrea"
+    - "Mwaniki, Njagi"
+    - "Marco-Sola, Santiago"
+  date: 2021
+  url:
+    value: "https://github.com/waveygang/wfmash"
+
+arends_bxdtools:
+  type: web
+  title: "BXDtools: genetic tools for working with BXD and other model organism populations"
+  author:
+    - "Arends, Danny"
+  url:
+    value: "https://github.com/DannyArends/BXDtools"
+
+hall_lab:
+  type: web
+  title: "Assembly validation pipeline"
+  author:
+    - "Hall Lab"
+  url:
+    value: "https://github.com/hall-lab/assembly_validation"
+
+villani2025thesis:
+  type: thesis
+  title: "Deciphering Genotype-Phenotype Connections: Leveraging Pangenomes and Comprehensive Genome Variation"
+  author:
+    - "Villani, Flavia"
+  date: 2025
+  organization: "University of Tennessee Health Science Center"
+
+guarracino2025impg:
+  type: article
+  title: "Implicit pangenome graphs for accessible pangenomics"
+  author:
+    - "Guarracino, Andrea"
+    - "Kille, Bryce"
+    - "Garrison, Erik"
+  date: 2025
+  parent:
+    type: periodical
+    title: "Bioinformatics"

@@ -1,0 +1,45 @@
+// A Practical Guide to Pangenome Graph Construction, Variant Calling,
+// and Phenome-Wide Association in the HXB/BXH Rat Panel
+//
+// For: Springer Methods in Molecular Biology
+
+#set document(
+  title: "A Practical Guide to Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel",
+  author: ("Flavia Villani", "Pjotr Prins", "Andrea Guarracino"),
+)
+
+#set text(font: "New Computer Modern", size: 11pt, lang: "en")
+#set par(justify: true)
+#set page(
+  paper: "a4",
+  margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
+  numbering: "1",
+)
+
+// Heading numbering: 1., 1.1, 1.2.1, etc.
+#set heading(numbering: "1.")
+
+// Code block styling
+#show raw.where(block: true): set text(size: 9pt)
+#show raw.where(block: true): block.with(
+  fill: luma(245),
+  inset: 8pt,
+  radius: 3pt,
+  width: 100%,
+)
+
+#include "00-frontmatter.typ"
+#include "01-introduction.typ"
+#include "02-materials.typ"
+#include "03-methods.typ"
+#include "04-notes.typ"
+#include "05-backmatter.typ"
+
+#bibliography("references.yml", style: "springer-basic-brackets.csl")
+
+// Figure captions (figures submitted as separate files per MiMB instructions)
+#heading(numbering: none, level: 1)[Figure Captions]
+
+*Fig. 1.* Overview of the pangenome workflow described in this protocol. Starting from de novo genome assemblies (left), the PGGB pipeline performs all-to-all alignment (WFMASH), graph induction (SEQWISH), graph normalization (SMOOTHXG), and redundancy removal (GFAFFIX) to produce a pangenome graph in GFA format. Downstream analyses include variant calling with vg deconstruct, structural variant detection via a multi-method approach, read mapping with vg Giraffe, and phenome-wide association mapping (PheWAS) linking novel variants to phenotypes.
+
+*Fig. 2.* Example ODGI visualizations of a pangenome graph. (A) 1D visualization (odgi viz): each horizontal row represents a genome path through the graph. Colored segments indicate graph node traversals; gaps correspond to sequence absent from that path. (B) 2D layout (odgi layout + odgi draw): the topological structure of the graph, where linear stretches appear as straight lines and variant sites (bubbles) produce branching patterns.
