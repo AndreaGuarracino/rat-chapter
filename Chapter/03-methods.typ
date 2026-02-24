@@ -271,7 +271,7 @@ The 1D visualization produces a horizontal image in which each row represents a 
 
 == Read mapping to the pangenome
 
-Once the pangenome graph is constructed, it can serve as a reference for aligning short reads using vg Giraffe @siren2021, which maps reads to a graph index:
+Variants called from the pangenome graph via vg deconstruct (Section 3.5) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. In addition, the alignments can be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites. vg Giraffe maps reads to a graph index:
 
 *1. Build graph indexes.* Convert the GFA to the formats required by vg Giraffe:
 
@@ -307,6 +307,23 @@ vg surject -x graph_index.giraffe.gbz \
 samtools sort -@ 48 aligned.bam -o aligned.sorted.bam
 samtools index aligned.sorted.bam
 ```
+
+*3. Call variants from read alignments.* Use `vg call` to genotype the snarls (bubble sites) in the graph based on the read alignments:
+
+```bash
+vg pack -x graph_index.giraffe.gbz \
+    -g aligned.gaf -t 48 -o aligned.pack
+
+vg call graph_index.giraffe.gbz \
+    -k aligned.pack \
+    -t 48 \
+    --ref-path rn7 \
+    > read_called.vcf
+```
+
+The `vg pack` step computes read support (coverage and quality) at each graph node and edge, and `vg call` uses this support to genotype each snarl relative to the specified reference path. The resulting VCF provides read-based variant calls that can be compared with the assembly-derived calls from vg deconstruct (Section 3.5) to identify variants supported by both lines of evidence.
+
+The surjected BAM (Step 2) can also be used for visual inspection of read support at specific variant sites in a genome browser such as IGV @robinson2011.
 
 vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `vg autoindex` step (shown above) handles all necessary format conversions. Both PGGB and Minigraph-Cactus graphs are fully compatible with vg Giraffe (_see_ *Note 4*).
 
