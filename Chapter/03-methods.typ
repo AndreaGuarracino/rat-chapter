@@ -1,6 +1,8 @@
 = Methods
 
-All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script (requires Python 3) for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, `odgi`, or `vcfbub` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`) require the `pangenome-tools` environment. When using Docker, all tools are available in a single container.
+All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script (requires Python 3) for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, `odgi`, or `vcfbub` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`) require the `pangenome-tools` environment. Activate the appropriate environment before running each set of commands (e.g., `conda activate pggb` or `conda activate pangenome-tools`). When using Docker, all tools are available in a single container.
+
+Throughout this protocol, assembly files are stored in an `assemblies/` directory. Create this directory and place each genome assembly as a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`). The reference genome file should be named `rn7.fa.gz`.
 
 == Assembly quality assessment
 
@@ -121,7 +123,7 @@ The main parameters passed to WFMASH are the mapping identity minimum `-p` and t
 
 - `-n 32`: number of haplotypes in the input (31 RI strains + 1 reference).
 
-- `-F 0.001`: k-mer frequency filter threshold. Ignores the top 0.1% most frequent k-mers in the MinHash sketches, reducing spurious alignments in repetitive regions. For scaling the number of pairwise comparisons with large inputs, see the `-x` sparsification option (_see_ *Note 7*).
+- `-F 0.001`: k-mer frequency filter threshold. Ignores the top 0.1% most frequent k-mers in the minmer sketches, reducing spurious alignments in repetitive regions. For scaling the number of pairwise comparisons with large inputs, see the `-x` sparsification option (_see_ *Note 7*).
 
 WFMASH outputs alignments in PAF format. Each sequence is aligned directly against every other sequence, so that no single genome is privileged. The BiWFA algorithm computes base-level alignments from the segment-level mappings.
 
@@ -129,15 +131,15 @@ WFMASH outputs alignments in PAF format. Each sequence is aligned directly again
 
 PGGB automatically invokes SEQWISH after alignment. SEQWISH reads the input genomes and the PAF alignments produced by WFMASH and induces a variation graph in GFA format. Graph induction often works better when very short exact matches are filtered out of the input alignments. These short matches typically occur in regions of low alignment quality, which are characteristic of areas with large indels and structural variations in the WFMASH alignments. A key parameter is:
 
-- `-k 79`: minimum exact match length for graph induction. For the HXB/BXH pangenome, `-k 79` was used, appropriate for the low divergence between these closely related inbred strains (the default `-k 23` is suitable for divergences up to ~5%). Setting `-k N` means that the graph can tolerate a local pairwise difference rate of no more than 1/N: indels represented by complex series of edit operations are opened into bubbles, and alignment regions with very low identity are ignored.
+- `-k 79`: minimum exact match length for graph induction. For the HXB/BXH pangenome, `-k 79` was used, appropriate for the low divergence between these closely related inbred strains (the default `-k 23` is suitable for divergences up to ∼5%). Setting `-k N` means that the graph can tolerate a local pairwise difference rate of no more than 1/N: indels represented by complex series of edit operations are opened into bubbles, and alignment regions with very low identity are ignored.
 
 === Graph normalization (SMOOTHXG)
 
 The raw graph from SEQWISH contains spurious local complexity. SMOOTHXG refines the graph by running a partial order alignment (POA) across segments, called blocks. Key parameters:
 
-- `-G 4001,4507`: target sequence length (in bp) for POA blocks. Two comma-separated values specify two successive smoothing passes with block targets of ~4 kbp and ~4.5 kbp respectively, providing progressive refinement. Higher values make sense for lower-diversity pangenomes.
+- `-G 4001,4507`: target sequence length (in bp) for POA blocks. Two comma-separated values specify two successive smoothing passes with block targets of ∼4 kb and ∼4.5 kb respectively, providing progressive refinement. Higher values make sense for lower-diversity pangenomes.
 
-- `-P asm5`: POA scoring parameters, using a minimap2-style preset tuned for assemblies with ~0.1% divergence. This is appropriate for the closely related HXB/BXH strains.
+- `-P asm5`: POA scoring parameters, using a minimap2-style preset tuned for assemblies with ∼0.1% divergence. This is appropriate for the closely related HXB/BXH strains.
 
 - `-O 0.03`: POA block padding factor. Each block boundary is extended by 3% of the longest sequence in the block to improve alignment quality at block edges.
 
@@ -149,21 +151,22 @@ GFAFFIX collapses walk-preserving redundant nodes---nodes that share identical s
 
 === Running PGGB chromosome by chromosome
 
-For large genomes, it is practical to partition the input by chromosome and run PGGB independently on each chromosome (_see_ *Note 8*). Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately. This reduces memory requirements and allows parallel execution on a cluster.
+As an alternative to running PGGB on the whole genome at once (Sections 3.2.1--3.2.4), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
 *Sequence partitioning.* Map each assembly against the reference genome using WFMASH:
 
 ```bash
 # a. Combine all assemblies into a single FASTA and index
-cat assemblies/*.fasta.gz > combined.fasta.gz
-samtools faidx combined.fasta.gz
+zcat assemblies/*.fa.gz > combined.fa
+bgzip -@ 48 combined.fa
+samtools faidx combined.fa.gz
 
 # b. List sample assembly files (excluding the reference)
-ls assemblies/*.fasta.gz | grep -v rn7 \
+ls assemblies/*.fa.gz | grep -v rn7 \
     | xargs -I{} basename {} | sort -V | uniq > haps.list
 
 # c. Map each assembly against the reference
-REF=assemblies/rn7.fasta.gz
+REF=assemblies/rn7.fa.gz
 mkdir -p alignments
 for HAP in $(cat haps.list); do
     wfmash -t 48 -m -N -p 90 -s 20000 \
@@ -172,7 +175,7 @@ for HAP in $(cat haps.list); do
 done
 ```
 
-The `-m` flag requests mapping-only output (no base-level alignment), `-N` prevents query splitting (maps each sequence in one piece), `-p 90` sets a permissive identity threshold to capture divergent contigs, and `-s 20000` sets a 20 kbp segment length appropriate for chromosome-scale assignment.
+The `-m` flag requests mapping-only output (no base-level alignment), `-N` prevents query splitting (maps each sequence in one piece), `-p 90` sets a permissive identity threshold to capture divergent contigs, and `-s 20000` sets a 20 kb segment length appropriate for chromosome-scale assignment.
 
 *Subset by chromosome.* Extract contig names per chromosome and build chromosome-specific FASTAs:
 
@@ -188,7 +191,7 @@ done
 
 # e. Build per-chromosome FASTAs from mapped contigs
 for CHR in $(seq 1 20) X Y; do
-    xargs samtools faidx combined.fasta.gz \
+    xargs samtools faidx combined.fa.gz \
         < parts/chr${CHR}.contigs \
         > parts/chr${CHR}.pan.fa
 done
@@ -223,7 +226,7 @@ for CHR in $(seq 1 20) X Y; do
 done
 ```
 
-Each chromosome can be submitted as an independent job on an HPC cluster. Using a local scratch disk for intermediate files and moving results to persistent storage upon completion is recommended.
+Each chromosome can be submitted as an independent job on an HPC cluster. Using a local scratch disk for intermediate files and moving results to persistent storage upon completion is recommended. PGGB produces several output files per run, including the final GFA graph (`*.smooth.final.gfa`), ODGI binary graph (`*.smooth.final.og`), 1D visualization PNGs, and a VCF file when `-V` is specified.
 
 == Graph quality assessment
 
@@ -262,12 +265,12 @@ odgi draw -i graph.og -c graph.og.lay -p graph.2D.png
 # By node ID (with context of 1 step)
 odgi extract -i graph.og -n 23 -c 1 -o subgraph.og
 
-# By reference coordinates (e.g., a 1 Mbp window on chr12)
+# By reference coordinates (e.g., a 1 Mb window on chr12)
 odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
     -o subgraph.og
 ```
 
-The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path (Fig. 2A). The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns (Fig. 2B). Both views are useful for quality control---for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view. For further discussion of visualization challenges and limitations, _see_ *Note 13*.
+The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path (Fig. 2A). The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns (Fig. 2B). Both views are useful for quality control---for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view. For further discussion of visualization challenges and limitations (_see_ *Note 13*).
 
 == Read mapping to the pangenome
 
@@ -312,16 +315,16 @@ samtools index aligned.sorted.bam
 
 ```bash
 vg pack -x graph_index.giraffe.gbz \
-    -g aligned.gaf -t 48 -o aligned.pack
+    -a aligned.gaf -t 48 -o aligned.pack
 
 vg call graph_index.giraffe.gbz \
     -k aligned.pack \
     -t 48 \
-    --ref-path rn7 \
+    --ref-sample rn7 \
     > read_called.vcf
 ```
 
-The `vg pack` step computes read support (coverage and quality) at each graph node and edge, and `vg call` uses this support to genotype each snarl relative to the specified reference path. The resulting VCF provides read-based variant calls that can be compared with the assembly-derived calls from vg deconstruct (Section 3.5) to identify variants supported by both lines of evidence.
+The `vg pack` step computes read support (coverage and quality) at each graph node and edge, and `vg call` uses this support to genotype each snarl relative to paths matching the specified reference sample name (here `rn7`, matching PanSN-spec paths like `rn7#1#chr1`). The resulting VCF provides read-based variant calls that can be compared with the assembly-derived calls from vg deconstruct (Section 3.5) to identify variants supported by both lines of evidence.
 
 The surjected BAM (Step 2) can also be used for visual inspection of read support at specific variant sites in a genome browser such as IGV @robinson2011.
 
@@ -374,9 +377,9 @@ rtg vcfeval \
 
 Here `-b` specifies the baseline (truth) VCF from reference-based joint calling, `-c` is the pangenome-derived call set to evaluate, `-e` restricts evaluation to confidently callable regions (e.g., RepeatMasker-derived easy regions excluding low-complexity repeats), and `-T` sets the number of threads. The output contains precision, recall, F1-score, and partitioned true-positive, false-positive, and false-negative VCFs (_see_ *Note 9*).
 
-=== Cross-validation with MUMMER4
+=== Cross-validation with MUMmer4
 
-An independent validation approach uses NUCMER (part of MUMMER4 @marcais2018) to generate pairwise alignments between individual genome sequences and call variants from these alignments:
+An independent validation approach uses NUCMER (part of MUMmer4 @marcais2018) to generate pairwise alignments between individual genome sequences and call variants from these alignments:
 
 ```bash
 # Align sample assembly against the reference
@@ -388,7 +391,7 @@ delta-filter -1 sample.delta > sample.filtered.delta
 show-snps -Clr sample.filtered.delta > sample.snps
 ```
 
-The NUCMER-derived variants are converted to VCF format and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. F1-scores exceeding 90% have been obtained across diverse genomic contexts @garrison2024.
+The NUCMER-derived variants are converted to VCF format and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. The output directory contains `summary.txt` with precision, recall, and F1-score. F1-scores exceeding 90% have been obtained across diverse genomic contexts @garrison2024.
 
 == Structural variant analysis
 
@@ -406,7 +409,7 @@ for SAMPLE in $(cat samples.list); do
     samtools index ${SAMPLE}.bam
 
     # Method 1: SVIM-asm (haploid mode)
-    svim-asm haploid svim_out/ ${SAMPLE}.bam ${REF} \
+    svim-asm haploid svim_out/${SAMPLE}/ ${SAMPLE}.bam ${REF} \
         --sample ${SAMPLE} --query_names \
         --interspersed_duplications_as_insertions \
         --min_sv_size 50
@@ -478,17 +481,20 @@ for SAMPLE in $(cat samples.list); do
 done
 ```
 
-*4. Cross-sample merging.* Merge the per-sample filtered call sets into a single cohort VCF:
+*4. Cross-sample merging.* Merge the per-sample filtered call sets into a single cohort VCF. SURVIVOR requires uncompressed VCF input:
 
 ```bash
-ls *.merged.filtered.vcf.gz | while read f; do
+# Decompress per-sample VCFs for SURVIVOR
+mkdir -p cross_sample
+for f in *.merged.filtered.vcf.gz; do
     SAMPLE=$(basename $f .merged.filtered.vcf.gz)
-    bcftools view \
-        -s $(bcftools query -l $f | head -1) $f \
-        > ${SAMPLE}.vcf
+    zcat $f > cross_sample/${SAMPLE}.vcf
 done
 
-ls *.merged.filtered.vcf.gz > sample_files
+# Create file list and merge across samples
+# Retain SVs found in at least 2 samples
+# (same type and strand, <=1000 bp breakpoint distance)
+ls cross_sample/*.vcf > sample_files
 SURVIVOR merge sample_files 1000 2 1 1 0 50 \
     all_samples.merged.vcf
 
@@ -580,10 +586,10 @@ plot.phewas(scores, bxd.phenosomes, do.sort = TRUE,
 dev.off()
 ```
 
-The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (LRS > 16) are reported. Note that with only ~30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
+Although the BXDtools function names contain "BXD" (the package was originally developed for BXD mouse RI strains), they work with any RI population when provided with the appropriate genotype and phenotype files. The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (likelihood ratio statistic, LRS > 16) are reported. Note that with only ∼30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
 
 *3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination---i.e., inflated statistics caused by including the test locus in the kinship estimate. This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
 
 *4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 reference genome @dejong2024.
 
-*Expected results.* Applying this workflow to the HXB/BXH panel, the following associations were identified @villani2025: (a) A variant (chr12\_4347739) within a long non-coding RNA gene was associated with blood glucose concentration and located on the same chromosome as a previously mapped QTL controlling insulin/glucose ratio (Insglur6, LOD 18.97). (b) An intronic variant (chr12\_18797475) within a locus similar to the paired immunoglobulin-like type 2 receptor was associated with both blood insulin concentration and hippocampal chromogranin A (CGA) expression. Additionally, validated SVs were found in disease-relevant genes including _Lmtk2_ (implicated in neurodegeneration, including Alzheimer's disease) and _Mcemp1_ (a critical factor in allergic and inflammatory lung diseases).
+*Expected results.* Applying this workflow to the HXB/BXH panel, the following associations were identified @villani2025: (a) A variant (chr12\_4347739) within a long non-coding RNA gene was associated with blood glucose concentration and located on the same chromosome as a previously mapped QTL controlling insulin/glucose ratio (Insglur6, logarithm of odds (LOD) score 18.97). (b) An intronic variant (chr12\_18797475) within a locus similar to the paired immunoglobulin-like type 2 receptor was associated with both blood insulin concentration and hippocampal chromogranin A (CGA) expression. Additionally, validated SVs were found in disease-relevant genes including _Lmtk2_ (implicated in neurodegeneration, including Alzheimer's disease) and _Mcemp1_ (a critical factor in allergic and inflammatory lung diseases).

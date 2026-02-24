@@ -2,9 +2,9 @@
 
 == Genome assemblies
 
-+ Reference genome: mRatBN7.2 (rn7), available from NCBI @dejong2024.
++ Reference genome: mRatBN7.2 (rn7), available from NCBI (GenBank assembly accession GCA\_015227675.2) @dejong2024.
 
-+ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @dejong2024. Note that 10x Genomics has discontinued the Chromium Linked-Read product; however, equivalent barcode-based approaches from other vendors are becoming available. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
++ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
 
 + Gene annotations from Ensembl for the mRatBN7.2 assembly @martin2023.
 

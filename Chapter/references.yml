@@ -143,6 +143,7 @@ garrison2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btac743"
+  page-range: "btac743"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -294,6 +295,7 @@ danecek2021:
   date: 2021
   serial-number:
     doi: "10.1093/gigascience/giab008"
+  page-range: "giab008"
   parent:
     type: periodical
     title: "GigaScience"
@@ -357,6 +359,7 @@ ebert2021:
   date: 2021
   serial-number:
     doi: "10.1126/science.abf7117"
+  page-range: "eabf7117"
   parent:
     type: periodical
     title: "Science"
@@ -389,6 +392,7 @@ jeffares2017:
   date: 2017
   serial-number:
     doi: "10.1038/ncomms14061"
+  page-range: "14061"
   parent:
     type: periodical
     title: "Nature Communications"
@@ -419,6 +423,7 @@ huang2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad595"
+  page-range: "btad595"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -450,6 +455,7 @@ heumos2024:
   date: 2024
   serial-number:
     doi: "10.1093/bioinformatics/btae609"
+  page-range: "btae609"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -466,6 +472,7 @@ rhie2020:
   date: 2020
   serial-number:
     doi: "10.1186/s13059-020-02134-9"
+  page-range: "245"
   parent:
     type: periodical
     title: "Genome Biology"
@@ -591,22 +598,6 @@ li2025:
     volume: 28
     issue: 3
 
-helmy2026:
-  type: article
-  title: "High-quality mouse reference genomes reveal the structural complexity of the murine protein-coding landscape"
-  author:
-    - "Helmy, Mohab"
-    - "Li, Jin U."
-    - "Yan, Xinyu F."
-  date: 2026
-  serial-number:
-    doi: "10.1016/j.xgen.2025.101074"
-  page-range: "101074"
-  parent:
-    type: periodical
-    title: "Cell Genomics"
-    volume: 6
-    issue: 2
 
 # --- Entry recovered from timeout ---
 guarracino2022odgi:
