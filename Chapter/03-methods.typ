@@ -1,8 +1,8 @@
 = Methods
 
-All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script (requires Python 3) for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, `odgi`, or `vcfbub` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`) require the `pangenome-tools` environment. Activate the appropriate environment before running each set of commands (e.g., `conda activate pggb` or `conda activate pangenome-tools`). When using Docker, all tools are available in a single container.
+All software listed in Section 2 should be installed before proceeding. The `filter_Ns.py` script (requires Python 3) for filtering N-rich SV calls is available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, or `odgi` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`, `vcfbub`, `vcfwave`) require the `pangenome-tools` environment. Activate the appropriate environment before running each set of commands (e.g., `conda activate pggb` or `conda activate pangenome-tools`). When using Docker, all tools are available in a single container.
 
-Throughout this protocol, assembly files are stored in an `assemblies/` directory. Create this directory and place each genome assembly as a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`). The reference genome file should be named `rn7.fa.gz`.
+Throughout this protocol, assembly files are stored in an `assemblies/` directory. Create this directory and place each genome assembly as a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.1 and 3.4), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
 == Assembly quality assessment
 
@@ -75,9 +75,10 @@ The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include t
 
 ```bash
 rm -f combined.fa
-ls *.fa.gz | cut -f 1 -d '.' | uniq | while read f; do
-    echo "$f"
-    zcat "${f}".fa.gz >> combined.fa
+for f in assemblies/*.fa.gz; do
+    STRAIN=$(basename "$f" .fa.gz)
+    echo "$STRAIN"
+    zcat "$f" >> combined.fa
 done
 ```
 
@@ -85,12 +86,13 @@ done
 
 ```bash
 rm -f in.fa
-ls *.fa.gz | cut -f 1 -d '.' | uniq | while read f; do
-    echo "${f}"
+for f in assemblies/*.fa.gz; do
+    STRAIN=$(basename "$f" .fa.gz)
+    echo "$STRAIN"
     # Using fastix (available in PGGB Docker image):
-    zcat "${f}".fa.gz | fastix -p "${f}#1#" >> in.fa
+    zcat "$f" | fastix -p "${STRAIN}#1#" >> in.fa
     # Alternative without fastix:
-    # zcat "${f}".fa.gz | sed "s/^>/>""${f}""#1#/" >> in.fa
+    # zcat "$f" | sed "s/^>/>""${STRAIN}""#1#/" >> in.fa
 done
 ```
 
@@ -103,7 +105,7 @@ samtools faidx in.fa.gz
 
 === All-to-All Alignment (WFMASH)
 
-Run PGGB, which internally invokes WFMASH as its first step. The command used for the HXB/BXH pangenome was:
+Run PGGB, which internally invokes all four pipeline stages in sequence. The following single command was used for the HXB/BXH pangenome; parameters are grouped by the module they control and explained in the subsections below:
 
 ```bash
 pggb -i in.fa.gz \
@@ -114,6 +116,8 @@ pggb -i in.fa.gz \
     -t 48 -T 48 \
     -o output_dir
 ```
+
+- `-V rn7:#`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.5).
 
 The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5--6* for parameter selection guidance):
 
@@ -153,29 +157,29 @@ GFAFFIX collapses walk-preserving redundant nodes---nodes that share identical s
 
 As an alternative to running PGGB on the whole genome at once (Sections 3.2.1--3.2.4), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
-*Sequence partitioning.* Map each assembly against the reference genome using WFMASH:
+*Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1--3.2.2. Map each assembly against the reference genome using WFMASH:
 
 ```bash
-# a. Combine all assemblies into a single FASTA and index
-zcat assemblies/*.fa.gz > combined.fa
-bgzip -@ 48 combined.fa
-samtools faidx combined.fa.gz
+# a. List non-reference haplotypes from the PanSN-named FASTA
+grep "^>" <(zcat in.fa.gz) | sed 's/>//' | cut -f1 -d'#' \
+    | sort -u | grep -v rn7 > haps.list
 
-# b. List sample assembly files (excluding the reference)
-ls assemblies/*.fa.gz | grep -v rn7 \
-    | xargs -I{} basename {} | sort -V | uniq > haps.list
-
-# c. Map each assembly against the reference
+# b. Map each assembly against the reference
 REF=assemblies/rn7.fa.gz
 mkdir -p alignments
 for HAP in $(cat haps.list); do
+    # Extract this haplotype's sequences from in.fa.gz
+    samtools faidx in.fa.gz \
+        $(grep "^${HAP}#" in.fa.gz.fai | cut -f1) \
+        > ${HAP}.tmp.fa
     wfmash -t 48 -m -N -p 90 -s 20000 \
-        ${REF} assemblies/${HAP} \
+        ${REF} ${HAP}.tmp.fa \
         > alignments/${HAP}.vs.ref.paf
+    rm ${HAP}.tmp.fa
 done
 ```
 
-The `-m` flag requests mapping-only output (no base-level alignment), `-N` prevents query splitting (maps each sequence in one piece), `-p 90` sets a permissive identity threshold to capture divergent contigs, and `-s 20000` sets a 20 kb segment length appropriate for chromosome-scale assignment.
+The `-m` flag requests mapping-only output (no base-level alignment), `-N` prevents query splitting (maps each sequence in one piece), `-p 90` sets a permissive identity threshold to capture divergent contigs, and `-s 20000` sets a 20 kb segment length appropriate for chromosome-scale assignment. The contig names in the PAF output will use PanSN-spec names (e.g., `SHR#1#scaffold_123`) since the input is the renamed `in.fa.gz`.
 
 *Subset by chromosome.* Extract contig names per chromosome and build chromosome-specific FASTAs:
 
@@ -191,7 +195,7 @@ done
 
 # e. Build per-chromosome FASTAs from mapped contigs
 for CHR in $(seq 1 20) X Y; do
-    xargs samtools faidx combined.fa.gz \
+    xargs samtools faidx in.fa.gz \
         < parts/chr${CHR}.contigs \
         > parts/chr${CHR}.pan.fa
 done
@@ -200,7 +204,7 @@ done
 # (chrM is excluded: the mitochondrial genome is small
 #  and has a distinct evolutionary history)
 for CHR in $(seq 1 20) X Y; do
-    samtools faidx ${REF} rn7#1#chr${CHR} \
+    samtools faidx in.fa.gz rn7#1#chr${CHR} \
         > parts/rn7.chr${CHR}.fa
     cat parts/rn7.chr${CHR}.fa parts/chr${CHR}.pan.fa \
         > parts/chr${CHR}.pan+ref.fa
@@ -238,7 +242,7 @@ After construction, evaluate graph quality using ODGI and diagnostic visualizati
 odgi stats -i graph.og -S
 ```
 
-For MultiQC-compatible output, add the `-m -sgdl` flags:
+For a well-constructed pangenome of 32 closely related haplotypes, the total graph length should modestly exceed a single reference genome size, and all paths should cover close to 100% of the input sequences. For MultiQC-compatible output, add the `-m -sgdl` flags:
 
 ```bash
 odgi stats -i graph.og -m -sgdl
@@ -250,7 +254,7 @@ odgi stats -i graph.og -m -sgdl
 odgi viz -i graph.og -o graph.1D.png -x 500
 ```
 
-Additional options: `-z` colors bars by node strandedness (black = forward, red = reverse); `-bm` colors bars by mean coverage depth (black = low, green = high).
+The `-x 500` flag sets the image width to 500 pixels; increase this value for larger graphs to avoid losing resolution. Additional options: `-z` colors bars by node strandedness (black = forward, red = reverse); `-bm` colors bars by mean coverage depth (black = low, green = high).
 
 *3. 2D visualization.* First compute a 2D layout, then render it as an image:
 
@@ -301,10 +305,11 @@ vg giraffe \
     > aligned.gaf
 ```
 
-The output is in GAF (Graph Alignment Format). To convert to BAM for use with standard tools, surject the alignments onto the reference path:
+The output is in GAF (Graph Alignment Format). To convert to BAM for use with standard tools, surject the alignments onto the reference paths. The `-p` flag restricts surjection to paths matching the given prefix (here, the rn7 reference paths); without it, surjection considers all paths in the graph, which is extremely slow for a pangenome:
 
 ```bash
 vg surject -x graph_index.giraffe.gbz \
+    -p "rn7#1#" \
     -t 48 -b -G -N sample_name -R "sample_name" \
     aligned.gaf > aligned.bam
 samtools sort -@ 48 aligned.bam -o aligned.sorted.bam
@@ -344,6 +349,8 @@ bcftools norm -m -both -f rn7.fa output.vcf.gz | \
     bcftools sort -Oz -o normalized.vcf.gz
 tabix normalized.vcf.gz
 ```
+
+The `ALT="*"` filter removes spanning deletion records---placeholder alleles indicating that a position is covered by a deletion defined at an upstream site. These records are not informative for per-site variant analysis and can cause issues with downstream tools.
 
 Perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.5). DeepVariant and GLnexus are available as Docker containers and are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
@@ -435,7 +442,7 @@ bcftools norm -m -any -f ${REF} ${SAMPLE}.raw.vcf.gz -cs \
 tabix ${SAMPLE}.caller.vcf.gz
 ```
 
-*2. Graph-based SV calling from PGGB.* Extract per-sample SVs from the pangenome VCF produced by vg deconstruct. Use vcfbub to remove nested alleles and vcfwave to decompose complex variants:
+*2. Graph-based SV calling from PGGB.* Extract per-sample SVs from the pangenome VCF produced by vg deconstruct. Use vcfbub to remove nested alleles and vcfwave to decompose complex variants. The vcfbub `-l 0` flag removes all nested (multi-level) alleles, retaining only top-level bubbles; `-a 100000` discards alleles longer than 100 kb, which are typically artifacts from graph topology. The vcfwave `-I 1000` flag sets the maximum alignment length for wavefront decomposition; variants longer than this are passed through without decomposition:
 
 ```bash
 # Decompose complex alleles from the pangenome VCF

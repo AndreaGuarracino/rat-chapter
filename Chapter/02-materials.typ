@@ -23,12 +23,14 @@ conda create -n pggb -c bioconda -c conda-forge pggb=0.7.0
 conda activate pggb
 ```
 
-Singularity and Guix containers are also available. The individual module versions used in this protocol are:
+Singularity and Guix containers are also available. The individual module versions bundled with PGGB v0.7.0 and used in this protocol are:
 
 + *WFMASH* (v0.14.0): All-to-all whole-genome alignment. #link("https://github.com/waveygang/wfmash") @guarracino2021wfmash.
 + *SEQWISH* (v0.7.11): Graph induction from pairwise alignments. #link("https://github.com/ekg/seqwish") @garrison2023.
 + *SMOOTHXG* (v0.8.0): Graph normalization via partial order alignment. #link("https://github.com/pangenome/smoothxg").
 + *GFAFFIX* (v0.1.5b): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix").
++ *ODGI* (v0.9.0): Graph statistics, visualization, and manipulation. #link("https://github.com/pangenome/odgi") @guarracino2022odgi.
++ *vg* (v1.59.0): Graph indexing, read mapping (Giraffe), variant calling (deconstruct, call). #link("https://github.com/vgteam/vg") @garrison2018.
 
 == Downstream analysis tools
 
