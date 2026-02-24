@@ -1,3 +1,20 @@
+robinson2011:
+  type: article
+  title: "Integrative genomics viewer"
+  author:
+    - "Robinson, James T"
+    - "Thorvaldsdóttir, Helga"
+    - "Winckler, Wendy"
+  date: 2011
+  serial-number:
+    doi: "10.1038/nbt.1754"
+  page-range: "24-26"
+  parent:
+    type: periodical
+    title: "Nature Biotechnology"
+    volume: 29
+    issue: 1
+
 siren2021:
   type: article
   title: "Pangenomics enables genotyping of known structural variants in 5202 diverse genomes"
