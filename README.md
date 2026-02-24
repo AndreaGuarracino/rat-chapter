@@ -68,4 +68,6 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 - [ ] Thinking about 1-2 figures
 - [ ] Check installation instructions
 - [ ] Check code instructions, if they make sense, are correct, correct values/flags, and are okay with tool versions
+- [ ] Check we covered [Guide/Editor_expectation.txt](Guide/Editor_expectation.txt)
+- [ ] Check we respect [Author Instructions](Guide/Author%20Instructions_MiMB-2025[11]-1.pdf)
 - [ ] **AT THE VERY END**: Check that references are correct, and that they have correct title, author, year, ...
