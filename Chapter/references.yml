@@ -372,7 +372,7 @@ heller2020:
   author:
     - "Heller, David"
     - "Vingron, Martin"
-  date: 2021
+  date: 2020
   serial-number:
     doi: "10.1093/bioinformatics/btaa1034"
   page-range: "5519-5521"
@@ -408,6 +408,7 @@ tarailo2009:
   date: 2009
   serial-number:
     doi: "10.1002/0471250953.bi0410s25"
+  page-range: "4.10.1-4.10.14"
   parent:
     type: periodical
     title: "Current Protocols in Bioinformatics"
@@ -503,15 +504,15 @@ yun2021:
     - "Yun, Taedong"
     - "Li, Helen"
     - "Chang, Pi-Chuan"
-  date: 2021
+  date: 2020
   serial-number:
     doi: "10.1093/bioinformatics/btaa1081"
-  page-range: "5582-5589"
+  page-range: "i555-i561"
   parent:
     type: periodical
     title: "Bioinformatics"
     volume: 36
-    issue: 24
+    issue: "Supplement_2"
 
 marcais2018:
   type: article
@@ -626,6 +627,8 @@ pravenec1989:
     - "Klir, Petr"
     - "Kren, Vladimir"
   date: 1989
+  serial-number:
+    doi: "10.1097/00004872-198903000-00007"
   page-range: "217-221"
   parent:
     type: periodical
@@ -649,6 +652,7 @@ arends_bxdtools:
   title: "BXDtools: genetic tools for working with BXD and other model organism populations"
   author:
     - "Arends, Danny"
+  date: 2023
   url:
     value: "https://github.com/DannyArends/BXDtools"
 
@@ -657,6 +661,7 @@ hall_lab:
   title: "Assembly validation pipeline"
   author:
     - "Hall Lab"
+  date: 2020
   url:
     value: "https://github.com/hall-lab/assembly_validation"
 
@@ -670,9 +675,11 @@ villani2025thesis:
 
 guarracino2025impg:
   type: article
-  title: "Implicit pangenome graphs for accessible pangenomics"
+  title: "Implicit pangenome graphs"
   author:
     - "Guarracino, Andrea"
     - "Kille, Bryce"
     - "Garrison, Erik"
   date: 2025
+  url:
+    value: "https://github.com/pangenome/impg"
