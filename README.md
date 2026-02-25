@@ -62,12 +62,8 @@ After review, append the manual entries (pravenec1989, guarracino2021wfmash, are
 Citations appear as numbered brackets [1], [2], etc., ordered by first appearance in the text, per Springer MiMB guidelines. This is handled automatically by Typst + the `springer-basic-brackets.csl` file.
 
 ## To do
-
-- [ ] Check if Flavia can build the chapter.pdf
-- [ ] Do we need the vg giraffe part for read mapping? The "3.4. Read mapping to the pangenome" paragraph" seems out of context. We should focus on all you really did in your paper/thesis. If so, remove the paragraph and related information and references (if any).
-- [ ] Thinking about 1-2 figures
-- [ ] Check installation instructions
-- [ ] Check code instructions, if they make sense, are correct, correct values/flags, and are okay with tool versions
 - [ ] Check we covered [Guide/Editor_expectation.txt](Guide/Editor_expectation.txt)
 - [ ] Check we respect [Author Instructions](Guide/Author%20Instructions_MiMB-2025[11]-1.pdf)
+- [ ] **AT THE VERY END**: Check tool installation instructions
+- [ ] **AT THE VERY END**: Check code instructions
 - [ ] **AT THE VERY END**: Check that references are correct, and that they have correct title, author, year, ...
