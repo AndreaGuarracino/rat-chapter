@@ -431,15 +431,13 @@ An independent validation approach uses NUCMER (part of MUMmer4 @marcais2018) to
 
 ```bash
 # Align sample assembly against the reference
-nucmer --maxmatch -l 100 -c 500 \
-    reference.fa sample.fa -p sample
+nucmer reference.fa sample.fa --prefix sample
 
-# Filter alignments and call variants
-delta-filter -1 sample.delta > sample.filtered.delta
-show-snps -Clr sample.filtered.delta > sample.snps
+# Call variants from alignments
+show-snps -THC sample.delta > sample.var.txt
 ```
 
-The NUCMER-derived variants are converted to VCF format (e.g., using the `mummer2vcf` tool, available at #link("https://github.com/edawson/mummer2vcf"), or a custom `awk` script to parse the `show-snps` tab-delimited output) and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. The output directory contains `summary.txt` with precision, recall, and F1-score. F1-scores exceeding 90% have been obtained across diverse genomic contexts @garrison2024.
+Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` to retain only the best one-to-one alignment for each region, which reduces ambiguity in repetitive areas. The NUCMER-derived SNPs are converted to VCF format using the `nucmer2vcf.R` script provided in the PGGB repository (`scripts/nucmer2vcf.R`) and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. The output directory contains `summary.txt` with precision, recall, and F1-score. F1-scores generally exceeding 90% have been obtained across diverse genomic contexts @garrison2024.
 
 == Structural variant analysis
 
