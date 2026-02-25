@@ -38,13 +38,13 @@ Install the downstream tools in a Bioconda environment. Note that the PGGB Bioco
 
 ```bash
 conda create -n pangenome-tools -c bioconda -c conda-forge \
-    samtools bcftools rtg-tools snpeff snpsift \
+    samtools bcftools bedtools rtg-tools snpeff snpsift \
     seqtk minimap2 survivor vcflib vcfbub \
     svim-asm repeatmasker meryl mummer4
 conda activate pangenome-tools
 ```
 
-vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in its own environment (Section 3.1).
+vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in a separate environment as described in Section 3.1.
 
 PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bioconda and should be installed from their respective GitHub repositories. The `fastix` utility for sequence renaming is included in the PGGB Docker image; when using Bioconda, install it via `cargo install fastix` (requires a Rust toolchain) or use `sed` for header renaming (see Section 3.2.1).
 
