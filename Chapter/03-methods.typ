@@ -280,17 +280,19 @@ The 1D visualization produces a horizontal image in which each row represents a 
 
 Variants called from the pangenome graph via vg deconstruct (Section 3.5) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. In addition, the alignments can be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites. vg Giraffe maps reads to a graph index:
 
-*1. Build graph indexes.* Convert the GFA to the formats required by vg Giraffe:
+*1. Chop long nodes and build graph indexes.* PGGB graphs can contain nodes longer than vg Giraffe expects. Use ODGI to chop nodes into smaller pieces (preserving topology and path order), then build the Giraffe indexes:
 
 ```bash
-# Convert GFA to vg format and compute snarls
+# Chop nodes to a maximum of 256 bp
+odgi chop -c 256 -i graph.og -o graph.chop.og
+odgi view -i graph.chop.og -g > graph.chop.gfa
+
+# Build Giraffe indexes (distance, minimizer, GBWT)
 vg autoindex --workflow giraffe \
-    -g graph.gfa \
+    -g graph.chop.gfa \
     -p graph_index \
     -t 48
 ```
-
-The `autoindex` command creates the distance index, minimizer index, and GBWT haplotype index needed by Giraffe.
 
 *2. Map reads.* Align paired-end reads against the pangenome graph:
 
@@ -301,39 +303,59 @@ vg giraffe \
     -d graph_index.dist \
     -f reads_1.fq.gz -f reads_2.fq.gz \
     -t 48 \
-    -o gaf \
-    > aligned.gaf
+    > aligned.gam
 ```
 
-The output is in GAF (Graph Alignment Format). To convert to BAM for use with standard tools, surject the alignments onto the reference paths. The `-p` flag restricts surjection to paths matching the given prefix (here, the rn7 reference paths); without it, surjection considers all paths in the graph, which is extremely slow for a pangenome:
+The output is in GAM (Graph Alignment Map) format.
+
+*3. Call variants from read alignments.* Compute read support at each graph node and edge with `vg pack`, then genotype each snarl (bubble site) with `vg call`:
+
+```bash
+vg pack -x graph_index.giraffe.gbz \
+    -g aligned.gam \
+    -t 48 \
+    -o aligned.pack
+
+vg call graph_index.giraffe.gbz \
+    -k aligned.pack \
+    -a -t 48 \
+    > read_called.vcf
+```
+
+*4. Surject to BAM for visual inspection.* In alternative the output can be a GAF (Graph Alignment Format) alignments can be surjected onto the reference path to produce a standard BAM file for read-level inspection in IGV @robinson2011. The `-p` flag restricts surjection to paths matching the given prefix (here, the rn7 reference paths); without it, surjection considers all paths in the graph, which is extremely slow for a pangenome:
+
 
 ```bash
 vg surject -x graph_index.giraffe.gbz \
     -p "rn7#1#" \
-    -t 48 -b -G -N sample_name -R "sample_name" \
-    aligned.gaf > aligned.bam
+    -t 48 -b -N sample_name -R "sample_name" \
+    aligned.gam > aligned.bam
 samtools sort -@ 48 aligned.bam -o aligned.sorted.bam
 samtools index aligned.sorted.bam
 ```
 
-*3. Call variants from read alignments.* Use `vg call` to genotype the snarls (bubble sites) in the graph based on the read alignments:
+=== Cross-validation of assembly-based and read-based calls
+
+The read-based call set (Section 3.4, step 3) can be intersected with the assembly-based call set (Section 3.4.1) to identify variants supported by both lines of evidence and to flag potential false positives in either approach:
 
 ```bash
-vg pack -x graph_index.giraffe.gbz \
-    -a aligned.gaf -t 48 -o aligned.pack
+# Normalize read-based calls
+bcftools norm -m -any read_called.vcf -o read_called.norm.vcf
 
-vg call graph_index.giraffe.gbz \
-    -k aligned.pack \
-    -t 48 \
-    --ref-sample rn7 \
-    > read_called.vcf
+# Extract variant coordinates as BED
+bcftools query -f '%CHROM\t%POS0\t%END\n' \
+    read_called.norm.vcf > read_called.bed
+
+# Intersect with pangenome false-positive SNPs
+bedtools intersect \
+    -a read_called.bed \
+    -b pangenome_fp_snps.vcf.gz \
+    -u > overlap_fp_snps.bed
 ```
 
-The `vg pack` step computes read support (coverage and quality) at each graph node and edge, and `vg call` uses this support to genotype each snarl relative to paths matching the specified reference sample name (here `rn7`, matching PanSN-spec paths like `rn7#1#chr1`). The resulting VCF provides read-based variant calls that can be compared with the assembly-derived calls from vg deconstruct (Section 3.5) to identify variants supported by both lines of evidence.
+Variants present in the read-based calls that overlap with assembly-derived false positives indicate sites where the pangenome graph topology may introduce spurious variants. Variants confirmed by both approaches represent high-confidence calls.
 
-The surjected BAM (Step 2) can also be used for visual inspection of read support at specific variant sites in a genome browser such as IGV @robinson2011.
-
-vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `vg autoindex` step (shown above) handles all necessary format conversions. Both PGGB and Minigraph-Cactus graphs are fully compatible with vg Giraffe (_see_ *Note 4*).
+vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `odgi chop` and `vg autoindex` steps handle all necessary format conversions. Both PGGB and Minigraph-Cactus graphs are fully compatible with vg Giraffe (_see_ Note 4).
 
 == Variant calling from the pangenome
 
