@@ -507,12 +507,12 @@ yun2021:
   date: 2020
   serial-number:
     doi: "10.1093/bioinformatics/btaa1081"
-  page-range: "i555-i561"
+  page-range: "5582-5589"
   parent:
     type: periodical
     title: "Bioinformatics"
     volume: 36
-    issue: "Supplement_2"
+    issue: 24
 
 marcais2018:
   type: article
@@ -628,7 +628,7 @@ pravenec1989:
     - "Kren, Vladimir"
   date: 1989
   serial-number:
-    doi: "10.1097/00004872-198903000-00007"
+    doi: "10.1097/00004872-198903000-00008"
   page-range: "217-221"
   parent:
     type: periodical
