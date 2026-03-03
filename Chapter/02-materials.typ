@@ -1,3 +1,5 @@
+#let fixme(txt) = text(red,"Fixme:" + txt)
+
 = Materials
 
 == Genome assemblies
@@ -23,6 +25,8 @@ conda create -n pggb -c bioconda -c conda-forge pggb=0.7.0
 conda activate pggb
 ```
 
+#fixme[The dark background does not work in print]
+
 Singularity and Guix containers are also available. The individual module versions bundled with PGGB v0.7.0 and used in this protocol are:
 
 + *WFMASH* (v0.14.0): All-to-all whole-genome alignment. #link("https://github.com/waveygang/wfmash") @guarracino2021wfmash.
@@ -34,7 +38,7 @@ Singularity and Guix containers are also available. The individual module versio
 
 == Downstream analysis tools
 
-Install the downstream tools in a Bioconda environment. Note that the PGGB Bioconda package is Linux-only; macOS users should use Docker.
+Install the downstream tools in a Bioconda environment. Note that the PGGB Bioconda package is Linux-only; macOS users should use Docker or similar.
 
 ```bash
 conda create -n pangenome-tools -c bioconda -c conda-forge \
@@ -47,6 +51,8 @@ conda activate pangenome-tools
 vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in a separate environment as described in Section 3.1.
 
 PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bioconda and should be installed from their respective GitHub repositories. The `fastix` utility for sequence renaming is included in the PGGB Docker image; when using Bioconda, install it via `cargo install fastix` (requires a Rust toolchain) or use `sed` for header renaming (see Section 3.2.1).
+
+#fixme[It probably pays to create a full Docker image or VM]
 
 + ODGI @guarracino2022odgi: for computing graph statistics (node count, edge count, base content, path coverage) and for generating visualizations. ODGI provides both one-dimensional (1D) visualizations that show how paths align into the graph structure and two-dimensional (2D) visualizations that reveal graph topology. It can also produce pairwise distance matrices suitable for phylogenetic analysis.
 
