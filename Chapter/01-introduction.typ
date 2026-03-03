@@ -1,3 +1,6 @@
+#let fixme(txt) = text(red,"Fixme:" + txt)
+
+
 = Introduction
 
 == Limitations of single reference genomes
@@ -43,3 +46,5 @@ As pangenome projects scale to hundreds or thousands of genomes, two challenges 
 Implicit pangenome graphs offer a complementary paradigm that addresses the scaling barrier @guarracino2025impg. Rather than collapsing all alignments into an explicit graph, the Implicit Pangenome Graph (IMPG) approach operates directly on pairwise alignments, indexing them with coitrees (cache-oblivious interval trees) and traversing them to discover both direct and transitive homology relationships. Because each alignment file is indexed independently, incorporating a new genome requires only aligning it to a representative subset---an effort that scales linearly rather than quadratically with cohort size. This approach enables population-scale queries on commodity hardware and would allow researchers to extend the HXB/BXH pangenome incrementally as new strains are sequenced (_see_ *Note 14*).
 
 This protocol describes a complete computational workflow applied to the HXB/BXH panel as a companion to @villani2025: reference-free graph construction with PGGB, variant calling and validation, structural variant analysis, and phenome-wide association mapping linking pangenome-derived variants to the panel's extensive phenotype collection. The pre-built HXB/BXH pangenome graph and associated VCF files are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript].
+
+#fixme[We should use a permanent repository, such as files.genenetwork.org]
