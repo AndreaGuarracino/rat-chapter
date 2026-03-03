@@ -56,6 +56,7 @@ paten2017:
     - "Paten, Benedict"
     - "Novak, Adam M."
     - "Eizenga, Jordan M."
+    - "Garrison, Erik"
   date: 2017
   serial-number:
     doi: "10.1101/gr.214155.116"
@@ -174,6 +175,9 @@ shoer2024:
     - "Shoer, Saar"
     - "Reicher, Lee"
     - "Zhao, Chunyu"
+    - "Pollard, Katherine S."
+    - "Pilpel, Yitzhak"
+    - "Segal, Eran"
   date: 2024
   serial-number:
     doi: "10.1016/j.chom.2024.08.017"
@@ -191,6 +195,7 @@ schreiber2024:
     - "Schreiber, Mona"
     - "Jayakodi, Murukarthick"
     - "Stein, Nils"
+    - "Mascher, Martin"
   date: 2024
   serial-number:
     doi: "10.1038/s41576-024-00691-4"
@@ -225,6 +230,8 @@ printz2003:
     - "Printz, Morton P."
     - "Jirout, Martin"
     - "Jaworski, Rebecca"
+    - "Alemayehu, Adamu"
+    - "Kren, Vladimir"
   date: 2003
   serial-number:
     doi: "10.1152/japplphysiol.00064.2003"
@@ -242,6 +249,7 @@ mulligan2017:
     - "Mulligan, Megan K."
     - "Mozhui, Khyobeni"
     - "Prins, Pjotr"
+    - "Williams, Robert W."
   date: 2017
   serial-number:
     doi: "10.1007/978-1-4939-6427-7_4"
@@ -318,7 +326,7 @@ cleary2015:
 
 cingolani2012:
   type: article
-  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff"
+  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w1118; iso-2; iso-3"
   author:
     - "Cingolani, Pablo"
     - "Platts, Adrian"
@@ -470,6 +478,7 @@ rhie2020:
     - "Rhie, Arang"
     - "Walenz, Brian P."
     - "Koren, Sergey"
+    - "Phillippy, Adam M."
   date: 2020
   serial-number:
     doi: "10.1186/s13059-020-02134-9"
@@ -504,6 +513,9 @@ yun2021:
     - "Yun, Taedong"
     - "Li, Helen"
     - "Chang, Pi-Chuan"
+    - "Lin, Michael F"
+    - "Carroll, Andrew"
+    - "McLean, Cory Y"
   date: 2020
   serial-number:
     doi: "10.1093/bioinformatics/btaa1081"
@@ -521,6 +533,9 @@ marcais2018:
     - "Marçais, Guillaume"
     - "Delcher, Arthur L."
     - "Phillippy, Adam M."
+    - "Coston, Rachel"
+    - "Salzberg, Steven L."
+    - "Zimin, Aleksey"
   date: 2018
   serial-number:
     doi: "10.1371/journal.pcbi.1005944"
@@ -608,6 +623,8 @@ guarracino2022odgi:
     - "Guarracino, Andrea"
     - "Heumos, Simon"
     - "Nahnsen, Sven"
+    - "Prins, Pjotr"
+    - "Garrison, Erik"
   date: 2022
   serial-number:
     doi: "10.1093/bioinformatics/btac308"
@@ -684,14 +701,14 @@ guarracino2025impg:
   url:
     value: "https://github.com/pangenome/impg"
 
-helmy2025:
+helmy2026:
   type: article
   title: "High-quality mouse reference genomes reveal the structural complexity of the murine protein-coding landscape"
   author:
     - "Helmy, Mohab"
     - "Li, Jin U."
     - "Yan, Xinyu F."
-  date: 2025
+  date: 2026
   serial-number:
     doi: "10.1016/j.xgen.2025.101074"
   page-range: "101074"
@@ -717,3 +734,19 @@ francis2025:
     title: "Nature Genetics"
     volume: 57
     issue: 11
+
+kaushan2026:
+  type: article
+  title: "Adaptive Tracepoints for Pangenome Alignment Compression"
+  author:
+    - "Kaushan, Hasitha"
+    - "Marco-Sola, Santiago"
+    - "Garrison, Erik"
+    - "Prins, Pjotr"
+    - "Guarracino, Andrea"
+  date: 2026
+  serial-number:
+    doi: "10.64898/2026.02.16.706236"
+  parent:
+    type: periodical
+    title: "openRxiv"
