@@ -1,10 +1,10 @@
 // Title — unnumbered
-#heading(numbering: none, level: 1)[A Practical Guide to Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel]
+#heading(numbering: none, level: 1)[Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel]
 
 // Authors and affiliations
 #v(0.5em)
 #text(size: 10pt)[
-  Flavia Villani#super[1], Pjotr Prins#super[2], Andrea Guarracino#super[1,\*]
+  Flavia Villani#super[1,2], Pjotr Prins#super[2], Andrea Guarracino#super[1,2,\*]
 ]
 #v(0.3em)
 #text(size: 9pt)[
