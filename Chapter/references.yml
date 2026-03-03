@@ -683,3 +683,37 @@ guarracino2025impg:
   date: 2025
   url:
     value: "https://github.com/pangenome/impg"
+
+helmy2025:
+  type: article
+  title: "High-quality mouse reference genomes reveal the structural complexity of the murine protein-coding landscape"
+  author:
+    - "Helmy, Mohab"
+    - "Li, Jin U."
+    - "Yan, Xinyu F."
+  date: 2025
+  serial-number:
+    doi: "10.1016/j.xgen.2025.101074"
+  page-range: "101074"
+  parent:
+    type: periodical
+    title: "Cell Genomics"
+    volume: 6
+    issue: 2
+
+francis2025:
+  type: article
+  title: "Complete genome assemblies of two mouse subspecies reveal structural diversity of telomeres and centromeres"
+  author:
+    - "Francis, Bailey A."
+    - "Gozashti, Landen"
+    - "Costello, Kevin"
+  date: 2025
+  serial-number:
+    doi: "10.1038/s41588-025-02367-z"
+  page-range: "2852-2862"
+  parent:
+    type: periodical
+    title: "Nature Genetics"
+    volume: 57
+    issue: 11
