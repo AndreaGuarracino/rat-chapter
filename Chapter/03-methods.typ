@@ -155,7 +155,7 @@ The raw graph from SEQWISH contains spurious local complexity. SMOOTHXG refines 
 
 === Redundancy removal (GFAFFIX)
 
-GFAFFIX collapses walk-preserving redundant nodes---nodes that share identical sequence prefixes or suffixes across all traversing paths. The final graph is sorted using ODGI. The output is a GFA file representing the complete pangenome variation graph.
+GFAFFIX collapses walk-preserving redundant nodes (nodes that share identical sequence prefixes or suffixes across all traversing paths). The final graph is sorted using ODGI. The output is a GFA file representing the complete pangenome variation graph.
 
 === Running PGGB chromosome by chromosome
 
@@ -286,7 +286,7 @@ odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
     -o subgraph.og
 ```
 
-The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control---for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (_see_ *Note 13* for further discussion of visualization challenges and limitations).
+The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control; for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (_see_ *Note 13* for further discussion of visualization challenges and limitations).
 
 == Read mapping to the pangenome
 
@@ -378,7 +378,7 @@ vg Giraffe operates on any graph converted to GBZ format. When using a PGGB grap
 
 == Variant calling from the pangenome
 
-Variants are extracted from the pangenome graph relative to the reference path using vg deconstruct, which identifies bubbles---pairs of divergent paths between shared anchors---and decomposes them into VCF records.
+Variants are extracted from the pangenome graph relative to the reference path using vg deconstruct, which identifies bubbles (pairs of divergent paths between shared anchors) and decomposes them into VCF records.
 
 - `-V rn7:#`: specifies the reference prefix for VCF output. Variants are called relative to paths matching this prefix. vg deconstruct is invoked automatically by PGGB when the `-V` flag is set.
 
@@ -391,7 +391,7 @@ bcftools norm -m -both -f rn7.fa output.vcf.gz | \
 tabix normalized.vcf.gz
 ```
 
-The `ALT="*"` filter removes spanning deletion records---placeholder alleles indicating that a position is covered by a deletion defined at an upstream site. These records are not informative for per-site variant analysis and can cause issues with downstream tools.
+The `ALT="*"` filter removes spanning deletion records (placeholder alleles indicating that a position is covered by a deletion defined at an upstream site). These records are not informative for per-site variant analysis and can cause issues with downstream tools.
 
 Optionally, perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.6). DeepVariant and GLnexus are available as Docker containers (`google/deepvariant` and `quay.io/mlin/glnexus`); see the DeepVariant documentation (#link("https://github.com/google/deepvariant")) for per-sample calling and GLnexus for joint genotyping. These tools are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
@@ -646,7 +646,7 @@ dev.off()
 
 Although the BXDtools function names contain "BXD" (the package was originally developed for BXD mouse RI strains), they work with any RI population when provided with the appropriate genotype and phenotype files. For species without RI populations or GeneNetwork phenotype data, replace Steps 1--2 with your own genotype--phenotype matrix preparation and use GEMMA or a similar LMM tool (Step 3) as the primary association method. The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (likelihood ratio statistic, LRS > 16) are reported. Note that with only ∼30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
 
-*3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination---i.e., inflated statistics caused by including the test locus in the kinship estimate. This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
+*3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination (inflated statistics caused by including the test locus in the kinship estimate). This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
 
 *4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 reference genome @dejong2024.
 
