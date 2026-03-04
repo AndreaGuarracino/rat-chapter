@@ -50,7 +50,7 @@ Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomes
 
 *4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
 
-*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
+*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
 
 ```bash
 samtools faidx assembly.fasta

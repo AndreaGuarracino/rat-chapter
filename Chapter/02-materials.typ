@@ -6,7 +6,7 @@
 
 + Reference genome: mRatBN7.2 (rn7), available from NCBI (GenBank assembly accession GCA\_015227675.2) @dejong2024.
 
-+ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
++ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @weisenfeld2017 @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
 
 + Gene annotations from Ensembl for the mRatBN7.2 assembly @martin2023.
 
@@ -31,8 +31,8 @@ Singularity and Guix containers are also available. The individual module versio
 
 + *WFMASH* (v0.14.0): All-to-all whole-genome alignment. #link("https://github.com/waveygang/wfmash") @guarracino2021wfmash.
 + *SEQWISH* (v0.7.11): Graph induction from pairwise alignments. #link("https://github.com/ekg/seqwish") @garrison2023.
-+ *SMOOTHXG* (v0.8.0): Graph normalization via partial order alignment. #link("https://github.com/pangenome/smoothxg").
-+ *GFAFFIX* (v0.1.5b): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix").
++ *SMOOTHXG* (v0.8.0): Graph normalization via partial order alignment @lee2002. #link("https://github.com/pangenome/smoothxg") @garrison2024.
++ *GFAFFIX* (v0.1.5b): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix") @garrison2024.
 + *ODGI* (v0.9.0): Graph statistics, visualization, and manipulation. #link("https://github.com/pangenome/odgi") @guarracino2022odgi.
 + *vg* (v1.59.0): Graph indexing, read mapping (Giraffe), variant calling (deconstruct, call). #link("https://github.com/vgteam/vg") @garrison2018.
 
@@ -58,7 +58,9 @@ PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bio
 
 + vg deconstruct (from the vg toolkit) @garrison2018: for extracting variants from the pangenome graph relative to a specified reference path by enumerating bubbles (snarls) in the graph.
 
-+ BCFtools @danecek2021: for VCF normalization, decomposition, filtering, and statistics.
++ SAMtools/BCFtools @danecek2021: for FASTA indexing, BAM sorting/indexing, VCF normalization, decomposition, filtering, and statistics.
+
++ bedtools @quinlan2010: for genomic interval operations such as computing complement regions.
 
 + RTG Tools @cleary2015: for precision/recall analysis of variant call sets using vcfeval.
 
@@ -72,11 +74,11 @@ PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bio
 
 + vcfbub (#link("https://github.com/pangenome/vcfbub")): for removing nested alleles from multi-allelic VCF records.
 
-+ vcfwave (from vcflib; #link("https://github.com/vcflib/vcflib")): for decomposing complex variants using the BiWFA algorithm.
++ vcfwave (from vcflib @garrison2022vcflib; #link("https://github.com/vcflib/vcflib")): for decomposing complex variants using the BiWFA algorithm @marcosola2023.
 
 + RepeatMasker @tarailo2009: for masking low-complexity and repetitive regions.
 
-+ Compleasm @huang2023: for BUSCO-based assessment of assembly completeness using the Mammalia ortholog gene set.
++ Compleasm @huang2023: for BUSCO-based @manni2021 assessment of assembly completeness using the Mammalia ortholog gene set.
 
 + Minimap2 @li2018: for assembly-to-reference alignment used by SV callers.
 

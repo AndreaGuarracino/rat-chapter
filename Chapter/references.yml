@@ -250,7 +250,7 @@ mulligan2017:
     - "Mozhui, Khyobeni"
     - "Prins, Pjotr"
     - "Williams, Robert W."
-  date: 2017
+  date: 2016
   serial-number:
     doi: "10.1007/978-1-4939-6427-7_4"
   page-range: "75-120"
@@ -734,6 +734,313 @@ francis2025:
     title: "Nature Genetics"
     volume: 57
     issue: 11
+
+kent2002:
+  type: article
+  title: "The Human Genome Browser at UCSC"
+  author:
+    - "Kent, W. James"
+    - "Sugnet, Charles W."
+    - "Furey, Terrence S."
+    - "Roskin, Krishna M."
+    - "Pringle, Tom H."
+    - "Zahler, Alan M."
+    - "Haussler, David"
+  date: 2002
+  serial-number:
+    doi: "10.1101/gr.229102"
+  page-range: "996-1006"
+  parent:
+    type: periodical
+    title: "Genome Research"
+    volume: 12
+    issue: 6
+
+wick2015:
+  type: article
+  title: "Bandage: interactive visualization of de novo genome assemblies"
+  author:
+    - "Wick, Ryan R."
+    - "Schultz, Mark B."
+    - "Zobel, Justin"
+    - "Holt, Kathryn E."
+  date: 2015
+  serial-number:
+    doi: "10.1093/bioinformatics/btv383"
+  page-range: "3350-3352"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 31
+    issue: 20
+
+gonnella2019:
+  type: article
+  title: "GfaViz: flexible and interactive visualization of GFA sequence graphs"
+  author:
+    - "Gonnella, Giorgio"
+    - "Niehus, Niklas"
+    - "Kurtz, Stefan"
+  date: 2019
+  serial-number:
+    doi: "10.1093/bioinformatics/bty1046"
+  page-range: "2853-2855"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 35
+    issue: 16
+
+beyer2019:
+  type: article
+  title: "Sequence tube maps: making graph genomes intuitive to commuters"
+  author:
+    - "Beyer, Wolfgang"
+    - "Novak, Adam M."
+    - "Hickey, Glenn"
+    - "Chan, Jeffrey"
+    - "Tan, Vanessa"
+    - "Paten, Benedict"
+    - "Zerbino, Daniel R."
+  date: 2019
+  serial-number:
+    doi: "10.1093/bioinformatics/btz597"
+  page-range: "5318-5320"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 35
+    issue: 24
+
+bostock2011:
+  type: article
+  title: "D3: Data-Driven Documents"
+  author:
+    - "Bostock, Michael"
+    - "Ogievetsky, Vadim"
+    - "Heer, Jeffrey"
+  date: 2011
+  serial-number:
+    doi: "10.1109/TVCG.2011.185"
+  page-range: "2301-2309"
+  parent:
+    type: periodical
+    title: "IEEE Transactions on Visualization and Computer Graphics"
+    volume: 17
+    issue: 12
+
+siren2024:
+  type: article
+  title: "Personalized pangenome references"
+  author:
+    - "Sirén, Jouni"
+    - "Eskandar, Parsa"
+    - "Ungaro, Matteo Tommaso"
+  date: 2024
+  serial-number:
+    doi: "10.1038/s41592-024-02407-2"
+  page-range: "2017-2023"
+  parent:
+    type: periodical
+    title: "Nature Methods"
+    volume: 21
+    issue: 11
+
+heumos2024pgsgd:
+  type: article
+  title: "Pangenome graph layout by Path-Guided Stochastic Gradient Descent"
+  author:
+    - "Heumos, Simon"
+    - "Guarracino, Andrea"
+    - "Schmelzle, Jan-Niklas M."
+    - "Li, Jiajie"
+    - "Zhang, Zhiru"
+    - "Hagmann, Jörg"
+    - "Nahnsen, Sven"
+    - "Prins, Pjotr"
+    - "Garrison, Erik"
+  date: 2024
+  serial-number:
+    doi: "10.1093/bioinformatics/btae363"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 40
+    issue: 7
+
+mastromatteo2025:
+  type: article
+  title: "Beyond reference bias: Making pangenomes accessible with PangyPlot"
+  author:
+    - "Mastromatteo, Scott"
+    - "Chirmade, Shalvi"
+    - "Roshandel, Delnaz"
+  date: 2025
+  serial-number:
+    doi: "10.1101/2025.10.31.684064"
+  parent:
+    type: periodical
+    title: "bioRxiv"
+
+lee2002:
+  type: article
+  title: "Multiple sequence alignment using partial order graphs"
+  author:
+    - "Lee, Christopher"
+    - "Grasso, Catherine"
+    - "Sharlow, Mark F."
+  date: 2002
+  serial-number:
+    doi: "10.1093/bioinformatics/18.3.452"
+  page-range: "452-464"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 18
+    issue: 3
+
+marcosola2023:
+  type: article
+  title: "Optimal gap-affine alignment in O(s) space"
+  author:
+    - "Marco-Sola, Santiago"
+    - "Eizenga, Jordan M"
+    - "Guarracino, Andrea"
+    - "Paten, Benedict"
+    - "Garrison, Erik"
+    - "Moreto, Miquel"
+  date: 2023
+  serial-number:
+    doi: "10.1093/bioinformatics/btad074"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 39
+    issue: 2
+
+jain2018:
+  type: article
+  title: "A fast adaptive algorithm for computing whole-genome homology maps"
+  author:
+    - "Jain, Chirag"
+    - "Koren, Sergey"
+    - "Dilthey, Alexander"
+    - "Phillippy, Adam M"
+    - "Aluru, Srinivas"
+  date: 2018
+  serial-number:
+    doi: "10.1093/bioinformatics/bty597"
+  page-range: "i748-i756"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 34
+    issue: 17
+
+garrison2022vcflib:
+  type: article
+  title: "A spectrum of free software tools for processing the VCF variant call format: vcflib, bio-vcf, cyvcf2, hts-nim and slivar"
+  author:
+    - "Garrison, Erik"
+    - "Kronenberg, Zev N."
+    - "Dawson, Eric T."
+    - "Pedersen, Brent S."
+    - "Prins, Pjotr"
+  date: 2022
+  serial-number:
+    doi: "10.1371/journal.pcbi.1009123"
+  page-range: "e1009123"
+  parent:
+    type: periodical
+    title: "PLOS Computational Biology"
+    volume: 18
+    issue: 5
+
+manni2021:
+  type: article
+  title: "BUSCO Update: Novel and Streamlined Workflows along with Broader and Deeper Phylogenetic Coverage for Scoring of Eukaryotic, Prokaryotic, and Viral Genomes"
+  author:
+    - "Manni, Mosè"
+    - "Berkeley, Matthew R"
+    - "Seppey, Mathieu"
+    - "Simão, Felipe A"
+    - "Zdobnov, Evgeny M"
+  date: 2021
+  serial-number:
+    doi: "10.1093/molbev/msab199"
+  page-range: "4647-4654"
+  parent:
+    type: periodical
+    title: "Molecular Biology and Evolution"
+    volume: 38
+    issue: 10
+
+weisenfeld2017:
+  type: article
+  title: "Direct determination of diploid genome sequences"
+  author:
+    - "Weisenfeld, Neil I."
+    - "Kumar, Vijay"
+    - "Shah, Preyas"
+    - "Church, Deanna M."
+    - "Jaffe, David B."
+  date: 2017
+  serial-number:
+    doi: "10.1101/gr.214874.116"
+  page-range: "757-767"
+  parent:
+    type: periodical
+    title: "Genome Research"
+    volume: 27
+    issue: 5
+
+quinlan2010:
+  type: article
+  title: "BEDTools: a flexible suite of utilities for comparing genomic features"
+  author:
+    - "Quinlan, Aaron R."
+    - "Hall, Ira M."
+  date: 2010
+  serial-number:
+    doi: "10.1093/bioinformatics/btq033"
+  page-range: "841-842"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 26
+    issue: 6
+
+astashyn2024:
+  type: article
+  title: "Rapid and sensitive detection of genome contamination at scale with FCS-GX"
+  author:
+    - "Astashyn, Alexander"
+    - "Tvedte, Eric S."
+    - "Sweeney, Deacon"
+  date: 2024
+  serial-number:
+    doi: "10.1186/s13059-024-03198-7"
+  parent:
+    type: periodical
+    title: "Genome Biology"
+    volume: 25
+    issue: 1
+
+deorowicz2023:
+  type: article
+  title: "AGC: compact representation of assembled genomes with fast queries and updates"
+  author:
+    - "Deorowicz, Sebastian"
+    - "Danek, Agnieszka"
+    - "Li, Heng"
+  date: 2023
+  serial-number:
+    doi: "10.1093/bioinformatics/btad097"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 39
+    issue: 3
 
 kaushan2026:
   type: article
