@@ -6,7 +6,7 @@ Throughout this protocol, assembly files are stored in an `assemblies/` director
 
 == Assembly quality assessment
 
-Before constructing the pangenome, verify the quality and suitability of each de novo assembly. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 reference genome @dejong2024.
+Before constructing the pangenome, verify the quality and suitability of each de novo assembly. When pre-built assemblies are not available from public repositories, de novo genome assemblies can be generated from PacBio HiFi or Oxford Nanopore long reads using assemblers such as hifiasm @cheng2021 or Verkko @rautiainen2023, or from 10x Genomics Linked-Read data using Supernova @weisenfeld2017. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 reference genome @dejong2024.
 
 *1. Install Compleasm and download the Mammalia BUSCO gene set:*
 

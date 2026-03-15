@@ -293,6 +293,23 @@ martin2023:
     volume: 51
     issue: D1
 
+guarracino2022odgi:
+  type: article
+  title: "ODGI: understanding pangenome graphs"
+  author:
+    - "Guarracino, Andrea"
+    - "Heumos, Simon"
+    - "Nahnsen, Sven"
+  date: 2022
+  serial-number:
+    doi: "10.1093/bioinformatics/btac308"
+  page-range: "3319-3326"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 38
+    issue: 13
+
 danecek2021:
   type: article
   title: "Twelve years of SAMtools and BCFtools"
@@ -614,93 +631,6 @@ li2025:
     volume: 28
     issue: 3
 
-
-# --- Entry recovered from timeout ---
-guarracino2022odgi:
-  type: article
-  title: "ODGI: understanding pangenome graphs"
-  author:
-    - "Guarracino, Andrea"
-    - "Heumos, Simon"
-    - "Nahnsen, Sven"
-    - "Prins, Pjotr"
-    - "Garrison, Erik"
-  date: 2022
-  serial-number:
-    doi: "10.1093/bioinformatics/btac308"
-  page-range: "3319-3326"
-  parent:
-    type: periodical
-    title: "Bioinformatics"
-    volume: 38
-    issue: 13
-
-# --- Manual entries (no DOI available) ---
-pravenec1989:
-  type: article
-  title: "An analysis of spontaneous hypertension in spontaneously hypertensive rats by means of new recombinant inbred strains"
-  author:
-    - "Pravenec, Michal"
-    - "Klir, Petr"
-    - "Kren, Vladimir"
-  date: 1989
-  serial-number:
-    doi: "10.1097/00004872-198903000-00008"
-  page-range: "217-221"
-  parent:
-    type: periodical
-    title: "Journal of Hypertension"
-    volume: 7
-    issue: 3
-
-guarracino2021wfmash:
-  type: web
-  title: "wfmash: whole-chromosome pairwise alignment using the hierarchical wavefront algorithm"
-  author:
-    - "Guarracino, Andrea"
-    - "Mwaniki, Njagi"
-    - "Marco-Sola, Santiago"
-  date: 2021
-  url:
-    value: "https://github.com/waveygang/wfmash"
-
-arends_bxdtools:
-  type: web
-  title: "BXDtools: genetic tools for working with BXD and other model organism populations"
-  author:
-    - "Arends, Danny"
-  date: 2023
-  url:
-    value: "https://github.com/DannyArends/BXDtools"
-
-hall_lab:
-  type: web
-  title: "Assembly validation pipeline"
-  author:
-    - "Hall Lab"
-  date: 2020
-  url:
-    value: "https://github.com/hall-lab/assembly_validation"
-
-villani2025thesis:
-  type: thesis
-  title: "Deciphering Genotype-Phenotype Connections: Leveraging Pangenomes and Comprehensive Genome Variation"
-  author:
-    - "Villani, Flavia"
-  date: 2025
-  organization: "University of Tennessee Health Science Center"
-
-guarracino2025impg:
-  type: article
-  title: "Implicit pangenome graphs"
-  author:
-    - "Guarracino, Andrea"
-    - "Kille, Bryce"
-    - "Garrison, Erik"
-  date: 2025
-  url:
-    value: "https://github.com/pangenome/impg"
-
 helmy2026:
   type: article
   title: "High-quality mouse reference genomes reveal the structural complexity of the murine protein-coding landscape"
@@ -781,7 +711,7 @@ gonnella2019:
     - "Gonnella, Giorgio"
     - "Niehus, Niklas"
     - "Kurtz, Stefan"
-  date: 2019
+  date: 2018
   serial-number:
     doi: "10.1093/bioinformatics/bty1046"
   page-range: "2853-2855"
@@ -1057,3 +987,103 @@ kaushan2026:
   parent:
     type: periodical
     title: "openRxiv"
+
+cheng2021:
+  type: article
+  title: "Haplotype-resolved de novo assembly using phased assembly graphs with hifiasm"
+  author:
+    - "Cheng, Haoyu"
+    - "Concepcion, Gregory T."
+    - "Feng, Xiaowen"
+  date: 2021
+  serial-number:
+    doi: "10.1038/s41592-020-01056-5"
+  page-range: "170-175"
+  parent:
+    type: periodical
+    title: "Nature Methods"
+    volume: 18
+    issue: 2
+
+rautiainen2023:
+  type: article
+  title: "Telomere-to-telomere assembly of diploid chromosomes with Verkko"
+  author:
+    - "Rautiainen, Mikko"
+    - "Nurk, Sergey"
+    - "Walenz, Brian P."
+  date: 2023
+  serial-number:
+    doi: "10.1038/s41587-023-01662-6"
+  page-range: "1474-1482"
+  parent:
+    type: periodical
+    title: "Nature Biotechnology"
+    volume: 41
+    issue: 10
+
+
+pravenec1989:
+  type: article
+  title: "An analysis of spontaneous hypertension in spontaneously hypertensive rats by means of new recombinant inbred strains"
+  author:
+    - "Pravenec, Michal"
+    - "Klir, Petr"
+    - "Kren, Vladimir"
+  date: 1989
+  serial-number:
+    doi: "10.1097/00004872-198903000-00008"
+  page-range: "217-221"
+  parent:
+    type: periodical
+    title: "Journal of Hypertension"
+    volume: 7
+    issue: 3
+
+guarracino2021wfmash:
+  type: web
+  title: "wfmash: whole-chromosome pairwise alignment using the hierarchical wavefront algorithm"
+  author:
+    - "Guarracino, Andrea"
+    - "Mwaniki, Njagi"
+    - "Marco-Sola, Santiago"
+  date: 2021
+  url:
+    value: "https://github.com/waveygang/wfmash"
+
+arends_bxdtools:
+  type: web
+  title: "BXDtools: genetic tools for working with BXD and other model organism populations"
+  author:
+    - "Arends, Danny"
+  date: 2023
+  url:
+    value: "https://github.com/DannyArends/BXDtools"
+
+hall_lab:
+  type: web
+  title: "Assembly validation pipeline"
+  author:
+    - "Hall Lab"
+  date: 2020
+  url:
+    value: "https://github.com/hall-lab/assembly_validation"
+
+villani2025thesis:
+  type: thesis
+  title: "Deciphering Genotype-Phenotype Connections: Leveraging Pangenomes and Comprehensive Genome Variation"
+  author:
+    - "Villani, Flavia"
+  date: 2025
+  organization: "University of Tennessee Health Science Center"
+
+guarracino2025impg:
+  type: article
+  title: "Implicit pangenome graphs"
+  author:
+    - "Guarracino, Andrea"
+    - "Kille, Bryce"
+    - "Garrison, Erik"
+  date: 2025
+  url:
+    value: "https://github.com/pangenome/impg"
