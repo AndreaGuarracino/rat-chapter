@@ -7,13 +7,14 @@
 // Authors and affiliations
 #v(0.5em)
 #text(size: 10pt)[
-  Flavia Villani#super[1,2], Vincenza Colonna#super[2], Erik Garrison#super[2], David Duggan#super[1], David G. Ashbrook#super[2,3], Robert W. Williams#super[2], Hao Chen#super[2], Pjotr Prins#super[2], Andrea Guarracino#super[1,2,\*]
+  Flavia Villani#super[1,2], Vincenza Colonna#super[2], Erik Garrison#super[2], David Duggan#super[3], David G. Ashbrook#super[2,4], Robert W. Williams#super[2], Hao Chen#super[2], Pjotr Prins#super[2], Andrea Guarracino#super[1,2,\*]
 ]
 #v(0.3em)
 #text(size: 9pt)[
-  #super[1] Bioinnovation and Genome Sciences, The Translational Genomics Research Institute (TGen), Phoenix, AZ, USA\
+  #super[1] Bioinnovation and Genome Sciences, Translational Genomics Research Institute (TGen), part of City of Hope, Phoenix, AZ, USA\
   #super[2] Department of Genetics, Genomics and Informatics, University of Tennessee Health Science Center, Memphis, TN, USA\
-  #super[3] Institute for Neuroscience and Cardiovascular Research, The University of Edinburgh, Edinburgh, UK\
+  #super[3] Division of Early Detection and Prevention, Translational Genomics Research Institute (TGen), part of City of Hope, Phoenix, AZ, USA\
+  #super[4] Institute for Neuroscience and Cardiovascular Research, The University of Edinburgh, Edinburgh, UK\
   #super[\*] Corresponding author: #link("mailto:aguarracino@tgen.org")[aguarracino\@tgen.org]
 ]
 #v(1em)
