@@ -121,9 +121,9 @@ pggb -i in.fa.gz \
 
 - `-V rn7:#`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.5).
 
-The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5--6* for parameter selection guidance):
+The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5-6* for parameter selection guidance):
 
-- `-p 98`: percent identity threshold for mapping. Set to 98% because the HXB/BXH strains are closely related inbred strains derived from two parental strains. For more divergent comparisons, lower values (e.g., 90--95%) are appropriate.
+- `-p 98`: percent identity threshold for mapping. Set to 98% because the HXB/BXH strains are closely related inbred strains derived from two parental strains. For more divergent comparisons, lower values (e.g., 90-95%) are appropriate.
 
 - `-s 2000`: segment length for mapping (in bp). This sets the minimum length of aligned segments.
 
@@ -159,9 +159,9 @@ GFAFFIX collapses walk-preserving redundant nodes (nodes that share identical se
 
 === Running PGGB chromosome by chromosome
 
-As an alternative to running PGGB on the whole genome at once (Sections 3.2.1--3.2.4), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
+As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.4), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (_see_ *Note 14*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
-*Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1--3.2.2. Map each assembly against the reference genome using WFMASH:
+*Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1-3.2.2. Map each assembly against the reference genome using WFMASH:
 
 ```bash
 # a. List non-reference haplotypes from the PanSN-named FASTA
@@ -290,7 +290,7 @@ The 1D visualization produces a horizontal image in which each row represents a 
 
 == Read mapping to the pangenome
 
-Variants called from the pangenome graph via vg deconstruct (Section 3.5) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. The alignments can also be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites. The steps below describe how to build the graph index, map reads, call variants, and surject alignments:
+Variants called from the pangenome graph via vg deconstruct (Section 3.5) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. The alignments can also be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites.
 
 *1. Chop long nodes and build graph indexes.* PGGB graphs can contain nodes longer than vg Giraffe expects. Use ODGI to chop nodes into smaller pieces (preserving topology and path order), then build the Giraffe indexes:
 
@@ -644,10 +644,10 @@ plot.phewas(scores, bxd.phenosomes, do.sort = TRUE,
 dev.off()
 ```
 
-Although the BXDtools function names contain "BXD" (the package was originally developed for BXD mouse RI strains), they work with any RI population when provided with the appropriate genotype and phenotype files. For species without RI populations or GeneNetwork phenotype data, replace Steps 1--2 with your own genotype--phenotype matrix preparation and use GEMMA or a similar LMM tool (Step 3) as the primary association method. The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (likelihood ratio statistic, LRS > 16) are reported. Note that with only ∼30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
+Although the BXDtools function names contain "BXD" (the package was originally developed for BXD mouse RI strains), they work with any RI population when provided with the appropriate genotype and phenotype files. For species without RI populations or GeneNetwork phenotype data, replace Steps 1-2 with your own genotype-phenotype matrix preparation and use GEMMA or a similar LMM tool (Step 3) as the primary association method. The `do.BXD.phewas` function computes Spearman correlations between genotype and each phenotype, with Bonferroni correction for multiple testing. Significant associations (likelihood ratio statistic, LRS > 16) are reported. Note that with only ∼30 RI strains, statistical power is limited, particularly for variants with small effect sizes or low minor allele frequency; results should be interpreted as hypothesis-generating rather than definitive. For a more rigorous primary analysis, a linear mixed model (LMM) with leave-one-chromosome-out (LOCO) kinship correction is recommended (Step 3). Adapted scripts are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md").
 
 *3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination (inflated statistics caused by including the test locus in the kinship estimate). This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
 
 *4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 reference genome @dejong2024.
 
-*Expected results.* Applying this workflow to the HXB/BXH panel, the following associations were identified @villani2025: (a) A variant (chr12\_4347739) within a long non-coding RNA gene was associated with blood glucose concentration and located on the same chromosome as a previously mapped QTL controlling insulin/glucose ratio (Insglur6, logarithm of odds (LOD) score 18.97). (b) An intronic variant (chr12\_18797475) within a locus similar to the paired immunoglobulin-like type 2 receptor was associated with both blood insulin concentration and hippocampal chromogranin A (CGA) expression. Additionally, validated SVs were found in disease-relevant genes including _Lmtk2_ (implicated in neurodegeneration, including Alzheimer's disease) and _Mcemp1_ (a critical factor in allergic and inflammatory lung diseases).
+*Expected results.* Applying this workflow to the HXB/BXH panel, the following associations were identified @villani2025: (a) A variant (chr12\_4347739) within a long non-coding RNA gene was associated with blood glucose concentration and located on the same chromosome as a previously mapped QTL controlling insulin/glucose ratio (Insglur6, logarithm of odds (LOD) score 18.97). (b) An intronic variant (chr12\_18797475) within a locus similar to the paired immunoglobulin-like type 2 receptor was associated with both blood insulin concentration and hippocampal chromogranin A (CGA) expression. Validated SVs were also found in disease-relevant genes including _Lmtk2_ (implicated in neurodegeneration, including Alzheimer's disease) and _Mcemp1_ (a critical factor in allergic and inflammatory lung diseases).

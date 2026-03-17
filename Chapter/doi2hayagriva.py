@@ -59,9 +59,8 @@ def format_authors(author_str: str) -> list:
         a = a.strip()
         if not a:
             continue
-        # Limit to first 3 authors
-        if len(authors) >= 3:
-            break
+        # Include all authors so the CSL "et al" threshold works
+        pass
         authors.append(a)
     return authors
 

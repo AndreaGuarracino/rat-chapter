@@ -6,7 +6,7 @@
 
 + Reference genome: mRatBN7.2 (rn7), available from NCBI (GenBank assembly accession GCA\_015227675.2) @dejong2024.
 
-+ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @weisenfeld2017 @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*).
++ De novo haploid genome assembly for each of the 31 HXB/BXH RI strains, generated from 10x Genomics Chromium Linked-Read whole-genome sequencing data at an average coverage depth of 109× using Supernova (version 2.1.1) @weisenfeld2017 @dejong2024. Linked-Read technology bridges the gap between short-read and long-read approaches by providing long-range barcode information that links short reads originating from the same high-molecular-weight DNA molecule (_see_ *Note 1*). Long-read reassembly of these strains would substantially improve the pangenome (_see_ *Note 15*).
 
 + Gene annotations from Ensembl for the mRatBN7.2 assembly @martin2023.
 
@@ -24,8 +24,6 @@ docker pull ghcr.io/pangenome/pggb:v0.7.0
 conda create -n pggb -c bioconda -c conda-forge pggb=0.7.0
 conda activate pggb
 ```
-
-#fixme[The dark background does not work in print]
 
 Singularity and Guix containers are also available. The individual module versions bundled with PGGB v0.7.0 and used in this protocol are:
 
@@ -51,8 +49,6 @@ conda activate pangenome-tools
 vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in a separate environment as described in Section 3.1.
 
 PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bioconda and should be installed from their respective GitHub repositories. The `fastix` utility for sequence renaming is included in the PGGB Docker image; when using Bioconda, install it via `cargo install fastix` (requires a Rust toolchain) or use `sed` for header renaming (see Section 3.2.1).
-
-#fixme[It probably pays to create a full Docker image or VM]
 
 + ODGI @guarracino2022odgi: for computing graph statistics (node count, edge count, base content, path coverage) and for generating visualizations. ODGI provides both one-dimensional (1D) visualizations that show how paths align into the graph structure and two-dimensional (2D) visualizations that reveal graph topology. It can also produce pairwise distance matrices suitable for phylogenetic analysis.
 
@@ -84,4 +80,4 @@ PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bio
 
 == Hardware requirements
 
-PGGB is computationally intensive. The HXB/BXH pangenome was built on a high-performance computing (HPC) cluster using machines equipped with AMD EPYC 7402P 24-core processors (48 threads), 256--378 GB of RAM, and 1 TB solid-state drive (SSD) storage. As a reference for runtime and memory requirements: building a pangenome graph of rat chromosome 12 from 32 haplotypes required approximately 29 GB of RAM, while human chromosome 6 from 90 haplotypes required approximately 1,183 minutes and 136 GB of RAM @garrison2024. Docker and Singularity containers are available to simplify deployment. A cluster-scalable Nextflow implementation (nf-core/pangenome) is also available for distributing alignment jobs across multiple nodes @heumos2024.
+PGGB is computationally intensive. The HXB/BXH pangenome was built on a high-performance computing (HPC) cluster using machines equipped with AMD EPYC 7402P 24-core processors (48 threads), 256-378 GB of RAM, and 1 TB solid-state drive (SSD) storage. To give a sense of scale: building a pangenome graph of rat chromosome 12 from 32 haplotypes required approximately 29 GB of RAM, while human chromosome 6 from 90 haplotypes required approximately 1,183 minutes and 136 GB of RAM @garrison2024. Docker and Singularity containers are available to simplify deployment, and a cluster-scalable Nextflow implementation (nf-core/pangenome) can distribute alignment jobs across multiple nodes @heumos2024.

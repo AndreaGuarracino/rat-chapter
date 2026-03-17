@@ -4,7 +4,7 @@
 // For: Springer Methods in Molecular Biology
 
 #set document(
-  title: "A Practical Guide to Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel",
+  title: "Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel",
   author: ("Flavia Villani", "Vincenza Colonna", "Erik Garrison", "David Duggan", "David G. Ashbrook", "Robert W. Williams", "Hao Chen", "Pjotr Prins", "Andrea Guarracino"),
 )
 
@@ -22,7 +22,7 @@
 // Code block styling
 #show raw.where(block: true): set text(size: 9pt)
 #show raw.where(block: true): block.with(
-  fill: luma(245),
+  fill: white,
   inset: 8pt,
   radius: 3pt,
   width: 100%,
@@ -41,4 +41,4 @@
 // Figure captions (figures submitted as separate files per MiMB instructions)
 #heading(numbering: none, level: 1)[Figure Captions]
 
-*Fig. 1.* Overview of the pangenome workflow described in this protocol. *Top:* the 31 HXB/BXH recombinant inbred rat strains, derived from SHR/OlaIpcv and BN-Lx/Cub progenitors, are sequenced and de novo assembled; assembly completeness is assessed with Compleasm (%BUSCOs). *Upper middle:* the PGGB pipeline constructs the pangenome graph through all-to-all alignment (WFMASH), graph induction (SEQWISH), graph normalization (SMOOTHXG), and redundancy removal (GFAFFIX). *Lower middle:* 1D visualization of the resulting pangenome graph (odgi viz), where each horizontal row represents a genome path and colored segments indicate node traversals. *Bottom:* downstream analyses including variant calling from graph snarls, read mapping with vg Giraffe, variant benchmarking (assembly evaluation and variant calling evaluation with precision, recall, and F1-score), and phenome-wide association study (PheWAS) linking variants to phenotypes.
+*Fig. 1.* Overview of the pangenome workflow described in this protocol. *Top:* the 31 HXB/BXH recombinant inbred rat strains, derived from SHR/OlaIpcv and BN-Lx/Cub progenitors, are sequenced and de novo assembled; assembly completeness is assessed with Compleasm (%BUSCOs). *Upper middle:* the PGGB pipeline constructs the pangenome graph through all-to-all alignment (WFMASH), graph induction (SEQWISH), graph normalization (SMOOTHXG), and redundancy removal (GFAFFIX). *Lower middle:* 1D visualization of the resulting pangenome graph (odgi viz), where each horizontal row represents a genome path and colored segments indicate node traversals. *Bottom:* downstream analyses including variant calling from graph snarls (illustrated with a two-genome bubble-graph schematic showing divergent paths through shared anchor nodes), read mapping with vg Giraffe (shown with short reads aligned to a similar bubble-graph), variant benchmarking (assembly evaluation and variant calling evaluation with precision, recall, and F1-score), and phenome-wide association study (PheWAS) linking variants to phenotypes.
