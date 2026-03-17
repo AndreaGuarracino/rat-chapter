@@ -93,8 +93,6 @@ for f in assemblies/*.fa.gz; do
     echo "$STRAIN"
     # Using fastix (available in PGGB Docker image):
     zcat "$f" | fastix -p "${STRAIN}#1#" >> in.fa
-    # Alternative without fastix:
-    # zcat "$f" | sed "s/^>/>""${STRAIN}""#1#/" >> in.fa
 done
 ```
 
