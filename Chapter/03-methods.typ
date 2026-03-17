@@ -374,7 +374,7 @@ bcftools isec -p isec_output \
 
 The `bcftools isec` output directory contains four VCF files: records private to the read-based calls (0000.vcf), records private to the assembly-based calls (0001.vcf), and records shared by both (0002.vcf, 0003.vcf). Variants confirmed by both approaches represent high-confidence calls; variants found only in one call set can be inspected further to identify potential false positives in either approach.
 
-vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `odgi chop` and `vg autoindex` steps handle all necessary format conversions. Both PGGB and Minigraph-Cactus graphs are fully compatible with vg Giraffe (_see_ *Note 4*).
+vg Giraffe operates on any graph converted to GBZ format. When using a PGGB graph, the `odgi chop` and `vg autoindex` steps handle the necessary format conversions. Minigraph-Cactus graphs are the recommended input for Giraffe because their linear high-level structure is well suited to Giraffe's distance indexing; PGGB graphs can work for smaller panels (as in this protocol) but may encounter indexing difficulties at larger scales due to complex snarl topology (_see_ *Note 4*).
 
 == Variant calling from the pangenome
 
