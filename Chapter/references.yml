@@ -5,13 +5,17 @@ robinson2011:
     - "Robinson, James T"
     - "Thorvaldsdóttir, Helga"
     - "Winckler, Wendy"
+    - "Guttman, Mitchell"
+    - "Lander, Eric S"
+    - "Getz, Gad"
+    - "Mesirov, Jill P"
   date: 2011
   serial-number:
     doi: "10.1038/nbt.1754"
   page-range: "24-26"
   parent:
     type: periodical
-    title: "Nature Biotechnology"
+    title: "Nat Biotechnol"
     volume: 29
     issue: 1
 
@@ -22,6 +26,23 @@ siren2021:
     - "Sirén, Jouni"
     - "Monlong, Jean"
     - "Chang, Xian"
+    - "Novak, Adam M."
+    - "Eizenga, Jordan M."
+    - "Markello, Charles"
+    - "Sibbesen, Jonas A."
+    - "Hickey, Glenn"
+    - "Chang, Pi-Chuan"
+    - "Carroll, Andrew"
+    - "Gupta, Namrata"
+    - "Gabriel, Stacey"
+    - "Blackwell, Thomas W."
+    - "Ratan, Aakrosh"
+    - "Taylor, Kent D."
+    - "Rich, Stephen S."
+    - "Rotter, Jerome I."
+    - "Haussler, David"
+    - "Garrison, Erik"
+    - "Paten, Benedict"
   date: 2021
   serial-number:
     doi: "10.1126/science.abg8871"
@@ -39,13 +60,22 @@ garrison2018:
     - "Garrison, Erik"
     - "Sirén, Jouni"
     - "Novak, Adam M"
+    - "Hickey, Glenn"
+    - "Eizenga, Jordan M"
+    - "Dawson, Eric T"
+    - "Jones, William"
+    - "Garg, Shilpa"
+    - "Markello, Charles"
+    - "Lin, Michael F"
+    - "Paten, Benedict"
+    - "Durbin, Richard"
   date: 2018
   serial-number:
     doi: "10.1038/nbt.4227"
   page-range: "875-879"
   parent:
     type: periodical
-    title: "Nature Biotechnology"
+    title: "Nat Biotechnol"
     volume: 36
     issue: 9
 
@@ -63,7 +93,7 @@ paten2017:
   page-range: "665-676"
   parent:
     type: periodical
-    title: "Genome Research"
+    title: "Genome Res"
     volume: 27
     issue: 5
 
@@ -74,6 +104,122 @@ liao2023:
     - "Liao, Wen-Wei"
     - "Asri, Mobin"
     - "Ebler, Jana"
+    - "Doerr, Daniel"
+    - "Haukness, Marina"
+    - "Hickey, Glenn"
+    - "Lu, Shuangjia"
+    - "Lucas, Julian K."
+    - "Monlong, Jean"
+    - "Abel, Haley J."
+    - "Buonaiuto, Silvia"
+    - "Chang, Xian H."
+    - "Cheng, Haoyu"
+    - "Chu, Justin"
+    - "Colonna, Vincenza"
+    - "Eizenga, Jordan M."
+    - "Feng, Xiaowen"
+    - "Fischer, Christian"
+    - "Fulton, Robert S."
+    - "Garg, Shilpa"
+    - "Groza, Cristian"
+    - "Guarracino, Andrea"
+    - "Harvey, William T."
+    - "Heumos, Simon"
+    - "Howe, Kerstin"
+    - "Jain, Miten"
+    - "Lu, Tsung-Yu"
+    - "Markello, Charles"
+    - "Martin, Fergal J."
+    - "Mitchell, Matthew W."
+    - "Munson, Katherine M."
+    - "Mwaniki, Moses Njagi"
+    - "Novak, Adam M."
+    - "Olsen, Hugh E."
+    - "Pesout, Trevor"
+    - "Porubsky, David"
+    - "Prins, Pjotr"
+    - "Sibbesen, Jonas A."
+    - "Sirén, Jouni"
+    - "Tomlinson, Chad"
+    - "Villani, Flavia"
+    - "Vollger, Mitchell R."
+    - "Antonacci-Fulton, Lucinda L."
+    - "Baid, Gunjan"
+    - "Baker, Carl A."
+    - "Belyaeva, Anastasiya"
+    - "Billis, Konstantinos"
+    - "Carroll, Andrew"
+    - "Chang, Pi-Chuan"
+    - "Cody, Sarah"
+    - "Cook, Daniel E."
+    - "Cook-Deegan, Robert M."
+    - "Cornejo, Omar E."
+    - "Diekhans, Mark"
+    - "Ebert, Peter"
+    - "Fairley, Susan"
+    - "Fedrigo, Olivier"
+    - "Felsenfeld, Adam L."
+    - "Formenti, Giulio"
+    - "Frankish, Adam"
+    - "Gao, Yan"
+    - "Garrison, Nanibaa’ A."
+    - "Giron, Carlos Garcia"
+    - "Green, Richard E."
+    - "Haggerty, Leanne"
+    - "Hoekzema, Kendra"
+    - "Hourlier, Thibaut"
+    - "Ji, Hanlee P."
+    - "Kenny, Eimear E."
+    - "Koenig, Barbara A."
+    - "Kolesnikov, Alexey"
+    - "Korbel, Jan O."
+    - "Kordosky, Jennifer"
+    - "Koren, Sergey"
+    - "Lee, HoJoon"
+    - "Lewis, Alexandra P."
+    - "Magalhães, Hugo"
+    - "Marco-Sola, Santiago"
+    - "Marijon, Pierre"
+    - "McCartney, Ann"
+    - "McDaniel, Jennifer"
+    - "Mountcastle, Jacquelyn"
+    - "Nattestad, Maria"
+    - "Nurk, Sergey"
+    - "Olson, Nathan D."
+    - "Popejoy, Alice B."
+    - "Puiu, Daniela"
+    - "Rautiainen, Mikko"
+    - "Regier, Allison A."
+    - "Rhie, Arang"
+    - "Sacco, Samuel"
+    - "Sanders, Ashley D."
+    - "Schneider, Valerie A."
+    - "Schultz, Baergen I."
+    - "Shafin, Kishwar"
+    - "Smith, Michael W."
+    - "Sofia, Heidi J."
+    - "Abou Tayoun, Ahmad N."
+    - "Thibaud-Nissen, Françoise"
+    - "Tricomi, Francesca Floriana"
+    - "Wagner, Justin"
+    - "Walenz, Brian"
+    - "Wood, Jonathan M. D."
+    - "Zimin, Aleksey V."
+    - "Bourque, Guillaume"
+    - "Chaisson, Mark J. P."
+    - "Flicek, Paul"
+    - "Phillippy, Adam M."
+    - "Zook, Justin M."
+    - "Eichler, Evan E."
+    - "Haussler, David"
+    - "Wang, Ting"
+    - "Jarvis, Erich D."
+    - "Miga, Karen H."
+    - "Garrison, Erik"
+    - "Marschall, Tobias"
+    - "Hall, Ira M."
+    - "Li, Heng"
+    - "Paten, Benedict"
   date: 2023
   serial-number:
     doi: "10.1038/s41586-023-05896-x"
@@ -91,13 +237,26 @@ eizenga2020:
     - "Eizenga, Jordan M."
     - "Novak, Adam M."
     - "Sibbesen, Jonas A."
+    - "Heumos, Simon"
+    - "Ghaffaari, Ali"
+    - "Hickey, Glenn"
+    - "Chang, Xian"
+    - "Seaman, Josiah D."
+    - "Rounthwaite, Robin"
+    - "Ebler, Jana"
+    - "Rautiainen, Mikko"
+    - "Garg, Shilpa"
+    - "Paten, Benedict"
+    - "Marschall, Tobias"
+    - "Sirén, Jouni"
+    - "Garrison, Erik"
   date: 2020
   serial-number:
     doi: "10.1146/annurev-genom-120219-080406"
   page-range: "139-162"
   parent:
     type: periodical
-    title: "Annual Review of Genomics and Human Genetics"
+    title: "Annu Rev Genomics Hum Genet"
     volume: 21
     issue: 1
 
@@ -108,13 +267,18 @@ secomandi2025:
     - "Secomandi, Simona"
     - "Gallo, Guido Roberto"
     - "Rossi, Riccardo"
+    - "Rodríguez Fernandes, Carlos"
+    - "Jarvis, Erich D."
+    - "Bonisoli-Alquati, Andrea"
+    - "Gianfranceschi, Luca"
+    - "Formenti, Giulio"
   date: 2025
   serial-number:
     doi: "10.1038/s41588-024-02029-6"
   page-range: "13-26"
   parent:
     type: periodical
-    title: "Nature Genetics"
+    title: "Nat Genet"
     volume: 57
     issue: 1
 
@@ -125,6 +289,41 @@ wang2022:
     - "Wang, Ting"
     - "Antonacci-Fulton, Lucinda"
     - "Howe, Kerstin"
+    - "Lawson, Heather A."
+    - "Lucas, Julian K."
+    - "Phillippy, Adam M."
+    - "Popejoy, Alice B."
+    - "Asri, Mobin"
+    - "Carson, Caryn"
+    - "Chaisson, Mark J. P."
+    - "Chang, Xian"
+    - "Cook-Deegan, Robert"
+    - "Felsenfeld, Adam L."
+    - "Fulton, Robert S."
+    - "Garrison, Erik P."
+    - "Garrison, Nanibaa’ A."
+    - "Graves-Lindsay, Tina A."
+    - "Ji, Hanlee"
+    - "Kenny, Eimear E."
+    - "Koenig, Barbara A."
+    - "Li, Daofeng"
+    - "Marschall, Tobias"
+    - "McMichael, Joshua F."
+    - "Novak, Adam M."
+    - "Purushotham, Deepak"
+    - "Schneider, Valerie A."
+    - "Schultz, Baergen I."
+    - "Smith, Michael W."
+    - "Sofia, Heidi J."
+    - "Weissman, Tsachy"
+    - "Flicek, Paul"
+    - "Li, Heng"
+    - "Miga, Karen H."
+    - "Paten, Benedict"
+    - "Jarvis, Erich D."
+    - "Hall, Ira M."
+    - "Eichler, Evan E."
+    - "Haussler, David"
   date: 2022
   serial-number:
     doi: "10.1038/s41586-022-04601-8"
@@ -158,13 +357,40 @@ garrison2024:
     - "Garrison, Erik"
     - "Guarracino, Andrea"
     - "Heumos, Simon"
+    - "Villani, Flavia"
+    - "Bao, Zhigui"
+    - "Tattini, Lorenzo"
+    - "Hagmann, Jörg"
+    - "Vorbrugg, Sebastian"
+    - "Marco-Sola, Santiago"
+    - "Kubica, Christian"
+    - "Ashbrook, David G."
+    - "Thorell, Kaisa"
+    - "Rusholme-Pilcher, Rachel L."
+    - "Liti, Gianni"
+    - "Rudbeck, Emilio"
+    - "Golicz, Agnieszka A."
+    - "Nahnsen, Sven"
+    - "Yang, Zuyu"
+    - "Mwaniki, Moses Njagi"
+    - "Nobrega, Franklin L."
+    - "Wu, Yi"
+    - "Chen, Hao"
+    - "de Ligt, Joep"
+    - "Sudmant, Peter H."
+    - "Huang, Sanwen"
+    - "Weigel, Detlef"
+    - "Soranzo, Nicole"
+    - "Colonna, Vincenza"
+    - "Williams, Robert W."
+    - "Prins, Pjotr"
   date: 2024
   serial-number:
     doi: "10.1038/s41592-024-02430-3"
   page-range: "2008-2012"
   parent:
     type: periodical
-    title: "Nature Methods"
+    title: "Nat Methods"
     volume: 21
     issue: 11
 
@@ -184,7 +410,7 @@ shoer2024:
   page-range: "1744-1757.e2"
   parent:
     type: periodical
-    title: "Cell Host & Microbe"
+    title: "Cell Host Microbe"
     volume: 32
     issue: 10
 
@@ -202,7 +428,7 @@ schreiber2024:
   page-range: "563-577"
   parent:
     type: periodical
-    title: "Nature Reviews Genetics"
+    title: "Nat Rev Genet"
     volume: 25
     issue: 8
 
@@ -213,6 +439,13 @@ bolognini2024:
     - "Bolognini, Davide"
     - "Halgren, Alma"
     - "Lou, Runyang Nicolas"
+    - "Raveane, Alessandro"
+    - "Rocha, Joana L."
+    - "Guarracino, Andrea"
+    - "Soranzo, Nicole"
+    - "Chin, Chen-Shan"
+    - "Garrison, Erik"
+    - "Sudmant, Peter H."
   date: 2024
   serial-number:
     doi: "10.1038/s41586-024-07911-1"
@@ -238,7 +471,7 @@ printz2003:
   page-range: "2510-2522"
   parent:
     type: periodical
-    title: "Journal of Applied Physiology"
+    title: "J Appl Physiol"
     volume: 94
     issue: 6
 
@@ -256,7 +489,7 @@ mulligan2017:
   page-range: "75-120"
   parent:
     type: periodical
-    title: "Methods in Molecular Biology"
+    title: "Methods Mol Biol"
     volume: 1488
 
 dejong2024:
@@ -266,13 +499,61 @@ dejong2024:
     - "de Jong, Tristan V."
     - "Pan, Yanchao"
     - "Rastas, Pasi"
+    - "Munro, Daniel"
+    - "Tutaj, Monika"
+    - "Akil, Huda"
+    - "Benner, Chris"
+    - "Chen, Denghui"
+    - "Chitre, Apurva S."
+    - "Chow, William"
+    - "Colonna, Vincenza"
+    - "Dalgard, Clifton L."
+    - "Demos, Wendy M."
+    - "Doris, Peter A."
+    - "Garrison, Erik"
+    - "Geurts, Aron M."
+    - "Gunturkun, Hakan M."
+    - "Guryev, Victor"
+    - "Hourlier, Thibaut"
+    - "Howe, Kerstin"
+    - "Huang, Jun"
+    - "Kalbfleisch, Ted"
+    - "Kim, Panjun"
+    - "Li, Ling"
+    - "Mahaffey, Spencer"
+    - "Martin, Fergal J."
+    - "Mohammadi, Pejman"
+    - "Ozel, Ayse Bilge"
+    - "Polesskaya, Oksana"
+    - "Pravenec, Michal"
+    - "Prins, Pjotr"
+    - "Sebat, Jonathan"
+    - "Smith, Jennifer R."
+    - "Solberg Woods, Leah C."
+    - "Tabakoff, Boris"
+    - "Tracey, Alan"
+    - "Uliano-Silva, Marcela"
+    - "Villani, Flavia"
+    - "Wang, Hongyang"
+    - "Sharp, Burt M."
+    - "Telese, Francesca"
+    - "Jiang, Zhihua"
+    - "Saba, Laura"
+    - "Wang, Xusheng"
+    - "Murphy, Terence D."
+    - "Palmer, Abraham A."
+    - "Kwitek, Anne E."
+    - "Dwinell, Melinda R."
+    - "Williams, Robert W."
+    - "Li, Jun Z."
+    - "Chen, Hao"
   date: 2024
   serial-number:
     doi: "10.1016/j.xgen.2024.100527"
   page-range: "100527"
   parent:
     type: periodical
-    title: "Cell Genomics"
+    title: "Cell Genom"
     volume: 4
     issue: 4
 
@@ -283,13 +564,106 @@ martin2023:
     - "Martin, Fergal J"
     - "Amode, M Ridwan"
     - "Aneja, Alisha"
+    - "Austine-Orimoloye, Olanrewaju"
+    - "Azov, Andrey G"
+    - "Barnes, If"
+    - "Becker, Arne"
+    - "Bennett, Ruth"
+    - "Berry, Andrew"
+    - "Bhai, Jyothish"
+    - "Bhurji, Simarpreet Kaur"
+    - "Bignell, Alexandra"
+    - "Boddu, Sanjay"
+    - "Branco Lins, Paulo R"
+    - "Brooks, Lucy"
+    - "Ramaraju, Shashank Budhanuru"
+    - "Charkhchi, Mehrnaz"
+    - "Cockburn, Alexander"
+    - "Da Rin Fiorretto, Luca"
+    - "Davidson, Claire"
+    - "Dodiya, Kamalkumar"
+    - "Donaldson, Sarah"
+    - "El Houdaigui, Bilal"
+    - "El Naboulsi, Tamara"
+    - "Fatima, Reham"
+    - "Giron, Carlos Garcia"
+    - "Genez, Thiago"
+    - "Ghattaoraya, Gurpreet S"
+    - "Martinez, Jose Gonzalez"
+    - "Guijarro, Cristi"
+    - "Hardy, Matthew"
+    - "Hollis, Zoe"
+    - "Hourlier, Thibaut"
+    - "Hunt, Toby"
+    - "Kay, Mike"
+    - "Kaykala, Vinay"
+    - "Le, Tuan"
+    - "Lemos, Diana"
+    - "Marques-Coelho, Diego"
+    - "Marugán, José Carlos"
+    - "Merino, Gabriela Alejandra"
+    - "Mirabueno, Louisse Paola"
+    - "Mushtaq, Aleena"
+    - "Hossain, Syed Nakib"
+    - "Ogeh, Denye N"
+    - "Sakthivel, Manoj Pandian"
+    - "Parker, Anne"
+    - "Perry, Malcolm"
+    - "Piližota, Ivana"
+    - "Prosovetskaia, Irina"
+    - "Pérez-Silva, José G"
+    - "Salam, Ahamed Imran Abdul"
+    - "Saraiva-Agostinho, Nuno"
+    - "Schuilenburg, Helen"
+    - "Sheppard, Dan"
+    - "Sinha, Swati"
+    - "Sipos, Botond"
+    - "Stark, William"
+    - "Steed, Emily"
+    - "Sukumaran, Ranjit"
+    - "Sumathipala, Dulika"
+    - "Suner, Marie-Marthe"
+    - "Surapaneni, Likhitha"
+    - "Sutinen, Kyösti"
+    - "Szpak, Michal"
+    - "Tricomi, Francesca Floriana"
+    - "Urbina-Gómez, David"
+    - "Veidenberg, Andres"
+    - "Walsh, Thomas A"
+    - "Walts, Brandon"
+    - "Wass, Elizabeth"
+    - "Willhoft, Natalie"
+    - "Allen, Jamie"
+    - "Alvarez-Jarreta, Jorge"
+    - "Chakiachvili, Marc"
+    - "Flint, Bethany"
+    - "Giorgetti, Stefano"
+    - "Haggerty, Leanne"
+    - "Ilsley, Garth R"
+    - "Loveland, Jane E"
+    - "Moore, Benjamin"
+    - "Mudge, Jonathan M"
+    - "Tate, John"
+    - "Thybert, David"
+    - "Trevanion, Stephen J"
+    - "Winterbottom, Andrea"
+    - "Frankish, Adam"
+    - "Hunt, Sarah E"
+    - "Ruffier, Magali"
+    - "Cunningham, Fiona"
+    - "Dyer, Sarah"
+    - "Finn, Robert D"
+    - "Howe, Kevin L"
+    - "Harrison, Peter W"
+    - "Yates, Andrew D"
+    - "Flicek, Paul"
   date: 2023
   serial-number:
     doi: "10.1093/nar/gkac958"
   page-range: "D933-D941"
   parent:
     type: periodical
-    title: "Nucleic Acids Research"
+    title: "Nucleic Acids Res"
     volume: 51
     issue: D1
 
@@ -300,6 +674,8 @@ guarracino2022odgi:
     - "Guarracino, Andrea"
     - "Heumos, Simon"
     - "Nahnsen, Sven"
+    - "Prins, Pjotr"
+    - "Garrison, Erik"
   date: 2022
   serial-number:
     doi: "10.1093/bioinformatics/btac308"
@@ -317,13 +693,21 @@ danecek2021:
     - "Danecek, Petr"
     - "Bonfield, James K"
     - "Liddle, Jennifer"
+    - "Marshall, John"
+    - "Ohan, Valeriu"
+    - "Pollard, Martin O"
+    - "Whitwham, Andrew"
+    - "Keane, Thomas"
+    - "McCarthy, Shane A"
+    - "Davies, Robert M"
+    - "Li, Heng"
   date: 2021
   serial-number:
     doi: "10.1093/gigascience/giab008"
   page-range: "giab008"
   parent:
     type: periodical
-    title: "GigaScience"
+    title: "Gigascience"
     volume: 10
     issue: 2
 
@@ -334,6 +718,16 @@ cleary2015:
     - "Cleary, John G."
     - "Braithwaite, Ross"
     - "Gaastra, Kurt"
+    - "Hilbush, Brian S."
+    - "Inglis, Stuart"
+    - "Irvine, Sean A."
+    - "Jackson, Alan"
+    - "Littin, Richard"
+    - "Rathod, Mehul"
+    - "Ware, David"
+    - "Zook, Justin M."
+    - "Trigg, Len"
+    - "De La Vega, Francisco M."
   date: 2015
   serial-number:
     doi: "10.1101/023754"
@@ -348,6 +742,12 @@ cingolani2012:
     - "Cingolani, Pablo"
     - "Platts, Adrian"
     - "Wang, Le Lily"
+    - "Coon, Melissa"
+    - "Nguyen, Tung"
+    - "Wang, Luan"
+    - "Land, Susan J."
+    - "Lu, Xiangyi"
+    - "Ruden, Douglas M."
   date: 2012
   serial-number:
     doi: "10.4161/fly.19695"
@@ -370,7 +770,7 @@ zhou2012:
   page-range: "821-824"
   parent:
     type: periodical
-    title: "Nature Genetics"
+    title: "Nat Genet"
     volume: 44
     issue: 7
 
@@ -381,6 +781,68 @@ ebert2021:
     - "Ebert, Peter"
     - "Audano, Peter A."
     - "Zhu, Qihui"
+    - "Rodriguez-Martin, Bernardo"
+    - "Porubsky, David"
+    - "Bonder, Marc Jan"
+    - "Sulovari, Arvis"
+    - "Ebler, Jana"
+    - "Zhou, Weichen"
+    - "Serra Mari, Rebecca"
+    - "Yilmaz, Feyza"
+    - "Zhao, Xuefang"
+    - "Hsieh, PingHsun"
+    - "Lee, Joyce"
+    - "Kumar, Sushant"
+    - "Lin, Jiadong"
+    - "Rausch, Tobias"
+    - "Chen, Yu"
+    - "Ren, Jingwen"
+    - "Santamarina, Martin"
+    - "Höps, Wolfram"
+    - "Ashraf, Hufsah"
+    - "Chuang, Nelson T."
+    - "Yang, Xiaofei"
+    - "Munson, Katherine M."
+    - "Lewis, Alexandra P."
+    - "Fairley, Susan"
+    - "Tallon, Luke J."
+    - "Clarke, Wayne E."
+    - "Basile, Anna O."
+    - "Byrska-Bishop, Marta"
+    - "Corvelo, André"
+    - "Evani, Uday S."
+    - "Lu, Tsung-Yu"
+    - "Chaisson, Mark J. P."
+    - "Chen, Junjie"
+    - "Li, Chong"
+    - "Brand, Harrison"
+    - "Wenger, Aaron M."
+    - "Ghareghani, Maryam"
+    - "Harvey, William T."
+    - "Raeder, Benjamin"
+    - "Hasenfeld, Patrick"
+    - "Regier, Allison A."
+    - "Abel, Haley J."
+    - "Hall, Ira M."
+    - "Flicek, Paul"
+    - "Stegle, Oliver"
+    - "Gerstein, Mark B."
+    - "Tubio, Jose M. C."
+    - "Mu, Zepeng"
+    - "Li, Yang I."
+    - "Shi, Xinghua"
+    - "Hastie, Alex R."
+    - "Ye, Kai"
+    - "Chong, Zechen"
+    - "Sanders, Ashley D."
+    - "Zody, Michael C."
+    - "Talkowski, Michael E."
+    - "Mills, Ryan E."
+    - "Devine, Scott E."
+    - "Lee, Charles"
+    - "Korbel, Jan O."
+    - "Marschall, Tobias"
+    - "Eichler, Evan E."
   date: 2021
   serial-number:
     doi: "10.1126/science.abf7117"
@@ -414,13 +876,20 @@ jeffares2017:
     - "Jeffares, Daniel C."
     - "Jolly, Clemency"
     - "Hoti, Mimoza"
+    - "Speed, Doug"
+    - "Shaw, Liam"
+    - "Rallis, Charalampos"
+    - "Balloux, Francois"
+    - "Dessimoz, Christophe"
+    - "Bähler, Jürg"
+    - "Sedlazeck, Fritz J."
   date: 2017
   serial-number:
     doi: "10.1038/ncomms14061"
   page-range: "14061"
   parent:
     type: periodical
-    title: "Nature Communications"
+    title: "Nat Commun"
     volume: 8
     issue: 1
 
@@ -433,10 +902,9 @@ tarailo2009:
   date: 2009
   serial-number:
     doi: "10.1002/0471250953.bi0410s25"
-  page-range: "4.10.1-4.10.14"
   parent:
     type: periodical
-    title: "Current Protocols in Bioinformatics"
+    title: "Curr Protoc Bioinformatics"
     volume: 25
     issue: 1
 
@@ -478,6 +946,13 @@ heumos2024:
     - "Heumos, Simon"
     - "Heuer, Michael L"
     - "Hanssen, Friederike"
+    - "Heumos, Lukas"
+    - "Guarracino, Andrea"
+    - "Heringer, Peter"
+    - "Ehmele, Philipp"
+    - "Prins, Pjotr"
+    - "Garrison, Erik"
+    - "Nahnsen, Sven"
   date: 2024
   serial-number:
     doi: "10.1093/bioinformatics/btae609"
@@ -502,7 +977,7 @@ rhie2020:
   page-range: "245"
   parent:
     type: periodical
-    title: "Genome Biology"
+    title: "Genome Biol"
     volume: 21
     issue: 1
 
@@ -513,6 +988,10 @@ vurture2017:
     - "Vurture, Gregory W"
     - "Sedlazeck, Fritz J"
     - "Nattestad, Maria"
+    - "Underwood, Charles J"
+    - "Fang, Han"
+    - "Gurtowski, James"
+    - "Schatz, Michael C"
   date: 2017
   serial-number:
     doi: "10.1093/bioinformatics/btx153"
@@ -559,7 +1038,7 @@ marcais2018:
   page-range: "e1005944"
   parent:
     type: periodical
-    title: "PLOS Computational Biology"
+    title: "PLoS Comput Biol"
     volume: 14
     issue: 1
 
@@ -570,13 +1049,25 @@ smith2020:
     - "Smith, Jennifer R"
     - "Hayman, G Thomas"
     - "Wang, Shur-Jen"
+    - "Laulederkind, Stanley J F"
+    - "Hoffman, Matthew J"
+    - "Kaldunski, Mary L"
+    - "Tutaj, Monika"
+    - "Thota, Jyothi"
+    - "Nalabolu, Harika S"
+    - "Ellanki, Santoshi L R"
+    - "Tutaj, Marek A"
+    - "De Pons, Jeffrey L"
+    - "Kwitek, Anne E"
+    - "Dwinell, Melinda R"
+    - "Shimoyama, Mary E"
   date: 2020
   serial-number:
     doi: "10.1093/nar/gkz1041"
   page-range: "D731-D742"
   parent:
     type: periodical
-    title: "Nucleic Acids Research"
+    title: "Nucleic Acids Res"
     volume: 48
     issue: D1
 
@@ -587,13 +1078,131 @@ hickey2024:
     - "Hickey, Glenn"
     - "Monlong, Jean"
     - "Ebler, Jana"
-  date: 2024
+    - "Novak, Adam M."
+    - "Eizenga, Jordan M."
+    - "Gao, Yan"
+    - "Abel, Haley J."
+    - "Antonacci-Fulton, Lucinda L."
+    - "Asri, Mobin"
+    - "Baid, Gunjan"
+    - "Baker, Carl A."
+    - "Belyaeva, Anastasiya"
+    - "Billis, Konstantinos"
+    - "Bourque, Guillaume"
+    - "Buonaiuto, Silvia"
+    - "Carroll, Andrew"
+    - "Chaisson, Mark J. P."
+    - "Chang, Pi-Chuan"
+    - "Chang, Xian H."
+    - "Cheng, Haoyu"
+    - "Chu, Justin"
+    - "Cody, Sarah"
+    - "Colonna, Vincenza"
+    - "Cook, Daniel E."
+    - "Cook-Deegan, Robert M."
+    - "Cornejo, Omar E."
+    - "Diekhans, Mark"
+    - "Doerr, Daniel"
+    - "Ebert, Peter"
+    - "Ebler, Jana"
+    - "Eichler, Evan E."
+    - "Fairley, Susan"
+    - "Fedrigo, Olivier"
+    - "Felsenfeld, Adam L."
+    - "Feng, Xiaowen"
+    - "Fischer, Christian"
+    - "Flicek, Paul"
+    - "Formenti, Giulio"
+    - "Frankish, Adam"
+    - "Fulton, Robert S."
+    - "Garg, Shilpa"
+    - "Garrison, Erik"
+    - "Garrison, Nanibaa’ A."
+    - "Giron, Carlos Garcia"
+    - "Green, Richard E."
+    - "Groza, Cristian"
+    - "Guarracino, Andrea"
+    - "Haggerty, Leanne"
+    - "Hall, Ira M."
+    - "Harvey, William T."
+    - "Haukness, Marina"
+    - "Haussler, David"
+    - "Heumos, Simon"
+    - "Hoekzema, Kendra"
+    - "Hourlier, Thibaut"
+    - "Howe, Kerstin"
+    - "Jain, Miten"
+    - "Jarvis, Erich D."
+    - "Ji, Hanlee P."
+    - "Kenny, Eimear E."
+    - "Koenig, Barbara A."
+    - "Kolesnikov, Alexey"
+    - "Korbel, Jan O."
+    - "Kordosky, Jennifer"
+    - "Koren, Sergey"
+    - "Lee, HoJoon"
+    - "Lewis, Alexandra P."
+    - "Liao, Wen-Wei"
+    - "Lu, Shuangjia"
+    - "Lu, Tsung-Yu"
+    - "Lucas, Julian K."
+    - "Magalhães, Hugo"
+    - "Marco-Sola, Santiago"
+    - "Marijon, Pierre"
+    - "Markello, Charles"
+    - "Marschall, Tobias"
+    - "Martin, Fergal J."
+    - "McCartney, Ann"
+    - "McDaniel, Jennifer"
+    - "Miga, Karen H."
+    - "Mitchell, Matthew W."
+    - "Mountcastle, Jacquelyn"
+    - "Munson, Katherine M."
+    - "Mwaniki, Moses Njagi"
+    - "Nattestad, Maria"
+    - "Nurk, Sergey"
+    - "Olsen, Hugh E."
+    - "Olson, Nathan D."
+    - "Pesout, Trevor"
+    - "Phillippy, Adam M."
+    - "Popejoy, Alice B."
+    - "Porubsky, David"
+    - "Prins, Pjotr"
+    - "Puiu, Daniela"
+    - "Rautiainen, Mikko"
+    - "Regier, Allison A."
+    - "Rhie, Arang"
+    - "Sacco, Samuel"
+    - "Sanders, Ashley D."
+    - "Schneider, Valerie A."
+    - "Schultz, Baergen I."
+    - "Shafin, Kishwar"
+    - "Sibbesen, Jonas A."
+    - "Sirén, Jouni"
+    - "Smith, Michael W."
+    - "Sofia, Heidi J."
+    - "Tayoun, Ahmad N. Abou"
+    - "Thibaud-Nissen, Françoise"
+    - "Tomlinson, Chad"
+    - "Tricomi, Francesca Floriana"
+    - "Villani, Flavia"
+    - "Vollger, Mitchell R."
+    - "Wagner, Justin"
+    - "Walenz, Brian"
+    - "Wang, Ting"
+    - "Wood, Jonathan M. D."
+    - "Zimin, Aleksey V."
+    - "Zook, Justin M."
+    - "Marschall, Tobias"
+    - "Li, Heng"
+    - "Paten, Benedict"
+  date: 2023
   serial-number:
     doi: "10.1038/s41587-023-01793-w"
   page-range: "663-673"
   parent:
     type: periodical
-    title: "Nature Biotechnology"
+    title: "Nat Biotechnol"
     volume: 42
     issue: 4
 
@@ -604,6 +1213,15 @@ villani2025:
     - "Villani, Flavia"
     - "Guarracino, Andrea"
     - "Ward, Rachel R."
+    - "Green, Tomomi"
+    - "Emms, Madeleine"
+    - "Pravenec, Michal"
+    - "Sharp, Burt"
+    - "Prins, Pjotr"
+    - "Garrison, Erik"
+    - "Williams, Robert W."
+    - "Chen, Hao"
+    - "Colonna, Vincenza"
   date: 2025
   serial-number:
     doi: "10.1016/j.isci.2025.111835"
@@ -621,6 +1239,26 @@ li2025:
     - "Li, Ling"
     - "Wu, Zhiping"
     - "Guarracino, Andrea"
+    - "Villani, Flavia"
+    - "Kong, Dehui"
+    - "Mancieri, Ariana"
+    - "Zhang, Aijun"
+    - "Saba, Laura"
+    - "Chen, Hao"
+    - "Brozka, Hana"
+    - "Vales, Karel"
+    - "Senko, Anna N."
+    - "Kempermann, Gerd"
+    - "Stuchlik, Ales"
+    - "Pravenec, Michal"
+    - "Lechner, Joseph"
+    - "Prins, Pjotr"
+    - "Mathur, Ramkumar"
+    - "Lu, Lu"
+    - "Yang, Kai"
+    - "Peng, Junmin"
+    - "Williams, Robert W."
+    - "Wang, Xusheng"
   date: 2025
   serial-number:
     doi: "10.1016/j.isci.2025.112079"
@@ -638,13 +1276,43 @@ helmy2026:
     - "Helmy, Mohab"
     - "Li, Jin U."
     - "Yan, Xinyu F."
+    - "Meade, Rachel K."
+    - "Anderson, Elizabeth"
+    - "Chen, Patrick B."
+    - "Czechanski, Anne M."
+    - "Di Domenico, Tomás"
+    - "Flint, Jonathan"
+    - "Garrison, Erik"
+    - "Gontijo, Marco T.P."
+    - "Guarracino, Andrea"
+    - "Haggerty, Leanne"
+    - "Heard, Edith"
+    - "Howe, Kerstin"
+    - "Meena, Narendra"
+    - "Martin, Fergal J."
+    - "Miska, Eric A."
+    - "Rall, Isabell"
+    - "Ramakrishna, Navin B."
+    - "Sapetschnig, Alexandra"
+    - "Sinha, Swati"
+    - "Sun, Diandian"
+    - "Tricomi, Francesca F."
+    - "Qu, Runjia"
+    - "Wood, Jonathan M.D."
+    - "Wu, Tianzhen"
+    - "Zhou, Dian J."
+    - "Reinholdt, Laura"
+    - "Adams, David J."
+    - "Smith, Clare M."
+    - "Lilue, Jingtao"
+    - "Keane, Thomas M."
   date: 2026
   serial-number:
     doi: "10.1016/j.xgen.2025.101074"
   page-range: "101074"
   parent:
     type: periodical
-    title: "Cell Genomics"
+    title: "Cell Genom"
     volume: 6
     issue: 2
 
@@ -655,13 +1323,28 @@ francis2025:
     - "Francis, Bailey A."
     - "Gozashti, Landen"
     - "Costello, Kevin"
+    - "Kasahara, Takaoki"
+    - "Harringmeyer, Olivia S."
+    - "Lilue, Jingtao"
+    - "Wu, Tianzhen"
+    - "Zoltowska, Katarzyna"
+    - "Helmy, Mohab"
+    - "Kato, Tadafumi"
+    - "Czechanski, Anne"
+    - "Bronner, Iraad. F."
+    - "Dawson, Emma"
+    - "Quail, Michael A."
+    - "Ferguson-Smith, Anne"
+    - "Reinholdt, Laura"
+    - "Adams, David J."
+    - "Keane, Thomas M."
   date: 2025
   serial-number:
     doi: "10.1038/s41588-025-02367-z"
   page-range: "2852-2862"
   parent:
     type: periodical
-    title: "Nature Genetics"
+    title: "Nat Genet"
     volume: 57
     issue: 11
 
@@ -675,14 +1358,15 @@ kent2002:
     - "Roskin, Krishna M."
     - "Pringle, Tom H."
     - "Zahler, Alan M."
-    - "Haussler, David"
+    - "Haussler,"
+    - "David"
   date: 2002
   serial-number:
     doi: "10.1101/gr.229102"
   page-range: "996-1006"
   parent:
     type: periodical
-    title: "Genome Research"
+    title: "Genome Res"
     volume: 12
     issue: 6
 
@@ -726,12 +1410,12 @@ beyer2019:
   title: "Sequence tube maps: making graph genomes intuitive to commuters"
   author:
     - "Beyer, Wolfgang"
-    - "Novak, Adam M."
+    - "Novak, Adam M"
     - "Hickey, Glenn"
     - "Chan, Jeffrey"
     - "Tan, Vanessa"
     - "Paten, Benedict"
-    - "Zerbino, Daniel R."
+    - "Zerbino, Daniel R"
   date: 2019
   serial-number:
     doi: "10.1093/bioinformatics/btz597"
@@ -744,18 +1428,18 @@ beyer2019:
 
 bostock2011:
   type: article
-  title: "D3: Data-Driven Documents"
+  title: "D³ Data-Driven Documents"
   author:
-    - "Bostock, Michael"
-    - "Ogievetsky, Vadim"
-    - "Heer, Jeffrey"
+    - "Bostock, M."
+    - "Ogievetsky, V."
+    - "Heer, J."
   date: 2011
   serial-number:
     doi: "10.1109/TVCG.2011.185"
   page-range: "2301-2309"
   parent:
     type: periodical
-    title: "IEEE Transactions on Visualization and Computer Graphics"
+    title: "IEEE Trans Vis Comput Graph"
     volume: 17
     issue: 12
 
@@ -766,13 +1450,22 @@ siren2024:
     - "Sirén, Jouni"
     - "Eskandar, Parsa"
     - "Ungaro, Matteo Tommaso"
+    - "Hickey, Glenn"
+    - "Eizenga, Jordan M."
+    - "Novak, Adam M."
+    - "Chang, Xian"
+    - "Chang, Pi-Chuan"
+    - "Kolmogorov, Mikhail"
+    - "Carroll, Andrew"
+    - "Monlong, Jean"
+    - "Paten, Benedict"
   date: 2024
   serial-number:
     doi: "10.1038/s41592-024-02407-2"
   page-range: "2017-2023"
   parent:
     type: periodical
-    title: "Nature Methods"
+    title: "Nat Methods"
     volume: 21
     issue: 11
 
@@ -782,7 +1475,7 @@ heumos2024pgsgd:
   author:
     - "Heumos, Simon"
     - "Guarracino, Andrea"
-    - "Schmelzle, Jan-Niklas M."
+    - "Schmelzle, Jan-Niklas M"
     - "Li, Jiajie"
     - "Zhang, Zhiru"
     - "Hagmann, Jörg"
@@ -792,6 +1485,7 @@ heumos2024pgsgd:
   date: 2024
   serial-number:
     doi: "10.1093/bioinformatics/btae363"
+  page-range: "btae363"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -805,6 +1499,18 @@ mastromatteo2025:
     - "Mastromatteo, Scott"
     - "Chirmade, Shalvi"
     - "Roshandel, Delnaz"
+    - "Thiruvahindrapuram, Bhooma"
+    - "Wang, Zhuozhi"
+    - "Patel, Rohan V"
+    - "Sung, Wilson WL"
+    - "Hajianpour, Amirhossein"
+    - "Wang, Cheng"
+    - "Lin, Fan"
+    - "Keenan, Katherine"
+    - "Avolio, Julie"
+    - "Eckford, Paul"
+    - "Ratjen, Felix"
+    - "Strug, Lisa J"
   date: 2025
   serial-number:
     doi: "10.1101/2025.10.31.684064"
@@ -842,6 +1548,7 @@ marcosola2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad074"
+  page-range: "btad074"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -882,7 +1589,7 @@ garrison2022vcflib:
   page-range: "e1009123"
   parent:
     type: periodical
-    title: "PLOS Computational Biology"
+    title: "PLoS Comput Biol"
     volume: 18
     issue: 5
 
@@ -901,7 +1608,7 @@ manni2021:
   page-range: "4647-4654"
   parent:
     type: periodical
-    title: "Molecular Biology and Evolution"
+    title: "Mol Biol Evol"
     volume: 38
     issue: 10
 
@@ -920,7 +1627,7 @@ weisenfeld2017:
   page-range: "757-767"
   parent:
     type: periodical
-    title: "Genome Research"
+    title: "Genome Res"
     volume: 27
     issue: 5
 
@@ -947,12 +1654,29 @@ astashyn2024:
     - "Astashyn, Alexander"
     - "Tvedte, Eric S."
     - "Sweeney, Deacon"
+    - "Sapojnikov, Victor"
+    - "Bouk, Nathan"
+    - "Joukov, Victor"
+    - "Mozes, Eyal"
+    - "Strope, Pooja K."
+    - "Sylla, Pape M."
+    - "Wagner, Lukas"
+    - "Bidwell, Shelby L."
+    - "Brown, Larissa C."
+    - "Clark, Karen"
+    - "Davis, Emily W."
+    - "Smith-White, Brian"
+    - "Hlavina, Wratko"
+    - "Pruitt, Kim D."
+    - "Schneider, Valerie A."
+    - "Murphy, Terence D."
   date: 2024
   serial-number:
     doi: "10.1186/s13059-024-03198-7"
+  page-range: "60"
   parent:
     type: periodical
-    title: "Genome Biology"
+    title: "Genome Biol"
     volume: 25
     issue: 1
 
@@ -966,6 +1690,7 @@ deorowicz2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad097"
+  page-range: "btad097"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -995,13 +1720,15 @@ cheng2021:
     - "Cheng, Haoyu"
     - "Concepcion, Gregory T."
     - "Feng, Xiaowen"
+    - "Zhang, Haowen"
+    - "Li, Heng"
   date: 2021
   serial-number:
     doi: "10.1038/s41592-020-01056-5"
   page-range: "170-175"
   parent:
     type: periodical
-    title: "Nature Methods"
+    title: "Nat Methods"
     volume: 18
     issue: 2
 
@@ -1012,16 +1739,21 @@ rautiainen2023:
     - "Rautiainen, Mikko"
     - "Nurk, Sergey"
     - "Walenz, Brian P."
+    - "Logsdon, Glennis A."
+    - "Porubsky, David"
+    - "Rhie, Arang"
+    - "Eichler, Evan E."
+    - "Phillippy, Adam M."
+    - "Koren, Sergey"
   date: 2023
   serial-number:
     doi: "10.1038/s41587-023-01662-6"
   page-range: "1474-1482"
   parent:
     type: periodical
-    title: "Nature Biotechnology"
+    title: "Nat Biotechnol"
     volume: 41
     issue: 10
-
 
 pravenec1989:
   type: article
@@ -1036,7 +1768,7 @@ pravenec1989:
   page-range: "217-221"
   parent:
     type: periodical
-    title: "Journal of Hypertension"
+    title: "J Hypertens"
     volume: 7
     issue: 3
 
@@ -1050,6 +1782,7 @@ guarracino2021wfmash:
   date: 2021
   url:
     value: "https://github.com/waveygang/wfmash"
+    date: 2026-03-16
 
 arends_bxdtools:
   type: web
@@ -1059,6 +1792,7 @@ arends_bxdtools:
   date: 2023
   url:
     value: "https://github.com/DannyArends/BXDtools"
+    date: 2026-03-16
 
 hall_lab:
   type: web
@@ -1068,6 +1802,7 @@ hall_lab:
   date: 2020
   url:
     value: "https://github.com/hall-lab/assembly_validation"
+    date: 2026-03-16
 
 villani2025thesis:
   type: thesis
@@ -1075,10 +1810,12 @@ villani2025thesis:
   author:
     - "Villani, Flavia"
   date: 2025
+  genre: "PhD dissertation"
+  publisher: "University of Tennessee Health Science Center"
   organization: "University of Tennessee Health Science Center"
 
 guarracino2025impg:
-  type: article
+  type: web
   title: "Implicit pangenome graphs"
   author:
     - "Guarracino, Andrea"
@@ -1087,3 +1824,4 @@ guarracino2025impg:
   date: 2025
   url:
     value: "https://github.com/pangenome/impg"
+    date: 2026-03-16
