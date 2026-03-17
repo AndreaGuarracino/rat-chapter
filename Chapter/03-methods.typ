@@ -91,7 +91,6 @@ rm -f in.fa
 for f in assemblies/*.fa.gz; do
     STRAIN=$(basename "$f" .fa.gz)
     echo "$STRAIN"
-    # Using fastix (available in PGGB Docker image):
     zcat "$f" | fastix -p "${STRAIN}#1#" >> in.fa
 done
 ```
