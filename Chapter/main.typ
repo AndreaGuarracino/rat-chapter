@@ -5,7 +5,7 @@
 
 #set document(
   title: "A Practical Guide to Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel",
-  author: ("Flavia Villani", "Pjotr Prins", "Andrea Guarracino"),
+  author: ("Flavia Villani", "Vincenza Colonna", "Erik Garrison", "David Duggan", "David G. Ashbrook", "Robert W. Williams", "Hao Chen", "Pjotr Prins", "Andrea Guarracino"),
 )
 
 #set text(font: "New Computer Modern", size: 11pt, lang: "en")
