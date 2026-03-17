@@ -568,7 +568,7 @@ Note that PGGB's graph-based method typically reports fewer SVs than assembly-ba
 
 == Phenome-Wide Association Study (PheWAS)
 
-The pangenome enables discovery of novel variants that can be immediately tested for phenotypic associations using the extensive HXB/BXH phenotype database.
+The pangenome enables discovery of novel variants that can be immediately tested for phenotypic associations using the extensive HXB/BXH phenotype database (_see_ *Note 16* for a broader discussion of how pangenomics is poised to reshape genotype-phenotype discovery in model organisms).
 
 *1. Prepare the genotype file.* Extract genotypes for validated pangenome-only variants and convert to a BXDtools-compatible format:
 
