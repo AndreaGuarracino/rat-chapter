@@ -71,3 +71,10 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 - [ ] **Figure EPS conversion**: once SVG is available from Google Slides, convert to EPS (`inkscape Figure1.svg --export-filename=Figure1.eps --export-type=eps`) and verify lettering is 8–12pt at 160mm print width
 - [ ] **Final checks**: verify all tool installation instructions and code/command examples are correct and runnable
 - [ ] **Final checks**: verify all references have correct title, author, year, journal (spot-check rendered PDF)
+
+## Docker
+
+```
+docker build -t rat_pangenome .
+docker run -it --rm -v ~/rat_pangenome:/rat_pangenome -w /rat_pangenome rat_pangenome /bin/bash
+```
