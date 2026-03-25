@@ -234,5 +234,17 @@ RUN wget -q https://github.com/genetics-statistics/GEMMA/releases/download/v0.98
 # Python tools, for now I am skipping the SVs and pheWAS analyses.
 # ---------------------------------------------------------
 #RUN pip3 install svim-asm compleasm
+
+# Download compleasm release and keep directory structure
+RUN wget -O /tmp/compleasm-0.2.7_x64-linux.tar.bz2 \
+        https://github.com/huangnengCSU/compleasm/releases/download/v0.2.7/compleasm-0.2.7_x64-linux.tar.bz2 && \
+    tar -xjf /tmp/compleasm-0.2.7_x64-linux.tar.bz2 -C /usr/local/ && \
+    rm -rf /tmp/compleasm-0.2.7_x64-linux.tar.bz2
+
+# Install Python dependencies
+RUN python3 -m pip install --no-cache-dir pandas numpy biopython
+
+# Make a convenient symlink to run compleasm
+RUN ln -s /usr/local/compleasm_kit/compleasm.py /usr/local/bin/compleasm
  
 WORKDIR /workspace
