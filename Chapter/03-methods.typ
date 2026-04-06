@@ -440,123 +440,339 @@ Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` t
 
 Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. For the full pipeline and detailed analysis, see @villani2025.
 
-Create a list of non-reference sample names for use in the commands below:
+*0. Environment setup
 
 ```bash
-grep -v rn7 haps.list > samples.list
+export DIR_BASE=/workspace
+export PATH_REF_FASTA=$DIR_BASE/input/rn7.fa.gz   # reference FASTA (bgzipped)
+
+# Set these to match your input files:
+export PATH_OG=$DIR_BASE/input/<your_graph>.gfa    # pangenome graph (.gfa or .og)
+export PATH_VCF=$DIR_BASE/input/<your_graph>.rn7.vcf.gz  # vg deconstruct VCF (bgzipped)
+export NAME_VCF=$(basename $PATH_VCF .vcf.gz)
+export PATH_OG_FASTA=$DIR_BASE/assemblies/pan.fa.gz
+
+export PAV=/opt/pav
+
+# Save for reuse across sessions
+cat > $DIR_BASE/env.sh << EOF
+export DIR_BASE=$DIR_BASE
+export PATH_REF_FASTA=$PATH_REF_FASTA
+export PATH_OG=$PATH_OG
+export PATH_VCF=$PATH_VCF
+export NAME_VCF=$NAME_VCF
+export PATH_OG_FASTA=$PATH_OG_FASTA
+export PAV=$PAV
+EOF
 ```
 
-*1. Assembly-based SV calling.* Align each sample assembly against the reference with minimap2 @li2018 and call SVs using three independent methods:
+*1.Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph. 
 
 ```bash
-REF=reference.fa
-for SAMPLE in $(cat samples.list); do
-    # Align assembly to reference
-    minimap2 -ax asm5 -L --cs -t 48 ${REF} \
-        assemblies/${SAMPLE}.fa \
-        | samtools sort -m 8G -@ 48 -o ${SAMPLE}.bam -
-    samtools index ${SAMPLE}.bam
+mkdir -p $DIR_BASE/assemblies
 
-    # Method 1: SVIM-asm (haploid mode)
-    svim-asm haploid svim_out/${SAMPLE}/ ${SAMPLE}.bam ${REF} \
-        --sample ${SAMPLE} --query_names \
+odgi paths -i $PATH_OG -f \
+    | bgzip -@ 48 -l 9 > $PATH_OG_FASTA
+samtools faidx $PATH_OG_FASTA
+cut -f1 $PATH_OG_FASTA.fai \
+    | cut -d'#' -f1 | sort -u \
+    | while read SAMPLE; do
+        samtools faidx $PATH_OG_FASTA \
+            $(grep "^${SAMPLE}#" $PATH_OG_FASTA.fai | cut -f1) \
+            > $DIR_BASE/assemblies/$SAMPLE.fa
+        samtools faidx $DIR_BASE/assemblies/$SAMPLE.fa
+    done
+
+# Non-reference sample list
+cut -f1 $PATH_OG_FASTA.fai \
+    | cut -d'#' -f1 | sort -u \
+    | grep -v rn7 > $DIR_BASE/samples.list
+```
+
+
+*2. Assembly-based SV calling.* Align each sample assembly against the reference with minimap2 @li2018 and call SVs (≥ 50 bp) using three independent methods.
+
+*2a. SVIM-asm.* SVs are called in haploid mode.
+
+```bash
+mkdir -p $DIR_BASE/SVIM-asm
+cd $DIR_BASE/SVIM-asm
+
+while read SAMPLE; do
+    echo ">>> $SAMPLE"
+
+    # Align: -I 1g batches index to avoid OOM; --split-prefix ensures @SQ headers
+    minimap2 -a -x asm5 --eqx -r2k -I 1g \
+        --split-prefix /tmp/mm2_$SAMPLE \
+        -t 48 \
+        $PATH_REF_FASTA \
+        $DIR_BASE/assemblies/$SAMPLE.fa \
+        -o $DIR_BASE/SVIM-asm/$SAMPLE.sam
+
+    samtools sort -m 4G -@ 48 \
+        -T /tmp/sort_$SAMPLE \
+        -o $DIR_BASE/SVIM-asm/$SAMPLE.bam \
+        $DIR_BASE/SVIM-asm/$SAMPLE.sam
+    rm $DIR_BASE/SVIM-asm/$SAMPLE.sam
+    samtools index $DIR_BASE/SVIM-asm/$SAMPLE.bam
+
+    mkdir -p $DIR_BASE/SVIM-asm/$SAMPLE
+    svim-asm haploid $DIR_BASE/SVIM-asm/$SAMPLE \
+        $DIR_BASE/SVIM-asm/$SAMPLE.bam \
+        $PATH_REF_FASTA \
+        --sample $SAMPLE \
+        --query_names \
         --interspersed_duplications_as_insertions \
         --min_sv_size 50
 
-    # Method 2: PAV
-    # Requires config.json pointing to reference and
-    # assemblies.tsv listing sample paths (see PAV docs)
+    mv $DIR_BASE/SVIM-asm/$SAMPLE/variants.vcf \
+       $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.raw.vcf
+    bgzip -@ 48 $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.raw.vcf
+    tabix $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.raw.vcf.gz
 
-    # Method 3: Hall-lab pipeline
-    # Uses paftools.js call (distributed with minimap2,
-    # requires the k8 JavaScript runtime) for variant
-    # detection from the alignment, followed by VCF conversion
-done
+    bcftools norm -m -any -f $PATH_REF_FASTA \
+            $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.raw.vcf.gz -c s \
+        | bcftools norm -d exact \
+        | bcftools view -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
+        | bcftools sort \
+        | bgzip -@ 48 -l 9 > $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.vcf.gz
+    tabix $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.vcf.gz
+
+    echo "<<< $SAMPLE done"
+
+done < $DIR_BASE/samples.list
 ```
 
-For each caller, normalize and filter the output to retain only SVs (≥50 bp):
+*2b. PAV.* PAV performs haplotype-resolved SV detection by aligning contigs and detecting variants directly from local alignment coordinates.
 
 ```bash
-bcftools norm -m -any -f ${REF} ${SAMPLE}.raw.vcf.gz -c s \
-    | bcftools norm -d exact \
-    | bcftools view -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
-    | bcftools sort | bgzip -c > ${SAMPLE}.caller.vcf.gz
-tabix ${SAMPLE}.caller.vcf.gz
+mkdir -p $DIR_BASE/PAV
+cd $DIR_BASE/PAV
+cat > config.json << EOF
+{
+    "reference": "$PATH_REF_FASTA",
+    "minimap2_params": "-x asm20 -m 10000 -z 10000,50 -r 50000 --end-bonus=100 -O 5,56 -E 4,1 -B 5 --secondary=no",
+    "threads": 4
+}
+EOF
+
+echo -e "NAME\tHAP1\tHAP2" > assemblies.tsv
+while read SAMPLE; do
+    echo -e "$SAMPLE\t$DIR_BASE/assemblies/$SAMPLE.fa\t"
+done < $DIR_BASE/samples.list >> assemblies.tsv
+
+# Test with one sample first:
+snakemake -s /opt/pav/Snakefile --unlock
+snakemake -s /opt/pav/Snakefile \
+    --cores 4 \
+    -j 1 \
+    --rerun-incomplete \
+    BNLxCub.vcf.gz \
+    2>&1 | tee pav.log
+
+# Then run all samples:
+snakemake -s /opt/pav/Snakefile --unlock
+snakemake -s /opt/pav/Snakefile \
+    --cores 4 \
+    -j 1 \
+    --rerun-incomplete \
+    2>&1 | tee pav.log
+
+# Normalize outputs 
+while read SAMPLE; do
+    echo ">>> $SAMPLE"
+    [[ -f $SAMPLE.pav.vcf.gz ]] && { echo "skip $SAMPLE"; continue; }
+    [[ ! -f $SAMPLE.vcf.gz ]]   && { echo "skip $SAMPLE (PAV not done)"; continue; }
+
+    bcftools norm --threads 4 -m -any \
+            -f $PATH_REF_FASTA $SAMPLE.vcf.gz -c s \
+        | bcftools norm --threads 4 -d none \
+        | bcftools view -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
+        | bcftools sort -T /tmp \
+        | bgzip -@ 4 -c > $SAMPLE.pav.vcf.gz
+    tabix $SAMPLE.pav.vcf.gz
+    echo "<<< $SAMPLE done"
+
+done < $DIR_BASE/samples.list
+```
+*2c.  Hall-lab pipeline.* The Hall-lab pipeline detects SVs via split-read alignment using `paftools.js call`.
+
+```bash
+mkdir -p $DIR_BASE/Hall-lab
+cd $DIR_BASE/Hall-lab
+
+VAR_TO_VCF=$PAFTOOLS_SCRIPTS/varToVcf.py
+VCFSORT=$PAFTOOLS_SCRIPTS/vcfsort
+GENOTYPE_VCF=$PAFTOOLS_SCRIPTS/vcfToGenotyped.pl
+
+while read SAMPLE; do
+    echo ">>> $SAMPLE"
+    [[ -f $SAMPLE.hall-lab.vcf.gz ]] && { echo "skip $SAMPLE"; continue; }
+
+    # Align to PAF directly (no BAM needed; -I 1g prevents OOM)
+    minimap2 -x asm5 -L --cs -t 4 -I 1g \
+        $PATH_REF_FASTA \
+        $DIR_BASE/assemblies/$SAMPLE.fa \
+        | sort -k6,6 -k8,8n \
+        | $K8 $PAFTOOLS call -l 1 -L 1 -q 0 - \
+        | grep "^V" | sort -V \
+        | bgzip -c > $SAMPLE.loose.var.txt.gz
+
+    python3 $VAR_TO_VCF \
+        -i <(zcat $SAMPLE.loose.var.txt.gz) \
+        -r $PATH_REF_FASTA \
+        -s $SAMPLE -o $SAMPLE.loose.vcf -p $SAMPLE
+
+    $VCFSORT $SAMPLE.loose.vcf \
+        | perl $GENOTYPE_VCF \
+        | bgzip -c > $SAMPLE.loose.genotyped.vcf.gz
+    tabix -f -p vcf $SAMPLE.loose.genotyped.vcf.gz
+
+    bcftools norm --threads 4 -m -any \
+            -f $PATH_REF_FASTA $SAMPLE.loose.genotyped.vcf.gz -c s \
+        | bcftools norm --threads 4 -d none \
+        | bcftools view -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
+        | bcftools sort -T /tmp \
+        | bgzip -@ 4 -c > $SAMPLE.hall-lab.vcf.gz
+    tabix $SAMPLE.hall-lab.vcf.gz
+
+    echo "<<< $SAMPLE done"
+
+done < $DIR_BASE/samples.list
 ```
 
-*2. Graph-based SV calling from PGGB.* Extract per-sample SVs from the pangenome VCF produced by vg deconstruct. Use vcfbub to remove nested alleles and vcfwave to decompose complex variants. The vcfbub `-l 0` flag removes all nested (multi-level) alleles, retaining only top-level bubbles; `-a 100000` discards alleles longer than 100 kb, which are typically artifacts from graph topology. The vcfwave `-I 1000` flag sets the minimum allele length to consider for inverted alignment (default: 64 bp):
+*3. Graph-based SV calling from PGGB.* Extract per-sample SVs from the pangenome VCF produced by vg deconstruct. Use vcfbub to remove nested alleles and vcfwave to decompose complex variants. The vcfbub `-l 0` flag removes all nested (multi-level) alleles, retaining only top-level bubbles; `-a 100000` discards alleles longer than 100 kb, which are typically artifacts from graph topology. The vcfwave `-I 1000` flag sets the minimum allele length to consider for inverted alignment (default: 64 bp):
 
 ```bash
 # Decompose complex alleles from the pangenome VCF
-vcfbub -l 0 -a 100000 --input pangenome.vcf.gz \
-    | vcfwave -t 48 -I 1000 \
-    | bgzip -c > pangenome.wave.vcf.gz
+mkdir -p $DIR_BASE/PGGB
+cd $DIR_BASE/PGGB
+tabix -f $PATH_VCF
 
-# Extract per-sample SVs
-for SAMPLE in $(cat samples.list); do
-    bcftools annotate -x INFO pangenome.wave.vcf.gz \
-        | bcftools view -a -s ${SAMPLE} -Ou \
-        | bcftools norm -f ${REF} -c s -m - -Ou \
-        | bcftools view -e 'GT="ref" | GT~"\."' \
-            -f 'PASS,.' -Ou \
-        | bcftools sort -Ou \
+# Decompose nested alleles and complex variants
+vcfbub -l 0 -a 100000 --input $PATH_VCF \
+    | vcfwave -t 4 -I 1000 \
+    | bgzip -@ 4 -l 9 -c > $NAME_VCF.wave.vcf.gz
+tabix $NAME_VCF.wave.vcf.gz
+
+# Per-sample extraction
+# sed converts PanSN CHROM name (rn7#1#chr12) to plain chr12 for bcftools norm
+while read SAMPLE; do
+    echo ">>> $SAMPLE"
+    [[ -f $SAMPLE.pggb.vcf.gz ]] && { echo "skip $SAMPLE"; continue; }
+
+    bcftools annotate -x INFO $NAME_VCF.wave.vcf.gz \
+        | sed 's/^rn7#1#chr12\t/chr12\t/' \
+        | bcftools view -a -s $SAMPLE -Ou \
+        | bcftools norm -f $PATH_REF_FASTA -c s -m - -Ou \
+        | bcftools view -e 'GT="ref" | GT~"\."' -f 'PASS,.' -Ou \
+        | bcftools sort -m 8G -T /tmp -Ou \
         | bcftools norm -d exact \
-        | bcftools view \
-            -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
-        | bgzip -c > ${SAMPLE}.pggb.vcf.gz
-    tabix ${SAMPLE}.pggb.vcf.gz
-done
+        | bcftools view -i 'STRLEN(REF)>=50 | STRLEN(ALT)>=50' \
+        | bgzip -@ 4 -l 9 -c > $SAMPLE.pggb.vcf.gz
+    tabix $SAMPLE.pggb.vcf.gz
+    echo "<<< $SAMPLE done"
+
+done < $DIR_BASE/samples.list
 ```
 
-*3. Multi-method merging.* Merge SV calls across all four methods per sample using SURVIVOR @jeffares2017, requiring agreement from at least two callers on type and strand within a 1,000 bp breakpoint distance. Note that SURVIVOR can over-merge distinct events when the breakpoint distance parameter is set too high; 1,000 bp is a reasonable compromise for mammalian genomes, but users should inspect merged calls in regions with clustered SVs:
+*4. Multi-method merging.* Merge SV calls across all four methods per sample using SURVIVOR @jeffares2017, requiring agreement from at least two callers on type and strand within a 1,000 bp breakpoint distance. Note that SURVIVOR can over-merge distinct events when the breakpoint distance parameter is set too high; 1,000 bp is a reasonable compromise for mammalian genomes, but users should inspect merged calls in regions with clustered SVs.
+Variants with > 10% uncalled bases (N) in REF or ALT are discarded:
 
 ```bash
-for SAMPLE in $(cat samples.list); do
-    # List per-caller VCFs for this sample
-    printf '%s\n' ${SAMPLE}.hall-lab.vcf.gz \
-        ${SAMPLE}.pggb.vcf.gz ${SAMPLE}.svim-asm.vcf.gz \
-        ${SAMPLE}.pav.vcf.gz > ${SAMPLE}.file_list
+fix_svtype() {
+    awk 'BEGIN{OFS="\t"}
+    /^#/{print; next}
+    {   ref=$4; alt=$5; lr=length(ref); la=length(alt)
+        if(la>lr)      {svtype="INS"; svlen=la-lr}
+        else if(la<lr) {svtype="DEL"; svlen=lr-la}
+        else if(lr>1)  {svtype="MNP"; svlen=la}
+        else           {svtype="SNV"; svlen=1}
+        gsub(/SVTYPE=[^;]*/,"SVTYPE="svtype,$8)
+        gsub(/SVLEN=[^;]*/,"SVLEN="svlen,$8)
+        if($8!~/SVTYPE/) $8=$8";SVTYPE="svtype
+        if($8!~/SVLEN/)  $8=$8";SVLEN="svlen
+        print}'
+}
 
-    # Merge: 1000bp max distance, >=2 callers,
-    # agree on type and strand, min SV size 50bp
-    SURVIVOR merge ${SAMPLE}.file_list \
-        1000 2 1 1 0 50 ${SAMPLE}.merged.vcf
+filter_Ns() {
+    awk 'BEGIN{OFS="\t"}
+    /^#/{print; next}
+    {   ref=$4; alt=$5; lr=length(ref); la=length(alt)
+        nr=gsub(/N/,"",ref); na=gsub(/N/,"",alt)
+        if((lr==0||nr*100/lr<=10)&&(la==0||na*100/la<=10)) print}'
+}
 
-    # Filter variants with >10% Ns in REF or ALT
-    awk '/^#/{print;next}
-        {r=$4; a=$5; lr=length(r); la=length(a);
-         nr=gsub(/N/,"",r); na=gsub(/N/,"",a);
-         if((lr==0||100*nr/lr<=10) && (la==0||100*na/la<=10))
-           print}' \
-        ${SAMPLE}.merged.vcf \
-        | bcftools sort \
-        | bgzip -c > ${SAMPLE}.merged.filtered.vcf.gz
-    tabix ${SAMPLE}.merged.filtered.vcf.gz
-done
+cd $DIR_BASE
+
+while read SAMPLE; do
+    echo ">>> $SAMPLE"
+
+    # Skip if any caller output is missing or already merged
+    missing=0
+    for f in $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.vcf.gz \
+              $DIR_BASE/PAV/$SAMPLE.pav.vcf.gz \
+              $DIR_BASE/Hall-lab/$SAMPLE.hall-lab.vcf.gz \
+              $DIR_BASE/PGGB/$SAMPLE.pggb.vcf.gz; do
+        [[ ! -f $f ]] && { echo "  skip: missing $f"; missing=1; }
+    done
+    [[ $missing -eq 1 ]] && continue
+    [[ -f $DIR_BASE/merged/$SAMPLE/$SAMPLE.merged.filtered.vcf.gz ]] && \
+        { echo "  skip: already done"; continue; }
+
+    mkdir -p $DIR_BASE/merged/$SAMPLE
+    cd $DIR_BASE/merged/$SAMPLE
+
+    # Decompress and fix SVTYPE/SVLEN for SURVIVOR compatibility
+    zcat $DIR_BASE/SVIM-asm/$SAMPLE.svim-asm.vcf.gz | fix_svtype > $SAMPLE.svim-asm.vcf
+    zcat $DIR_BASE/PAV/$SAMPLE.pav.vcf.gz            | fix_svtype > $SAMPLE.pav.vcf
+    zcat $DIR_BASE/Hall-lab/$SAMPLE.hall-lab.vcf.gz  | fix_svtype > $SAMPLE.hall-lab.vcf
+    zcat $DIR_BASE/PGGB/$SAMPLE.pggb.vcf.gz          | fix_svtype > $SAMPLE.pggb.vcf
+
+    printf '%s\n' $SAMPLE.hall-lab.vcf $SAMPLE.pggb.vcf \
+        $SAMPLE.svim-asm.vcf $SAMPLE.pav.vcf > $SAMPLE.file_list
+
+    # Merge: 1000bp max distance, >=2 callers, agree on type+strand, min 50bp
+    SURVIVOR merge $SAMPLE.file_list 1000 2 1 1 0 50 $SAMPLE.merged.tmp.vcf
+
+    bcftools sort -m 8G -T /tmp $SAMPLE.merged.tmp.vcf \
+        | bgzip -@ 4 -l 9 > $SAMPLE.merged.vcf.gz
+    tabix $SAMPLE.merged.vcf.gz
+    rm $SAMPLE.file_list $SAMPLE.merged.tmp.vcf
+
+    # Remove variants with >10% Ns in REF or ALT
+    zcat $SAMPLE.merged.vcf.gz | filter_Ns \
+        | bgzip -@ 4 -l 9 -c > $SAMPLE.merged.filtered.vcf.gz
+    tabix $SAMPLE.merged.filtered.vcf.gz
+
+    echo "<<< $SAMPLE done"
+    cd $DIR_BASE
+
+done < $DIR_BASE/samples.list
 ```
 
 *4. Cross-sample merging.* Merge the per-sample filtered call sets into a single cohort VCF. SURVIVOR requires uncompressed VCF input:
 
 ```bash
-# Decompress per-sample VCFs for SURVIVOR
-mkdir -p cross_sample
-for f in *.merged.filtered.vcf.gz; do
+cd $DIR_BASE
+mkdir -p survivor_merge
+cd survivor_merge
+
+for f in $DIR_BASE/merged/*/*.merged.filtered.vcf.gz; do
     SAMPLE=$(basename $f .merged.filtered.vcf.gz)
-    zcat $f > cross_sample/${SAMPLE}.vcf
+    zcat $f > $SAMPLE.vcf
 done
 
-# Create file list and merge across samples
-# Retain SVs found in at least 2 samples
-# (same type and strand, <=1000 bp breakpoint distance)
-ls cross_sample/*.vcf > sample_files
-SURVIVOR merge sample_files 1000 2 1 1 0 50 \
-    all_samples.merged.vcf
+ls *.vcf > sample_files
+SURVIVOR merge sample_files 1000 2 1 1 0 50 all_samples.merged.tmp.vcf
 
-bcftools sort all_samples.merged.vcf \
-    | bgzip -c > all_samples.merged.vcf.gz
-tabix all_samples.merged.vcf.gz
+bcftools sort -m 8G -T /tmp all_samples.merged.tmp.vcf \
+    | bgzip -@ 4 -l 9 > $DIR_BASE/all_samples.merged.vcf.gz
+tabix $DIR_BASE/all_samples.merged.vcf.gz
+
+cd $DIR_BASE
+rm -rf survivor_merge all_samples.merged.tmp.vcf
 ```
-
 Note that PGGB's graph-based method typically reports fewer SVs than assembly-based methods (_see_ *Note 10*).
 
 *5. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage (#link("https://rrwick.github.io/Bandage/")) or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ *Note 11*).
