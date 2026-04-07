@@ -59,26 +59,9 @@ meryl count k=21 reads/${STRAIN}_1.fq.gz \
 meryl histogram ${STRAIN}.meryl > ${STRAIN}.hist
 ```
 
-Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomescope/genomescope2.0/")) to visualize the results.
+Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomescope/genomescope2.0/")) to visualize the results. For strictly inbred strains, GenomeScope should report a near-zero heterozygosity estimate; substantial heterozygosity in a supposedly inbred strain warrants further investigation before including it in the pangenome (_see_ *Note 2*).
 
-*4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
-
-*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
-
-```bash
-for ASSEMBLY in assemblies/*.fa.gz; do
-    STRAIN=$(basename "$ASSEMBLY" .fa.gz)
-
-    samtools faidx ${ASSEMBLY}
-    awk '$2 > 100000 {print $1}' ${ASSEMBLY}.fai \
-        > assemblies/${STRAIN}.keep.list
-    samtools faidx -r assemblies/${STRAIN}.keep.list ${ASSEMBLY} \
-        | bgzip > assemblies/${STRAIN}.clean.fa.gz
-    samtools faidx assemblies/${STRAIN}.clean.fa.gz
-done
-```
-
-*6. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
+*4. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
 
 ```bash
 seqtk telo assembly.fasta > assembly.telo.bed 2> assembly.telo.counts
@@ -425,8 +408,8 @@ java -Xmx8g -jar snpEff.jar build -gtf22 -v mRatBN7.2 -nocheckcds
 wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_assembly_report.txt" -O /tmp/assembly_report.txt                                                                                                                                                                                                                                 
 python3 -c "f=open('/tmp/assembly_report.txt');out=open('/opt/snpEff/pansn_to_refseq.txt','w');[out.write('rn7#1#'+('chrM' if c[2]=='MT' else 'chr'+c[2])+'#0\t'+c[6]+'\n') for line in f if not line.startswith('#') and '\t' in line for c in [line.strip().split('\t')] if c[1]=='assembled-molecule' and c[6]!='na']"   
 awk '{print $2"\t"$1}' /opt/snpEff/pansn_to_refseq.txt > /opt/snpEff/refseq_to_pansn.txt                                                                                                                                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                                                                              
-# ── annotation ─────────────────────────────────────────────────────
+                                                                    
+# annotation
 INPUT_VCF=pangenome.vcf.gz                                                                                                                                                                                                                                                                                                  
 OUTPUT_VCF=pangenome_annotated.vcf.gz
 bcftools annotate --rename-chrs /opt/snpEff/pansn_to_refseq.txt -O z -o renamed.vcf.gz "${INPUT_VCF}"
