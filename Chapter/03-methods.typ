@@ -472,17 +472,6 @@ export NAME_VCF=$(basename $PATH_VCF .vcf.gz)
 export PATH_OG_FASTA=$DIR_BASE/assemblies/pan.fa.gz
 
 export PAV=/opt/pav
-
-# Save for reuse across sessions
-cat > $DIR_BASE/env.sh << EOF
-export DIR_BASE=$DIR_BASE
-export PATH_REF_FASTA=$PATH_REF_FASTA
-export PATH_OG=$PATH_OG
-export PATH_VCF=$PATH_VCF
-export NAME_VCF=$NAME_VCF
-export PATH_OG_FASTA=$PATH_OG_FASTA
-export PAV=$PAV
-EOF
 ```
 
 *1.Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph. 
