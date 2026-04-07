@@ -12,71 +12,46 @@
 
 + Phenotype data from GeneNetwork (#link("https://genenetwork.org")[genenetwork.org]), comprising quantitative molecular and physiological phenotypes collected over more than three decades across the HXB/BXH panel @mulligan2017.
 
-== PGGB pipeline components
+== Software environment
 
-The PGGB @garrison2024 pipeline (available at #link("https://github.com/pangenome/pggb")) consists of four core modules whose algorithmic details are described in the Introduction (Section 1.3). Install PGGB using one of the following methods:
+All software required for this protocol is bundled in a single Docker container defined by `Docker/Dockerfile`. Build and launch the container as described in Section 3.1; once inside, every tool listed below is on `$PATH` and you can follow the rest of the protocol without installing anything else.
 
-```bash
-# Docker (recommended — includes all dependencies)
-docker pull ghcr.io/pangenome/pggb:v0.7.0
+=== Pangenome construction tools
 
-# or Bioconda
-conda create -n pggb -c bioconda -c conda-forge pggb=0.7.0
-conda activate pggb
-```
++ *PGGB* (v0.7.0) @garrison2024: orchestrates the pangenome construction pipeline. #link("https://github.com/pangenome/pggb")
++ *WFMASH* (v0.14.1) @guarracino2021wfmash: all-to-all whole-genome alignment (PGGB stage 1). #link("https://github.com/waveygang/wfmash")
++ *SEQWISH* (commit 90dc76e1) @garrison2023: graph induction from pairwise alignments (PGGB stage 2). #link("https://github.com/ekg/seqwish")
++ *SMOOTHXG* (commit 0ea0470a) @garrison2024: graph normalization via partial order alignment @lee2002 (PGGB stage 3). #link("https://github.com/pangenome/smoothxg")
++ *GFAFFIX* (commit 460e0dd) @garrison2024: walk-preserving redundancy removal (PGGB stage 4). #link("https://github.com/marschall-lab/GFAffix")
++ *ODGI* (v0.8.6) @guarracino2022odgi: graph statistics, 1D/2D visualization, subgraph extraction, and manipulation. #link("https://github.com/pangenome/odgi")
++ *vg* (v1.71.0) @garrison2018: graph indexing (`autoindex`), short-read mapping (`giraffe`), variant calling (`deconstruct`, `call`), and surjection. #link("https://github.com/vgteam/vg")
++ *fastix* (commit 331c1159): PanSN-spec sequence renaming.
++ *samtools / bcftools / htslib* (v1.19) @danecek2021: FASTA/BAM/VCF processing, indexing, normalization, filtering, and concatenation.
++ *NCBI datasets CLI* (v18.23.0): reference genome download from NCBI.
 
-Singularity and Guix containers are also available. The individual module versions bundled with PGGB v0.7.0 and used in this protocol are:
+=== Downstream analysis tools
 
-+ *WFMASH* (v0.14.0): All-to-all whole-genome alignment. #link("https://github.com/waveygang/wfmash") @guarracino2021wfmash.
-+ *SEQWISH* (v0.7.11): Graph induction from pairwise alignments. #link("https://github.com/ekg/seqwish") @garrison2023.
-+ *SMOOTHXG* (v0.8.0): Graph normalization via partial order alignment @lee2002. #link("https://github.com/pangenome/smoothxg") @garrison2024.
-+ *GFAFFIX* (v0.1.5b): Walk-preserving redundancy removal. #link("https://github.com/marschall-lab/GFAffix") @garrison2024.
-+ *ODGI* (v0.9.0): Graph statistics, visualization, and manipulation. #link("https://github.com/pangenome/odgi") @guarracino2022odgi.
-+ *vg* (v1.59.0): Graph indexing, read mapping (Giraffe), variant calling (deconstruct, call). #link("https://github.com/vgteam/vg") @garrison2018.
++ *Compleasm* (v0.2.7) @huang2023: BUSCO-based @manni2021 assessment of assembly completeness using the Mammalia ortholog gene set.
++ *meryl* (v1.4) @rhie2020: k-mer counting and histogram generation for GenomeScope @vurture2017.
++ *seqtk* (v1.5-r133): telomere repeat detection.
++ *minimap2* (v2.26) @li2018: assembly-to-reference alignment used by SV callers.
++ *SVIM-asm* (v1.0.3) @heller2020: assembly-based SV calling in haploid mode.
++ *PAV* (v2.4.6) @ebert2021 with snakemake (v7.32.4): haplotype-resolved SV detection from local alignment coordinates.
++ *Hall-lab assembly_validation* @hall_lab (paftools.js + k8 v1.2): assembly-based SV calling via split-read alignment.
++ *vcfbub* (v0.1.0): nested allele removal from multi-allelic pangenome VCF records. #link("https://github.com/pangenome/vcfbub")
++ *vcfwave* (vcflib commit b118a9b) @garrison2022vcflib: complex variant decomposition using the BiWFA algorithm @marcosola2023. #link("https://github.com/vcflib/vcflib")
++ *SURVIVOR* (commit ed1ca518) @jeffares2017: multi-caller SV merging.
++ *RTG Tools* (v3.12.1) @cleary2015: precision/recall analysis of variant call sets via `vcfeval`.
++ *MUMmer4 / nucmer* (v3.1) @marcais2018: independent pairwise genome alignment and SNP calling for cross-validation.
++ *bedtools* (v2.30.0) @quinlan2010: genome arithmetic such as computing complement regions.
++ *SnpEff / SnpSift* (v5.0) @cingolani2012: functional annotation and effect prediction of variants on genes and proteins.
++ *GEMMA* (v0.98.5) @zhou2012: kinship-corrected linear mixed model association analysis for PheWAS.
 
-== Downstream analysis tools
+Two pieces of software used in the protocol are *not* included in the Docker image and must be installed separately:
 
-Install the downstream tools in a Bioconda environment. Note that the PGGB Bioconda package is Linux-only; macOS users should use Docker or similar.
++ *RepeatMasker* @tarailo2009: for masking low-complexity and repetitive regions. Install per the upstream instructions; required only if generating callable-region masks for validation (Section 3.7).
 
-```bash
-conda create -n pangenome-tools -c bioconda -c conda-forge \
-    samtools bcftools bedtools rtg-tools snpeff snpsift \
-    seqtk minimap2 survivor vcflib vcfbub \
-    svim-asm repeatmasker meryl mummer4
-conda activate pangenome-tools
-```
-
-vg and ODGI are already installed as part of the PGGB environment (Section 2.2); activate that environment when running `pggb`, `vg`, or `odgi` commands. Compleasm is installed in a separate environment as described in Section 3.1.
-
-PAV (@ebert2021) and the Hall-lab pipeline (@hall_lab) are not available via Bioconda and should be installed from their respective GitHub repositories. The `fastix` utility for sequence renaming is included in the PGGB Docker image; when using Bioconda, install it via `cargo install fastix` (requires a Rust toolchain) or use `sed` for header renaming (see Section 3.2.1).
-
-+ ODGI @guarracino2022odgi: for computing graph statistics (node count, edge count, base content, path coverage) and for generating visualizations. ODGI provides both one-dimensional (1D) visualizations that show how paths align into the graph structure and two-dimensional (2D) visualizations that reveal graph topology. It can also produce pairwise distance matrices suitable for phylogenetic analysis.
-
-+ vg deconstruct (from the vg toolkit) @garrison2018: for extracting variants from the pangenome graph relative to a specified reference path by enumerating bubbles (snarls) in the graph.
-
-+ SAMtools/BCFtools @danecek2021: for FASTA indexing, BAM sorting/indexing, VCF normalization, decomposition, filtering, and statistics.
-
-+ bedtools @quinlan2010: for genomic interval operations such as computing complement regions.
-
-+ RTG Tools @cleary2015: for precision/recall analysis of variant call sets using vcfeval.
-
-+ SnpEff (v5.1) @cingolani2012: for functional annotation and effect prediction of variants on genes and proteins.
-
-+ GEMMA @zhou2012 (available via Bioconda: `conda install -c bioconda gemma`) or GeneNetwork/BXDtools @arends_bxdtools (R package: `devtools::install_github("DannyArends/BXDtools")`): for kinship-corrected linear mixed model association analysis (PheWAS). R (≥ 4.0) is required for the PheWAS analysis in Section 3.7.
-
-+ Assembly-based SV callers: PAV @ebert2021, SVIM-asm @heller2020, and Hall-lab pipeline @hall_lab, used in combination with vg to produce a multi-method high-confidence SV call set.
-
-+ SURVIVOR @jeffares2017: for merging structural variant calls across multiple callers.
-
-+ vcfbub (#link("https://github.com/pangenome/vcfbub")): for removing nested alleles from multi-allelic VCF records.
-
-+ vcfwave (from vcflib @garrison2022vcflib; #link("https://github.com/vcflib/vcflib")): for decomposing complex variants using the BiWFA algorithm @marcosola2023.
-
-+ RepeatMasker @tarailo2009: for masking low-complexity and repetitive regions.
-
-+ Compleasm @huang2023: for BUSCO-based @manni2021 assessment of assembly completeness using the Mammalia ortholog gene set.
-
-+ Minimap2 @li2018: for assembly-to-reference alignment used by SV callers.
++ *BXDtools* @arends_bxdtools: an R package for kinship-corrected association analysis on RI panels, used as an alternative to GEMMA in the PheWAS step (Section 3.9). Install in R (≥ 4.0) outside the container with `devtools::install_github("DannyArends/BXDtools")`.
 
 == Hardware requirements
 

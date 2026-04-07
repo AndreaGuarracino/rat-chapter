@@ -21,9 +21,9 @@ typst compile Chapter/main.typ Chapter/chapter.pdf
 Chapter/
   main.typ                    # Master document (includes all sections)
   00-frontmatter.typ          # Title, authors, abstract, keywords
-  01-introduction.typ         # Introduction (sections 1.1–1.5)
-  02-materials.typ            # Materials (sections 2.1–2.4)
-  03-methods.typ              # Methods (sections 3.1–3.8)
+  01-introduction.typ         # Introduction (sections 1.1–1.6)
+  02-materials.typ            # Materials (sections 2.1–2.3)
+  03-methods.typ              # Methods (sections 3.1–3.9, Docker-first)
   04-notes.typ                # Notes (1–16)
   05-backmatter.typ           # Competing interests, acknowledgments
   references.yml              # Hayagriva YAML bibliography (NLM-abbreviated journals)
@@ -33,6 +33,9 @@ Chapter/
   Figures/
     Figure1.pdf               # Figure 1 (submitted separately per MiMB)
     alt-text.xlsx             # Alternative text for figures (EU Accessibility Act)
+Docker/
+  Dockerfile                  # Single image with every tool used in the protocol
+  README.md                   # Build/run instructions and tool version table
 ```
 
 ## Regenerate references from DOIs
@@ -74,7 +77,16 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 
 ## Docker
 
-```
-docker build -t rat_pangenome .
-docker run -it --rm -v ~/rat_pangenome:/rat_pangenome -w /rat_pangenome rat_pangenome /bin/bash
+A reproducible Docker image bundling every tool used in the protocol (PGGB, vg, ODGI, WFMASH, SVIM-asm, PAV, Hall-lab, SURVIVOR, GEMMA, Compleasm, ...) is defined in `Docker/Dockerfile`. See `Docker/README.md` for the full tool version table and build/run instructions. The Dockerfile is the canonical source of truth for tool versions referenced in `Chapter/02-materials.typ`.
+
+Quick start:
+
+```bash
+cd Docker
+docker build -t rat-chapter-tools .
+docker run -it --rm \
+    -v /path/to/your/assemblies:/workspace/assemblies \
+    -v /path/to/your/reads:/workspace/reads \
+    -v /path/to/your/output:/workspace/output \
+    rat-chapter-tools bash
 ```

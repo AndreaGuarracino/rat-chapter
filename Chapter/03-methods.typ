@@ -1,14 +1,13 @@
 = Methods
 
-All software listed in Section 2 should be installed before proceeding. Adjust the `-t` thread count in all commands below to match your available CPU cores. Commands that use `pggb`, `vg`, or `odgi` require the `pggb` conda environment; commands that use other downstream tools (e.g., `bcftools`, `snpEff`, `minimap2`, `vcfbub`, `vcfwave`) require the `pangenome-tools` environment. Activate the appropriate environment before running each set of commands (e.g., `conda activate pggb` or `conda activate pangenome-tools`). When using Docker, all tools are available in a single container.
-
-Throughout this protocol, assembly files are stored in an `assemblies/` directory. Create this directory and place each genome assembly as a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.1 and 3.4), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
+Run everything in this protocol from inside the rat-chapter Docker container (Section 3.1). Once you are in, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
 == Docker set-up
-All tools are available in the Docker container. Build and run the container:*
+
+All tools are bundled in a single Docker image built from `Docker/Dockerfile`. The build is a one-time step that produces a self-contained image with PGGB, VG, ODGI, the SV callers, and the rest of the toolchain. Build and launch the container, mounting your local data directories into `/workspace`:
 
 ```bash
-cd /path/to/rat-chapter/docker
+cd /path/to/rat-chapter/Docker
 docker build -t rat-chapter-tools .
 docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \
@@ -18,14 +17,24 @@ docker run -it --rm \
     bash
 ```
 
+The container starts an interactive shell in `/workspace` with all tools available on `$PATH`. Every command in this protocol from here on assumes you are working inside this container.
+
 == Assembly quality assessment
 
 Before constructing the pangenome, verify the quality and suitability of each de novo assembly. When pre-built assemblies are not available from public repositories, de novo genome assemblies can be generated from PacBio HiFi or Oxford Nanopore long reads using assemblers such as hifiasm @cheng2021 or Verkko @rautiainen2023, or from 10x Genomics Linked-Read data using Supernova @weisenfeld2017. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 reference genome @dejong2024.
 
-*1. Run Compleasm on each assembly and the reference genome:*
+*1. Download the Mammalia BUSCO gene set* (one-time, inside the container):
 
 ```bash
-for ASSEMBLY in assemblies/*.fasta.gz; do
+mkdir -p busco/databases
+compleasm download -L busco/databases mammalia_odb12
+```
+
+*2. Run Compleasm on each assembly and the reference genome:*
+
+```bash
+mkdir -p busco/results
+for ASSEMBLY in assemblies/*.fa.gz; do
     STRAIN=$(basename "$ASSEMBLY" .fa.gz)
     mkdir -p busco/results/${STRAIN}
     compleasm run \
@@ -41,7 +50,7 @@ done
 
 On an HPC cluster, each strain can be submitted as an independent job. The majority of BUSCO orthologs should be complete and single-copy, indicating high assembly quality.
 
-*2. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
+*3. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
 
 ```bash
 STRAIN=BXH2  # adjust per strain
@@ -52,13 +61,13 @@ meryl histogram ${STRAIN}.meryl > ${STRAIN}.hist
 
 Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomescope/genomescope2.0/")) to visualize the results.
 
-*3. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
+*4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
 
-*4. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
+*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
 
 ```bash
-for ASSEMBLY in assemblies/*.fasta.gz; do
-    STRAIN=$(basename "$ASSEMBLY" .fasta.gz)
+for ASSEMBLY in assemblies/*.fa.gz; do
+    STRAIN=$(basename "$ASSEMBLY" .fa.gz)
 
     samtools faidx ${ASSEMBLY}
     awk '$2 > 100000 {print $1}' ${ASSEMBLY}.fai \
@@ -69,7 +78,7 @@ for ASSEMBLY in assemblies/*.fasta.gz; do
 done
 ```
 
-*5. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
+*6. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
 
 ```bash
 seqtk telo assembly.fasta > assembly.telo.bed 2> assembly.telo.counts
@@ -126,7 +135,7 @@ pggb -i in.fa.gz \
     -o output_dir
 ```
 
-- `-V rn7`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.5).
+- `-V rn7`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.6).
 
 The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5-6* for parameter selection guidance):
 
@@ -140,7 +149,7 @@ The main parameters passed to WFMASH are the mapping identity minimum `-p` and t
 
 WFMASH outputs alignments in PAF format. Each sequence is aligned directly against every other sequence, so that no single genome is privileged. The BiWFA algorithm computes base-level alignments from the segment-level mappings.
 
-PGGB writes several output files to `output_dir`, including: the final pangenome graph in GFA format (`*.smooth.final.gfa`) and ODGI binary format (`*.smooth.final.og`); 1D visualization PNGs; and a VCF file with variants relative to the reference paths when `-V` is set. Use the `.smooth.final.og` file as input for graph quality assessment (Section 3.3) and subsequent steps.
+PGGB writes several output files to `output_dir`, including: the final pangenome graph in GFA format (`*.smooth.final.gfa`) and ODGI binary format (`*.smooth.final.og`); 1D visualization PNGs; and a VCF file with variants relative to the reference paths when `-V` is set. Use the `.smooth.final.og` file as input for graph quality assessment (Section 3.4) and subsequent steps.
 
 === Graph induction (SEQWISH)
 
@@ -249,7 +258,7 @@ bcftools concat -Oz -o genome_wide.vcf.gz \
 tabix genome_wide.vcf.gz
 ```
 
-For read mapping (Section 3.4), merge the per-chromosome graphs into a single genome-wide graph using `odgi squeeze` before building the Giraffe indexes, since whole-genome reads must be mapped against the complete graph.
+For read mapping (Section 3.5), merge the per-chromosome graphs into a single genome-wide graph using `odgi squeeze` before building the Giraffe indexes, since whole-genome reads must be mapped against the complete graph.
 
 == Graph quality assessment
 
@@ -297,7 +306,7 @@ The 1D visualization produces a horizontal image in which each row represents a 
 
 == Read mapping to the pangenome
 
-Variants called from the pangenome graph via vg deconstruct (Section 3.5) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. The alignments can also be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites.
+Variants called from the pangenome graph via vg deconstruct (Section 3.6) are derived from the assemblies, not directly from the raw sequencing reads. To call variants from the reads themselves, the original reads are mapped back to the pangenome graph using vg Giraffe @siren2021 and then genotyped with `vg call`. The alignments can also be surjected onto the reference path to produce a standard BAM file for read-level inspection of individual variant sites.
 
 *1. Chop long nodes and build graph indexes.* PGGB graphs can contain nodes longer than vg Giraffe expects. Use ODGI to chop nodes into smaller pieces (preserving topology and path order), then build the Giraffe indexes:
 
@@ -362,7 +371,7 @@ The `-p` flag restricts surjection to paths matching the given prefix (here, the
 
 === Cross-validation of assembly-based and read-based calls
 
-The read-based call set (Section 3.4, step 3) can be intersected with the assembly-based call set (Section 3.5) to identify variants supported by both lines of evidence and to flag potential false positives in either approach:
+The read-based call set (Section 3.5, step 3) can be intersected with the assembly-based call set (Section 3.6) to identify variants supported by both lines of evidence and to flag potential false positives in either approach:
 
 ```bash
 # Normalize both call sets
@@ -400,7 +409,7 @@ tabix normalized.vcf.gz
 
 The `ALT="*"` filter removes spanning deletion records (placeholder alleles indicating that a position is covered by a deletion defined at an upstream site). These records are not informative for per-site variant analysis and can cause issues with downstream tools.
 
-Optionally, perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.6). DeepVariant and GLnexus are available as Docker containers (`google/deepvariant` and `quay.io/mlin/glnexus`); see the DeepVariant documentation (#link("https://github.com/google/deepvariant")) for per-sample calling and GLnexus for joint genotyping. These tools are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
+Optionally, perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.7). DeepVariant and GLnexus are available as Docker containers (`google/deepvariant` and `quay.io/mlin/glnexus`); see the DeepVariant documentation (#link("https://github.com/google/deepvariant")) for per-sample calling and GLnexus for joint genotyping. These tools are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
 ```bash
 #Build snpEff mRatBN7.2 database
@@ -467,7 +476,7 @@ Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` t
 
 Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. For the full pipeline and detailed analysis, see @villani2025.
 
-*0. Environment setup
+*0. Environment setup.*
 
 ```bash
 export DIR_BASE=/workspace

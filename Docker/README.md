@@ -21,11 +21,11 @@ pangenome protocol described in the methods chapter.
 | Tool | Version | Purpose |
 |------|---------|---------|
 | fastix | 0.1.0 | PanSN-spec sequence renaming |
-| pggb | v0.6.0 | Pangenome graph construction (orchestrator) |
-| wfmash | v0.14.0 | All-to-all sequence alignment (pggb stage 1) |
-| seqwish | v0.7.11 | Graph induction from alignments (pggb stage 2) |
-| smoothxg | v0.8.2 | Graph normalization via POA (pggb stage 3) |
-| gfaffix | 0.2.1 | Redundancy removal (pggb stage 4) |
+| pggb | v0.7.0 | Pangenome graph construction (orchestrator) |
+| wfmash | v0.14.1 | All-to-all sequence alignment (pggb stage 1) |
+| seqwish | commit 90dc76e1 | Graph induction from alignments (pggb stage 2) |
+| smoothxg | commit 0ea0470a | Graph normalization via POA (pggb stage 3) |
+| gfaffix | commit 460e0dd | Redundancy removal (pggb stage 4) |
 | bcftools | 1.19 | VCF/BCF processing (concat per-chromosome VCFs) |
 
 ### §3.3 — Graph quality assessment
@@ -44,8 +44,8 @@ pangenome protocol described in the methods chapter.
 
 | Tool | Version | Purpose |
 |------|---------|---------|
-| SnpEff | 5.1 | Functional variant annotation |
-| SnpSift | 5.1 | VCF filtering and manipulation |
+| SnpEff | 5.0 | Functional variant annotation |
+| SnpSift | 5.0 | VCF filtering and manipulation |
 
 ### §3.6 — Validation strategies
 
@@ -88,7 +88,7 @@ pangenome protocol described in the methods chapter.
 Build from this directory:
 
 ```bash
-cd /path/to/rat-chapter/docker
+cd /path/to/rat-chapter/Docker
 docker build -t rat-chapter-tools .
 ```
 
