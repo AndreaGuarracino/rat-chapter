@@ -78,7 +78,6 @@ The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include t
 *1. Combine all haploid assemblies and the mRatBN7.2 reference* into a single multi-FASTA file:
 
 ```bash
-rm -f combined.fa
 for f in assemblies/*.fa.gz; do
     STRAIN=$(basename "$f" .fa.gz)
     echo "$STRAIN"
@@ -89,7 +88,6 @@ done
 *2. Rename sequences* according to the PanSN-spec (Pangenome Sequence Naming specification) convention: `sample#haplotype#contig`. For example: `SHR#1#chr12`. Because the assemblies are haploid, the haplotype field is set to 1 for all strains:
 
 ```bash
-rm -f in.fa
 for f in assemblies/*.fa.gz; do
     STRAIN=$(basename "$f" .fa.gz)
     echo "$STRAIN"
