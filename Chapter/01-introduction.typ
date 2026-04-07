@@ -41,4 +41,4 @@ Implicit pangenome graphs offer a complementary paradigm that addresses the scal
 
 == Scope of this protocol
 
-This protocol describes a complete computational workflow applied to the HXB/BXH panel as a companion to @villani2025: reference-free graph construction with PGGB, variant calling and validation, structural variant analysis, and phenome-wide association mapping linking pangenome-derived variants to the panel's extensive phenotype collection. The pre-built HXB/BXH pangenome graph and associated VCF files are available at #link("https://github.com/Flavia95/HXB_rat_pangenome_manuscript")[github.com/Flavia95/HXB\_rat\_pangenome\_manuscript]. The complete workflow described in this protocol is illustrated in Fig. 1.
+This protocol describes a complete computational workflow applied to the HXB/BXH panel as a companion to @villani2025: reference-free graph construction with PGGB, variant calling and validation, structural variant analysis, and phenome-wide association mapping linking pangenome-derived variants to the panel's extensive phenotype collection. The complete workflow described in this protocol is illustrated in Fig. 1.
