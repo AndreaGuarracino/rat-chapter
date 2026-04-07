@@ -1647,39 +1647,6 @@ quinlan2010:
     volume: 26
     issue: 6
 
-astashyn2024:
-  type: article
-  title: "Rapid and sensitive detection of genome contamination at scale with FCS-GX"
-  author:
-    - "Astashyn, Alexander"
-    - "Tvedte, Eric S."
-    - "Sweeney, Deacon"
-    - "Sapojnikov, Victor"
-    - "Bouk, Nathan"
-    - "Joukov, Victor"
-    - "Mozes, Eyal"
-    - "Strope, Pooja K."
-    - "Sylla, Pape M."
-    - "Wagner, Lukas"
-    - "Bidwell, Shelby L."
-    - "Brown, Larissa C."
-    - "Clark, Karen"
-    - "Davis, Emily W."
-    - "Smith-White, Brian"
-    - "Hlavina, Wratko"
-    - "Pruitt, Kim D."
-    - "Schneider, Valerie A."
-    - "Murphy, Terence D."
-  date: 2024
-  serial-number:
-    doi: "10.1186/s13059-024-03198-7"
-  page-range: "60"
-  parent:
-    type: periodical
-    title: "Genome Biol"
-    volume: 25
-    issue: 1
-
 deorowicz2023:
   type: article
   title: "AGC: compact representation of assembled genomes with fast queries and updates"
