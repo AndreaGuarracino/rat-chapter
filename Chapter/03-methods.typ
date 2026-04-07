@@ -455,7 +455,7 @@ Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` t
 
 == Structural variant analysis
 
-Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson201 For the full pipeline and detailed analysis, see @villani2025. 
+Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson2011 For the full pipeline and detailed analysis, see @villani2025. 
 
 *0. Environment setup.*
 
