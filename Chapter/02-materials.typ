@@ -38,7 +38,7 @@ All software required for this protocol is bundled in a single Docker container 
 === Variant calling and validation
 
 + *vg* (v1.71.0) @garrison2018: graph indexing (`autoindex`), short-read mapping (`giraffe`), variant calling (`deconstruct`, `call`), and surjection. #link("https://github.com/vgteam/vg")
-+ *SnpEff / SnpSift* (v5.0) @cingolani2012: functional annotation, effect prediction of variants on genes and proteins, and VCF filtering.
++ *SnpEff/SnpSift* (v5.0) @cingolani2012: functional annotation, effect prediction of variants on genes and proteins, and VCF filtering.
 + *RTG Tools* (v3.12.1) @cleary2015: precision/recall analysis of variant call sets via `vcfeval`.
 + *MUMmer4 / nucmer* (v3.1) @marcais2018: independent pairwise genome alignment and SNP calling for cross-validation.
 + *bedtools* (v2.30.0) @quinlan2010: genome arithmetic such as computing complement regions for callable loci. #link("https://github.com/arq5x/bedtools2")
@@ -62,8 +62,7 @@ Two pieces of software used in the protocol are *not* included in the Docker ima
 
 + *RepeatMasker* @tarailo2009: for masking low-complexity and repetitive regions. Install per the upstream instructions; required only if generating callable-region masks for validation (Section 3.7).
 
-+ *BXDtools* @arends_bxdtools: an R package for kinship-corrected association analysis on RI panels, used as an alternative to GEMMA in the PheWAS step (Section 3.9). Install in R (≥ 4.0) outside the container with `devtools::install_github("DannyArends/BXDtools")`. Adapted scripts are available at https://github.com/Flavia
-95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md
++ *BXDtools* @arends_bxdtools: an R package for kinship-corrected association analysis on RI panels, used as an alternative to GEMMA in the PheWAS step (Section 3.9). Install in R (≥ 4.0) outside the container with `devtools::install_github("DannyArends/BXDtools")`. Adapted scripts are available at https://github.com/Flavia95/HXB_rat_pangenome_manuscript/blob/main/workflows/3_PheWAS.md
 
 == Hardware requirements
 
