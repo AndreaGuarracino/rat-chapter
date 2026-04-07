@@ -4,31 +4,35 @@ All software listed in Section 2 should be installed before proceeding. Adjust t
 
 Throughout this protocol, assembly files are stored in an `assemblies/` directory. Create this directory and place each genome assembly as a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.1 and 3.4), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
+== Docker set-up
+All tools are available in the Docker container. Build and run the container:*
+
+```bash
+cd /path/to/rat-chapter/docker
+docker build -t rat-chapter-tools .
+docker run -it --rm \
+    -v /path/to/your/assemblies:/workspace/assemblies \
+    -v /path/to/your/reads:/workspace/reads \
+    -v /path/to/your/output:/workspace/output \
+    rat-chapter-tools \
+    bash
+```
+
 == Assembly quality assessment
 
 Before constructing the pangenome, verify the quality and suitability of each de novo assembly. When pre-built assemblies are not available from public repositories, de novo genome assemblies can be generated from PacBio HiFi or Oxford Nanopore long reads using assemblers such as hifiasm @cheng2021 or Verkko @rautiainen2023, or from 10x Genomics Linked-Read data using Supernova @weisenfeld2017. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 reference genome @dejong2024.
 
-*1. Install Compleasm and download the Mammalia BUSCO gene set:*
+*1. Run Compleasm on each assembly and the reference genome:*
 
 ```bash
-conda create -n compleasm -c conda-forge -c bioconda compleasm
-conda activate compleasm
-mkdir -p busco/databases
-compleasm download -L busco/databases mammalia
-```
-
-*2. Run Compleasm on each assembly and the reference genome:*
-
-```bash
-mkdir -p busco/results
-for ASSEMBLY in assemblies/*.fa.gz; do
+for ASSEMBLY in assemblies/*.fasta.gz; do
     STRAIN=$(basename "$ASSEMBLY" .fa.gz)
     mkdir -p busco/results/${STRAIN}
     compleasm run \
         -a ${ASSEMBLY} \
         -o busco/results/${STRAIN} \
         -t 48 \
-        -l mammalia \
+        -l mammalia_odb12 \
         -L busco/databases
     mv busco/results/${STRAIN}/summary.txt \
         busco/results/${STRAIN}/summary.mammalia.${STRAIN}.txt
@@ -37,7 +41,7 @@ done
 
 On an HPC cluster, each strain can be submitted as an independent job. The majority of BUSCO orthologs should be complete and single-copy, indicating high assembly quality.
 
-*3. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
+*2. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
 
 ```bash
 STRAIN=BXH2  # adjust per strain
@@ -48,18 +52,24 @@ meryl histogram ${STRAIN}.meryl > ${STRAIN}.hist
 
 Upload the histogram file to GenomeScope 2.0 (#link("https://qb.cshl.edu/genomescope/genomescope2.0/")) to visualize the results.
 
-*4. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
+*3. Evaluate homozygosity* of each strain by examining the fraction of heterozygous variant sites from standard reference-based variant calling (e.g., DeepVariant/GLnexus joint calling @yun2021). For inbred strains, close to 98% of variants should be homozygous. Flag any strain that deviates substantially (_see_ *Note 2*).
 
-*5. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
+*4. Decontamination.* Screen assemblies for mitochondrial, chloroplast, and other contamination. The NCBI Foreign Contamination Screen (FCS; #link("https://github.com/ncbi/fcs")) @astashyn2024 provides a standardized approach. For simplicity, remove contigs shorter than 100 kb, which in Linked-Read assemblies typically represent unresolved haplotype segments or assembly fragments too short for reliable pangenome construction:
 
 ```bash
-samtools faidx assembly.fasta
-awk '$2 > 100000 {print $1}' assembly.fasta.fai > keep.list
-samtools faidx -r keep.list assembly.fasta > assembly.clean.fasta
-samtools faidx assembly.clean.fasta
+for ASSEMBLY in assemblies/*.fasta.gz; do
+    STRAIN=$(basename "$ASSEMBLY" .fasta.gz)
+
+    samtools faidx ${ASSEMBLY}
+    awk '$2 > 100000 {print $1}' ${ASSEMBLY}.fai \
+        > assemblies/${STRAIN}.keep.list
+    samtools faidx -r assemblies/${STRAIN}.keep.list ${ASSEMBLY} \
+        | bgzip > assemblies/${STRAIN}.clean.fa.gz
+    samtools faidx assemblies/${STRAIN}.clean.fa.gz
+done
 ```
 
-*6. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
+*5. Identify telomeric repeats* to assess assembly completeness at chromosome ends:
 
 ```bash
 seqtk telo assembly.fasta > assembly.telo.bed 2> assembly.telo.counts
@@ -111,12 +121,12 @@ pggb -i in.fa.gz \
     -p 98 -s 2000 -n 32 \
     -F 0.001 -k 79 -P asm5 -O 0.03 \
     -G 4001,4507 \
-    -V rn7:# \
+    -V rn7 \
     -t 48 -T 48 \
     -o output_dir
 ```
 
-- `-V rn7:#`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.5).
+- `-V rn7`: reference path prefix for variant calling. When this flag is set, PGGB automatically invokes vg deconstruct after graph construction, producing a VCF file with variants called relative to all paths starting with `rn7` (Section 3.5).
 
 The main parameters passed to WFMASH are the mapping identity minimum `-p` and the segment length `-s`. Key parameters (_see_ *Notes 5-6* for parameter selection guidance):
 
@@ -276,7 +286,7 @@ odgi draw -i graph.og -c graph.og.lay -p graph.2D.png
 
 ```bash
 # By node ID (with context of 1 step)
-odgi extract -i graph.og -n 23 -c 1 -o subgraph.og
+odgi extract -i graph.og -n 2 -c 1 -o subgraph.og
 
 # By reference coordinates (e.g., a 1 Mb window on chr12)
 odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
@@ -341,7 +351,7 @@ The `-g` flag specifies GAM-format input (use `-a` instead for GAF format). The 
 
 ```bash
 vg surject -x graph_index.giraffe.gbz \
-    -p "rn7#1#" \
+    -p "rn7#1#0" \
     -t 48 -b -N sample_name -R "sample_name" \
     aligned.gam > aligned.bam
 samtools sort -@ 48 aligned.bam -o aligned.sorted.bam
@@ -393,10 +403,27 @@ The `ALT="*"` filter removes spanning deletion records (placeholder alleles indi
 Optionally, perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.6). DeepVariant and GLnexus are available as Docker containers (`google/deepvariant` and `quay.io/mlin/glnexus`); see the DeepVariant documentation (#link("https://github.com/google/deepvariant")) for per-sample calling and GLnexus for joint genotyping. These tools are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
 ```bash
-# Verify the exact database name for mRatBN7.2:
-snpEff databases | grep -i "rattus"
-# Then run annotation (adjust database name as needed):
-snpEff mRatBN7.2 input.vcf > annotated.vcf
+#Build snpEff mRatBN7.2 database
+mkdir -p /opt/snpEff/data/mRatBN7.2                                                                                                                                                                                                                                                                                         
+cd /opt/snpEff/data/mRatBN7.2                                                                                                                                                                                                                                                                                               
+BASE="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/227/675/GCF_015227675.2_mRatBN7.2"                                                                                                                                                                                                                                   
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.fna.gz" -O sequences.fa.gz && gunzip sequences.fa.gz                                                                                                                                                                                                                     
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.gtf.gz" -O genes.gtf.gz && gunzip genes.gtf.gz                                                                                                                                                                                                                           
+chmod 644 /opt/snpEff/snpEff.config                                                                                                                                                                                                                                                                                         
+printf '\nmRatBN7.2.genome : Rat\nmRatBN7.2.reference : data/mRatBN7.2\nmRatBN7.2.NC_001665.2.codonTable : Invertebrate_Mitochondrial\n' >> /opt/snpEff/snpEff.config                                                                                                                                                       
+cd /opt/snpEff                                                                                                                                                                                                                                                                                                              
+java -Xmx8g -jar snpEff.jar build -gtf22 -v mRatBN7.2 -nocheckcds                                                                                                                                                                                                                                                           
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_assembly_report.txt" -O /tmp/assembly_report.txt                                                                                                                                                                                                                                 
+python3 -c "f=open('/tmp/assembly_report.txt');out=open('/opt/snpEff/pansn_to_refseq.txt','w');[out.write('rn7#1#'+('chrM' if c[2]=='MT' else 'chr'+c[2])+'#0\t'+c[6]+'\n') for line in f if not line.startswith('#') and '\t' in line for c in [line.strip().split('\t')] if c[1]=='assembled-molecule' and c[6]!='na']"   
+awk '{print $2"\t"$1}' /opt/snpEff/pansn_to_refseq.txt > /opt/snpEff/refseq_to_pansn.txt                                                                                                                                                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                                                                              
+# ── annotation ─────────────────────────────────────────────────────
+INPUT_VCF=pangenome.vcf.gz                                                                                                                                                                                                                                                                                                  
+OUTPUT_VCF=pangenome_annotated.vcf.gz
+bcftools annotate --rename-chrs /opt/snpEff/pansn_to_refseq.txt -O z -o renamed.vcf.gz "${INPUT_VCF}"
+java -Xmx8g -jar /opt/snpEff/snpEff.jar ann mRatBN7.2 renamed.vcf.gz | bcftools annotate --rename-chrs /opt/snpEff/refseq_to_pansn.txt -O z -o "${OUTPUT_VCF}"                                                                                                                                                              
+tabix -p vcf "${OUTPUT_VCF}"                                                                                                                                                                                                                                                                                               
+rm renamed.vcf.gz  
 ```
 
 == Validation strategies
@@ -751,7 +778,7 @@ while read SAMPLE; do
 done < $DIR_BASE/samples.list
 ```
 
-*4. Cross-sample merging.* Merge the per-sample filtered call sets into a single cohort VCF. SURVIVOR requires uncompressed VCF input:
+*5. Cross-sample merging.* Merge the per-sample filtered call sets into a single cohort VCF. SURVIVOR requires uncompressed VCF input:
 
 ```bash
 cd $DIR_BASE
@@ -775,9 +802,9 @@ rm -rf survivor_merge all_samples.merged.tmp.vcf
 ```
 Note that PGGB's graph-based method typically reports fewer SVs than assembly-based methods (_see_ *Note 10*).
 
-*5. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage (#link("https://rrwick.github.io/Bandage/")) or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ *Note 11*).
+*6. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage (#link("https://rrwick.github.io/Bandage/")) or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ *Note 11*).
 
-*6.* Annotate SV content with RepeatMasker @tarailo2009 to identify retrotransposon content (LINEs, SINEs) within structural variants.
+*7.* Annotate SV content with RepeatMasker @tarailo2009 to identify retrotransposon content (LINEs, SINEs) within structural variants.
 
 == Phenome-Wide Association Study (PheWAS)
 
