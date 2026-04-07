@@ -451,11 +451,11 @@ nucmer reference.fa sample.fa --prefix sample
 show-snps -THC sample.delta > sample.var.txt
 ```
 
-Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` to retain only the best one-to-one alignment for each region, which reduces ambiguity in repetitive areas. The NUCMER-derived SNPs are converted to VCF format using the `nucmer2vcf.R` script provided in the PGGB repository (`scripts/nucmer2vcf.R`) and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. The output directory contains `summary.txt` with precision, recall, and F1-score. F1-scores generally exceeding 90% have been obtained across diverse genomic contexts @garrison2024.
+Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` to retain only the best one-to-one alignment for each region, which reduces ambiguity in repetitive areas. The NUCMER-derived SNPs are converted to VCF format using the `nucmer2vcf.R` script provided in the PGGB repository (`scripts/nucmer2vcf.R`) and compared against the pangenome-derived call set using RTG Tools vcfeval as described above. The output directory contains `summary.txt` with precision, recall, and F1-score. F1-scores generally exceeding 90% have been obtained across diverse genomic contexts @garrison2024. For variants requiring wet-lab confirmation, Sanger sequencing offers a straightforward orthogonal approach: primers are designed with NCBI PrimerBLAST, the target region is amplified from genomic DNA using a high-fidelity polymerase, and sequencing reads are mapped against the target sequence for manual allele confirmation.
 
 == Structural variant analysis
 
-Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. For the full pipeline and detailed analysis, see @villani2025.
+Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson201 For the full pipeline and detailed analysis, see @villani2025. 
 
 *0. Environment setup.*
 
