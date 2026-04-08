@@ -136,7 +136,7 @@ PGGB writes several output files to `output_dir`, including: the final pangenome
 
 PGGB automatically invokes SEQWISH after alignment. SEQWISH reads the input genomes and the PAF alignments produced by WFMASH and induces a variation graph in GFA format. Graph induction often works better when very short exact matches are filtered out of the input alignments. These short matches typically occur in regions of low alignment quality, which are characteristic of areas with large indels and structural variations in the WFMASH alignments. A key parameter is:
 
-- `-k 79`: minimum exact match length for graph induction. For the HXB/BXH pangenome, `-k 79` was used, appropriate for the low divergence between these closely related inbred strains (the default `-k 23` is suitable for divergences up to ∼5%). Setting `-k N` means that the graph can tolerate a local pairwise difference rate of no more than 1/N: indels represented by complex series of edit operations are opened into bubbles, and alignment regions with very low identity are ignored.
+- `-k 79`: minimum exact match length for graph induction. For the HXB/BXH pangenome, this value was used, appropriate for the low divergence between these closely related inbred strains (the default `-k 23` is suitable for divergences up to ∼5%). Setting `-k N` means that the graph can tolerate a local pairwise difference rate of no more than 1/N: indels represented by complex series of edit operations are opened into bubbles, and alignment regions with very low identity are ignored.
 
 === Graph normalization (SMOOTHXG)
 
@@ -524,7 +524,7 @@ cd $DIR_BASE/SVIM-asm
 while read SAMPLE; do
     echo ">>> $SAMPLE"
 
-    # Align: -I 1g batches index to avoid OOM; --split-prefix ensures @SQ headers
+    # -I 1g batches index to avoid OOM; --split-prefix ensures @SQ headers
     minimap2 -a -x asm5 --eqx -r2k -I 1g \
         --split-prefix /tmp/mm2_$SAMPLE \
         -t 48 \
