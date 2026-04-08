@@ -20,7 +20,7 @@ All software required for this protocol is bundled in a single Docker container 
 
 + *Compleasm* (v0.2.7) @huang2023: BUSCO-based @manni2021 assessment of assembly completeness using the Mammalia ortholog gene set.
 + *meryl* (v1.4) @rhie2020: k-mer counting and histogram generation for GenomeScope @vurture2017.
-+ *samtools / htslib* (v1.19) @danecek2021: contig filtering, indexing, BAM/CRAM processing, compression, and indexing.
++ *samtools/htslib* (v1.19) @danecek2021: contig filtering, indexing, BAM/CRAM processing, compression, and indexing.
 + *seqtk* (v1.5-r133): telomere repeat detection.
 + *NCBI datasets CLI* (v18.23.0): reference genome download from NCBI.
 
@@ -40,7 +40,7 @@ All software required for this protocol is bundled in a single Docker container 
 + *vg* (v1.71.0) @garrison2018: graph indexing (`autoindex`), short-read mapping (`giraffe`), variant calling (`deconstruct`, `call`), and surjection. #link("https://github.com/vgteam/vg")
 + *SnpEff/SnpSift* (v5.0) @cingolani2012: functional annotation, effect prediction of variants on genes and proteins, and VCF filtering.
 + *RTG Tools* (v3.12.1) @cleary2015: precision/recall analysis of variant call sets via `vcfeval`.
-+ *MUMmer4 / nucmer* (v3.1) @marcais2018: independent pairwise genome alignment and SNP calling for cross-validation.
++ *MUMmer4/nucmer* (v3.1) @marcais2018: independent pairwise genome alignment and SNP calling for cross-validation.
 + *bedtools* (v2.30.0) @quinlan2010: genome arithmetic such as computing complement regions for callable loci. #link("https://github.com/arq5x/bedtools2")
 
 === Structural variant analysis
