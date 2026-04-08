@@ -40,7 +40,7 @@ All software required for this protocol is bundled in a single Docker container 
 + *vg* (v1.71.0) @garrison2018: graph indexing (`autoindex`), short-read mapping (`giraffe`), variant calling (`deconstruct`, `call`), and surjection. #link("https://github.com/vgteam/vg")
 + *SnpEff/SnpSift* (v5.0) @cingolani2012: functional annotation, effect prediction of variants on genes and proteins, and VCF filtering.
 + *RTG Tools* (v3.12.1) @cleary2015: precision/recall analysis of variant call sets via `vcfeval`.
-+ *MUMmer4/nucmer* (v3.1) @marcais2018: independent pairwise genome alignment and SNP calling for cross-validation.
++ *MUMmer3/nucmer* (v3.23) @kurtz2004: independent pairwise genome alignment and SNP calling for cross-validation.
 + *bedtools* (v2.30.0) @quinlan2010: genome arithmetic such as computing complement regions for callable loci. #link("https://github.com/arq5x/bedtools2")
 
 === Structural variant analysis

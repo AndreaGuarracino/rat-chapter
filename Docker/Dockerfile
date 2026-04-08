@@ -66,8 +66,10 @@ RUN wget -q https://github.com/samtools/bcftools/releases/download/1.19/bcftools
 # ---------------------------------------------------------
 # seqtk
 # ---------------------------------------------------------
-RUN git clone --depth 1 https://github.com/lh3/seqtk /tmp/seqtk && \
-    cd /tmp/seqtk && make && \
+RUN git clone https://github.com/lh3/seqtk /tmp/seqtk && \
+    cd /tmp/seqtk && \
+    git checkout v1.5 && \
+    make && \
     cp seqtk /usr/local/bin/ && \
     rm -rf /tmp/seqtk
 
@@ -92,8 +94,10 @@ RUN git clone https://github.com/fritzsedlazeck/SURVIVOR /tmp/survivor && \
 # ---------------------------------------------------------
 # meryl
 # ---------------------------------------------------------
-RUN git clone --depth 1 https://github.com/marbl/meryl /tmp/meryl && \
-    cd /tmp/meryl/src && make -j$(nproc) && \
+RUN git clone https://github.com/marbl/meryl /tmp/meryl && \
+    cd /tmp/meryl && \
+    git checkout v1.4 && \
+    cd src && make -j$(nproc) && \
     cp /tmp/meryl/build/bin/meryl /usr/local/bin/ && \
     rm -rf /tmp/meryl
 
@@ -177,7 +181,9 @@ RUN git clone --recursive https://github.com/vcflib/vcflib.git /tmp/vcflib && \
 # minimap2
 # ---------------------------------------------------------
 RUN git clone https://github.com/lh3/minimap2 /usr/local/minimap2 && \
-    cd /usr/local/minimap2 && make && \
+    cd /usr/local/minimap2 && \
+    git checkout v2.26 && \
+    make && \
     cp minimap2 /usr/local/bin/minimap2 && \
     ln -sf /usr/local/minimap2/misc/paftools.js /usr/local/bin/paftools.js
 
@@ -283,7 +289,7 @@ RUN pip3 install --no-cache-dir \
         pysam \
         scipy \
         "pulp==2.7.0" \
-        snakemake \
+        "snakemake==7.32.4" \
         "truvari==4.0.0"
 
 # ---------------------------------------------------------
@@ -379,9 +385,11 @@ RUN wget -q https://github.com/genetics-statistics/GEMMA/releases/download/v0.98
 # ---------------------------------------------------------
 # ncbi-datasets-cli
 # ---------------------------------------------------------
-RUN wget -q https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/LATEST/linux-amd64/datasets \
-        -O /usr/local/bin/datasets && \
-    chmod +x /usr/local/bin/datasets
+RUN wget -q https://github.com/ncbi/datasets/releases/download/v18.23.0/linux-amd64.cli.package.zip \
+        -O /tmp/datasets.zip && \
+    unzip -p /tmp/datasets.zip datasets > /usr/local/bin/datasets && \
+    chmod +x /usr/local/bin/datasets && \
+    rm /tmp/datasets.zip
 
 # ---------------------------------------------------------
 # RTG Tools 3.12.1

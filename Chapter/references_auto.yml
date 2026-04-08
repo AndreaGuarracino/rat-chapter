@@ -1346,7 +1346,8 @@ kent2002:
     - "Roskin, Krishna M."
     - "Pringle, Tom H."
     - "Zahler, Alan M."
-    - "Haussler, David"
+    - "Haussler,"
+    - "David"
   date: 2002
   serial-number:
     doi: "10.1101/gr.229102"
@@ -1730,73 +1731,3 @@ kurtz2004:
     volume: 5
     issue: 2
 
-pravenec1989:
-  type: article
-  title: "An analysis of spontaneous hypertension in spontaneously hypertensive rats by means of new recombinant inbred strains"
-  author:
-    - "Pravenec, Michal"
-    - "Klir, Petr"
-    - "Kren, Vladimir"
-  date: 1989
-  serial-number:
-    doi: "10.1097/00004872-198903000-00008"
-  page-range: "217-221"
-  parent:
-    type: periodical
-    title: "J Hypertens"
-    volume: 7
-    issue: 3
-
-guarracino2021wfmash:
-  type: web
-  title: "wfmash: whole-chromosome pairwise alignment using the hierarchical wavefront algorithm"
-  author:
-    - "Guarracino, Andrea"
-    - "Mwaniki, Njagi"
-    - "Marco-Sola, Santiago"
-  date: 2021
-  url:
-    value: "https://github.com/waveygang/wfmash"
-    date: 2026-03-16
-
-arends_bxdtools:
-  type: web
-  title: "BXDtools: genetic tools for working with BXD and other model organism populations"
-  author:
-    - "Arends, Danny"
-  date: 2023
-  url:
-    value: "https://github.com/DannyArends/BXDtools"
-    date: 2026-03-16
-
-hall_lab:
-  type: web
-  title: "Assembly validation pipeline"
-  author:
-    - "Hall Lab"
-  date: 2020
-  url:
-    value: "https://github.com/hall-lab/assembly_validation"
-    date: 2026-03-16
-
-villani2025thesis:
-  type: thesis
-  title: "Deciphering Genotype-Phenotype Connections: Leveraging Pangenomes and Comprehensive Genome Variation"
-  author:
-    - "Villani, Flavia"
-  date: 2025
-  genre: "PhD dissertation"
-  publisher: "University of Tennessee Health Science Center"
-  organization: "University of Tennessee Health Science Center"
-
-guarracino2025impg:
-  type: web
-  title: "Implicit pangenome graphs"
-  author:
-    - "Guarracino, Andrea"
-    - "Kille, Bryce"
-    - "Garrison, Erik"
-  date: 2025
-  url:
-    value: "https://github.com/pangenome/impg"
-    date: 2026-03-16
