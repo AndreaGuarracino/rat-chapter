@@ -393,27 +393,44 @@ The `ALT="*"` filter removes spanning deletion records (placeholder alleles indi
 Optionally, perform reference-based variant calling using DeepVariant/GLnexus @yun2021 on the same sequencing data as a benchmark call set for validation (Section 3.7). DeepVariant and GLnexus are available as Docker containers (`google/deepvariant` and `quay.io/mlin/glnexus`); see the DeepVariant documentation (#link("https://github.com/google/deepvariant")) for per-sample calling and GLnexus for joint genotyping. These tools are used here only for benchmarking; they are not required for the pangenome workflow itself. Annotate variants using SnpEff @cingolani2012 for functional consequence prediction:
 
 ```bash
-#Build snpEff mRatBN7.2 database
-mkdir -p /opt/snpEff/data/mRatBN7.2                                                                                                                                                                                                                                                                                         
-cd /opt/snpEff/data/mRatBN7.2                                                                                                                                                                                                                                                                                               
-BASE="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/227/675/GCF_015227675.2_mRatBN7.2"                                                                                                                                                                                                                                   
-wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.fna.gz" -O sequences.fa.gz && gunzip sequences.fa.gz                                                                                                                                                                                                                     
-wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.gtf.gz" -O genes.gtf.gz && gunzip genes.gtf.gz                                                                                                                                                                                                                           
-chmod 644 /opt/snpEff/snpEff.config                                                                                                                                                                                                                                                                                         
-printf '\nmRatBN7.2.genome : Rat\nmRatBN7.2.reference : data/mRatBN7.2\nmRatBN7.2.NC_001665.2.codonTable : Invertebrate_Mitochondrial\n' >> /opt/snpEff/snpEff.config                                                                                                                                                       
-cd /opt/snpEff                                                                                                                                                                                                                                                                                                              
-java -Xmx8g -jar snpEff.jar build -gtf22 -v mRatBN7.2 -nocheckcds                                                                                                                                                                                                                                                           
-wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_assembly_report.txt" -O /tmp/assembly_report.txt                                                                                                                                                                                                                                 
-python3 -c "f=open('/tmp/assembly_report.txt');out=open('/opt/snpEff/pansn_to_refseq.txt','w');[out.write('rn7#1#'+('chrM' if c[2]=='MT' else 'chr'+c[2])+'#0\t'+c[6]+'\n') for line in f if not line.startswith('#') and '\t' in line for c in [line.strip().split('\t')] if c[1]=='assembled-molecule' and c[6]!='na']"   
-awk '{print $2"\t"$1}' /opt/snpEff/pansn_to_refseq.txt > /opt/snpEff/refseq_to_pansn.txt                                                                                                                                                                                                                                                                                                                                                                               
-                                                                    
-# annotation
-INPUT_VCF=pangenome.vcf.gz                                                                                                                                                                                                                                                                                                  
-OUTPUT_VCF=pangenome_annotated.vcf.gz
-bcftools annotate --rename-chrs /opt/snpEff/pansn_to_refseq.txt -O z -o renamed.vcf.gz "${INPUT_VCF}"
-java -Xmx8g -jar /opt/snpEff/snpEff.jar ann mRatBN7.2 renamed.vcf.gz | bcftools annotate --rename-chrs /opt/snpEff/refseq_to_pansn.txt -O z -o "${OUTPUT_VCF}"                                                                                                                                                              
-tabix -p vcf "${OUTPUT_VCF}"                                                                                                                                                                                                                                                                                               
-rm renamed.vcf.gz  
+# Download mRatBN7.2 reference FASTA and GTF for snpEff
+mkdir -p /opt/snpEff/data/mRatBN7.2
+cd /opt/snpEff/data/mRatBN7.2
+BASE="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/227/675/GCF_015227675.2_mRatBN7.2"
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.fna.gz" -O sequences.fa.gz
+gunzip sequences.fa.gz
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_genomic.gtf.gz" -O genes.gtf.gz
+gunzip genes.gtf.gz
+
+# Register the mRatBN7.2 genome in the snpEff config
+chmod 644 /opt/snpEff/snpEff.config
+printf '\nmRatBN7.2.genome : Rat\nmRatBN7.2.reference : data/mRatBN7.2\nmRatBN7.2.NC_001665.2.codonTable : Invertebrate_Mitochondrial\n' \
+    >> /opt/snpEff/snpEff.config
+
+# Build the snpEff database from the GTF annotation
+cd /opt/snpEff
+java -Xmx8g -jar snpEff.jar build -gtf22 -v mRatBN7.2 -nocheckcds
+
+# Build PanSN <-> RefSeq chromosome name maps
+wget -q "${BASE}/GCF_015227675.2_mRatBN7.2_assembly_report.txt" \
+    -O /tmp/assembly_report.txt
+awk -F'\t' '!/^#/ && $2=="assembled-molecule" && $7!="na" {
+    chr = ($3=="MT") ? "chrM" : "chr"$3
+    print "rn7#1#"chr"#0\t"$7
+}' /tmp/assembly_report.txt > /opt/snpEff/pansn_to_refseq.txt
+awk '{print $2"\t"$1}' /opt/snpEff/pansn_to_refseq.txt \
+    > /opt/snpEff/refseq_to_pansn.txt
+
+# Annotation
+bcftools annotate \
+    --rename-chrs /opt/snpEff/pansn_to_refseq.txt \
+    -Oz -o renamed.vcf.gz pangenome.vcf.gz
+java -Xmx8g -jar /opt/snpEff/snpEff.jar ann mRatBN7.2 renamed.vcf.gz | \
+    bcftools annotate \
+        --rename-chrs /opt/snpEff/refseq_to_pansn.txt \
+        -Oz -o pangenome_annotated.vcf.gz
+tabix -p vcf pangenome_annotated.vcf.gz
+rm renamed.vcf.gz
 ```
 
 == Validation strategies
@@ -455,7 +472,7 @@ Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` t
 
 == Structural variant analysis
 
-Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson2011 For the full pipeline and detailed analysis, see @villani2025. 
+Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson2011. For the full pipeline and detailed analysis, see @villani2025. 
 
 *0. Environment setup.*
 
