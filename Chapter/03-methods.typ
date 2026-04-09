@@ -1,6 +1,6 @@
 = Methods
 
-Run everything in this protocol from inside the rat-chapter fixme(this is a rat book, maybe call it something else more relevant, like pangenome?) Docker container (Section 3.1). Once the container is lauched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
+Run everything in this protocol from inside the `rat-pangenome-tools` Docker container (Section 3.1). Once the container is launched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
 == Docker set-up
 
@@ -8,12 +8,12 @@ All tools are bundled in a single Docker image built from `Docker/Dockerfile`. T
 
 ```bash
 cd /path/to/rat-chapter/Docker
-docker build -t rat-chapter-tools . ## maybe change the name here to pangenome as well. 
+docker build -t rat-pangenome-tools .
 docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \
     -v /path/to/your/reads:/workspace/reads \
     -v /path/to/your/output:/workspace/output \
-    rat-chapter-tools \
+    rat-pangenome-tools \
     bash
 ```
 

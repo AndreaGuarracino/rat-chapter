@@ -89,7 +89,7 @@ Build from this directory:
 
 ```bash
 cd /path/to/rat-chapter/Docker
-docker build -t rat-chapter-tools .
+docker build -t rat-pangenome-tools .
 ```
 
 ### 2. Run interactively with your data mounted
@@ -99,7 +99,7 @@ docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \
     -v /path/to/your/reads:/workspace/reads \
     -v /path/to/your/output:/workspace/output \
-    rat-chapter-tools \
+    rat-pangenome-tools \
     bash
 ```
 

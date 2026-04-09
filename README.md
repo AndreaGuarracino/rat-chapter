@@ -83,10 +83,10 @@ Quick start:
 
 ```bash
 cd Docker
-docker build -t rat-chapter-tools .
+docker build -t rat-pangenome-tools .
 docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \
     -v /path/to/your/reads:/workspace/reads \
     -v /path/to/your/output:/workspace/output \
-    rat-chapter-tools bash
+    rat-pangenome-tools bash
 ```
