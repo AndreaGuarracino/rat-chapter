@@ -14,6 +14,19 @@ For: Springer Methods in Molecular Biology (MiMB).
 cd rat-chapter
 typst compile Chapter/main.typ Chapter/chapter.pdf
 ```
+## Build the Word file (for Springer submission)                                                                                                                                 
+
+Typst does not export directly to Word. Use the three-step pipeline below, which requires LibreOffice (≥ 7) in addition to Typst:                                                
+```bash                                                                                                                                                                          
+ cd Chapter                                                                                                                                                                                                       
+# 1. Export to HTML                                                                                                         
+typst compile --features html main.typ main.html                                                                                                                                 
+# 2. Convert HTML → ODT                                                                                                                                                          
+libreoffice --headless --convert-to odt main.html                                                                                                                                
+# 3. Convert ODT → DOCX                                                                                                                                                          
+libreoffice --headless --convert-to docx --infilter="writer8" main.odt
+#4. Before submitting, open it and check.                                                                                                         
+```
 
 ## File structure
 
