@@ -1789,6 +1789,98 @@ villani2025thesis:
   publisher: "University of Tennessee Health Science Center"
   organization: "University of Tennessee Health Science Center"
 
+shumate2021:
+  type: article
+  title: "Liftoff: accurate mapping of gene annotations"
+  author:
+    - "Shumate, Alaina"
+    - "Salzberg, Steven L"
+  date: 2021
+  serial-number:
+    doi: "10.1093/bioinformatics/btaa1016"
+  page-range: "1639-1643"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 37
+    issue: 12
+
+parmigiani2024panacus:
+  type: article
+  title: "Panacus: fast and exact pangenome growth and core size estimation"
+  author:
+    - "Parmigiani, Luca"
+    - "Garrison, Erik"
+    - "Stoye, Jens"
+    - "Marschall, Tobias"
+    - "Doerr, Daniel"
+  date: 2024
+  serial-number:
+    doi: "10.1093/bioinformatics/btae720"
+  page-range: "btae720"
+  parent:
+    type: periodical
+    title: "Bioinformatics"
+    volume: 40
+    issue: 12
+
+li2024grcr8:
+  type: article
+  title: "Construction and evaluation of a new rat reference genome assembly, GRCr8, from long reads and long-range scaffolding"
+  author:
+    - "Li, Kai"
+    - "Smith, Melissa L"
+    - "Blazier, J Chris"
+    - "Kochan, Kelli J"
+    - "Wood, Jonathan M D"
+    - "Howe, Kerstin"
+    - "Kwitek, Anne E"
+    - "Dwinell, Melinda R"
+    - "Chen, Hao"
+    - "Ciosek, Julia L"
+    - "Masterson, Patrick"
+    - "Murphy, Terence D"
+    - "Kalbfleisch, Theodore S"
+    - "Doris, Peter A"
+  date: 2024
+  serial-number:
+    doi: "10.1101/gr.279292.124"
+  page-range: "2081-2093"
+  parent:
+    type: periodical
+    title: "Genome Research"
+    volume: 34
+    issue: 11
+
+kalbfleisch2024:
+  type: article
+  title: "Three decades of rat genomics: approaching the finish(ed) line"
+  author:
+    - "Kalbfleisch, Theodore S"
+    - "Smith, Melissa L"
+    - "Ciosek, Julia L"
+    - "Li, Kai"
+    - "Doris, Peter A"
+  date: 2024
+  serial-number:
+    doi: "10.1152/physiolgenomics.00110.2024"
+  page-range: "807-818"
+  parent:
+    type: periodical
+    title: "Physiological Genomics"
+    volume: 56
+    issue: 12
+
+gfa_spec:
+  type: web
+  title: "GFA (Graphical Fragment Assembly) format specification"
+  author:
+    - "GFA-spec contributors"
+  date: 2024
+  url:
+    value: "https://github.com/GFA-spec/GFA-spec"
+    date: 2026-04-10
+
 guarracino2025impg:
   type: web
   title: "Implicit pangenome graphs"

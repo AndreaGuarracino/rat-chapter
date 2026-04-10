@@ -34,6 +34,7 @@ All software required for this protocol is bundled in a single Docker container 
 + *GFAFFIX* (commit 460e0dd) @garrison2024: walk-preserving redundancy removal (PGGB stage 4). #link("https://github.com/marschall-lab/GFAffix")
 + *bcftools* (v1.19) @danecek2021: VCF/BCF processing and concatenation of per-chromosome VCFs.
 + *ODGI* (v0.8.6) @guarracino2022odgi: graph statistics, 1D/2D visualization, subgraph extraction, and manipulation. #link("https://github.com/pangenome/odgi")
++ *Panacus* (v0.2.3) @parmigiani2024panacus: pangenome growth and core/shell/private size estimation from GFA graphs. #link("https://github.com/marschall-lab/panacus")
 
 === Variant calling and validation
 
