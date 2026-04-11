@@ -95,16 +95,6 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 
 ## Docker
 
-A reproducible Docker image bundling every tool used in the protocol (PGGB, vg, ODGI, WFMASH, SVIM-asm, PAV, Hall-lab, SURVIVOR, GEMMA, Compleasm, ...) is defined in `Docker/Dockerfile`. See `Docker/README.md` for the full tool version table and build/run instructions. The Dockerfile is the canonical source of truth for tool versions referenced in `Chapter/02-materials.typ`.
+A reproducible Docker image bundling every tool used in the protocol is defined in `Docker/Dockerfile`. The Dockerfile is the canonical source of truth for tool versions referenced in `Chapter/02-materials.typ`.
 
-Quick start:
-
-```bash
-cd Docker
-docker build -t rat-pangenome-tools .
-docker run -it --rm \
-    -v /path/to/your/assemblies:/workspace/assemblies \
-    -v /path/to/your/reads:/workspace/reads \
-    -v /path/to/your/output:/workspace/output \
-    rat-pangenome-tools bash
-```
+See [`Docker/README.md`](Docker/README.md) for the full tool version table and build/run instructions.

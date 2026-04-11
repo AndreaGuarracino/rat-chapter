@@ -94,11 +94,14 @@ docker build -t rat-pangenome-tools .
 
 ### 2. Run interactively with your data mounted
 
+Replace each `/path/to/your/...` with the actual path on your machine. Only mount the directories you need — all four mounts are optional.
+
 ```bash
 docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \
     -v /path/to/your/reads:/workspace/reads \
     -v /path/to/your/output:/workspace/output \
+    -v /path/to/your/input:/workspace/input \
     rat-pangenome-tools \
     bash
 ```
