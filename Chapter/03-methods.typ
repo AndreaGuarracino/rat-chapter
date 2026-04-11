@@ -48,7 +48,7 @@ for ASSEMBLY in assemblies/*.fa.gz; do
 done
 ```
 
-On an HPC cluster, each strain can be submitted as an independent job. An assembly with ≥95% complete single-copy BUSCOs is considered high quality; values of 90–95% are generally acceptable for inclusion in the pangenome, while values below 90% warrant closer inspection and may indicate assembly fragmentation or contamination. As an alternative or complement, the GRCr8 gene annotation @li2024grcr8 can be lifted over to each assembly using LiftOff @shumate2021; the fraction of annotated genes successfully transferred provides an assembly-to-assembly completeness metric that is directly interpretable in terms of gene content.
+On an HPC cluster, each strain can be submitted as an independent job. We treat ≥95% complete single-copy BUSCOs as the bar for a high-quality assembly, and 90–95% as acceptable for inclusion in the pangenome. Below 90% we take a closer look before adding the assembly to the graph, since the drop is usually a sign of fragmentation or contamination. A useful cross-check is to lift the GRCr8 gene annotation @li2024grcr8 onto each assembly with LiftOff @shumate2021 and count how many genes transfer cleanly. This gene-content metric is often easier to reason about than a BUSCO score, because it compares each assembly to a current, fully annotated rat reference rather than to a distant ortholog set.
 
 *3. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
 
@@ -283,7 +283,7 @@ odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
     -o subgraph.og
 ```
 
-The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control; for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (_see_ *Note 13* for further discussion of visualization challenges and limitations). Panacus @parmigiani2024panacus offers complementary statistics including pangenome growth curves and core, shell, and private genome size estimates directly from the GFA output.
+The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control; for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (_see_ *Note 13* for further discussion of visualization challenges and limitations). For a different angle on the same graph, Panacus @parmigiani2024panacus reads the GFA directly and produces pangenome growth curves along with core, shell, and private genome size estimates.
 
 == Read mapping to the pangenome
 

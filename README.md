@@ -4,29 +4,32 @@ For: Springer Methods in Molecular Biology (MiMB).
 
 ## Prerequisites
 
-- [Typst](https://typst.app/) >= 0.14
-- [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`) — only needed to regenerate references
-- Python 3 — only needed to regenerate references
+- [Typst](https://typst.app/) >= 0.14 — PDF build
+- Python 3 with PyYAML (`pip install pyyaml`) — for `yaml2bib.py` (Word build) and `doi2hayagriva.py` (regenerating references)
+- [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`) — only needed to regenerate references from DOIs
+- [pandoc](https://pandoc.org/) >= 3.1.2 — only needed to produce the Word file for Springer submission
 
-## Build the PDF
+## Build the PDF file
 
 ```bash
 cd rat-chapter
 typst compile Chapter/main.typ Chapter/chapter.pdf
 ```
-## Build the Word file (for Springer submission)                                                                                                                                 
 
-Typst does not export directly to Word. Use the three-step pipeline below, which requires LibreOffice (≥ 7) in addition to Typst:                                                
-```bash                                                                                                                                                                          
- cd Chapter                                                                                                                                                                                                       
-# 1. Export to HTML                                                                                                         
-typst compile --features html main.typ main.html                                                                                                                                 
-# 2. Convert HTML → ODT                                                                                                                                                          
-libreoffice --headless --convert-to odt main.html                                                                                                                                
-# 3. Convert ODT → DOCX                                                                                                                                                          
-libreoffice --headless --convert-to docx --infilter="writer8" main.odt
-#4. Before submitting, open it and check.                                                                                                         
+## Build the Word file (for Springer submission)
+
+Typst does not export to Word directly. Use pandoc (≥ 3.1.2), which reads Typst natively. Pandoc cannot read Hayagriva YAML, so `references.bib` is regenerated from `references.yml` on each build via `yaml2bib.py`.
+
+```bash
+cd Chapter
+python3 yaml2bib.py references.yml > references.bib
+pandoc main.typ -o chapter.docx \
+    --citeproc \
+    --csl=springer-basic-brackets.csl \
+    --bibliography=references.bib
 ```
+
+Open `chapter.docx` and diff it against `chapter.pdf` before submitting. Figures are not embedded (MiMB wants them separate anyway), and cross-references to `*Note N*` / `Fig. N` render as literal text rather than hyperlinks.
 
 ## File structure
 
@@ -43,6 +46,8 @@ Chapter/
   springer-basic-brackets.csl # Springer citation style (CSL)
   dois.tsv                    # DOI → citation key mapping (source of truth)
   doi2hayagriva.py            # Script: converts DOIs to Hayagriva YAML (full author lists)
+  yaml2bib.py                 # Script: converts references.yml → references.bib for pandoc
+  references.bib              # BibTeX sidecar for pandoc Word build (regenerated from references.yml)
   Figures/
     Figure1.pdf               # Figure 1 (submitted separately per MiMB)
     alt-text.xlsx             # Alternative text for figures (EU Accessibility Act)
