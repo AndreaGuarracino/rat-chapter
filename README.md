@@ -95,6 +95,6 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 
 ## Docker
 
-A reproducible Docker image bundling every tool used in the protocol is defined in `Docker/Dockerfile`. The Dockerfile is the canonical source of truth for tool versions referenced in `Chapter/02-materials.typ`.
+A reproducible Docker image bundling every tool used in the protocol is defined in `Docker/Dockerfile`. Tool versions are defined in `Chapter/02-materials.typ`.
 
 See [`Docker/README.md`](Docker/README.md) for the full tool version table and build/run instructions.
