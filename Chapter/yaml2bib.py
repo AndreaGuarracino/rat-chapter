@@ -40,20 +40,59 @@ def escape_bibtex(value: str) -> str:
     return result
 
 
+def format_one_author(a: Any) -> str:
+    """Convert one Hayagriva author entry to BibTeX form.
+
+    Handles three input shapes:
+    - 'Family, Given' string with comma -> emit as-is
+    - 'Corporate Name' string with no comma -> wrap in {{...}} so BibTeX
+      treats it as a corporate author and does not split on whitespace
+    - Mapping with 'name', optional 'given-name', optional 'prefix' ->
+      assemble 'Prefix Family, Given' for personal authors, or
+      '{{Name}}' for corporate (no given-name)
+    """
+    if isinstance(a, str):
+        if "," in a:
+            return a
+        # Corporate / mononymous author: brace it so BibTeX does not
+        # parse 'Hall Lab' as a personal name 'Lab, H'.
+        return "{" + a + "}"
+    if isinstance(a, dict):
+        name = str(a.get("name", "")).strip()
+        given = str(a.get("given-name") or a.get("given") or "").strip()
+        prefix = str(a.get("prefix") or "").strip()
+        suffix = str(a.get("suffix") or "").strip()
+        if not name:
+            raise ValueError(f"author dict missing 'name': {a}")
+        if given:
+            family = (prefix + " " + name).strip() if prefix else name
+            # Brace multi-word family names so BibTeX does not parse a
+            # leading lowercase particle (de, van, von) as a von-form.
+            # Example: 'de Jong' -> '{de Jong}'.
+            if " " in family:
+                family = "{" + family + "}"
+            out = f"{family}, {given}"
+            if suffix:
+                out += f", {suffix}"
+            return out
+        # Corporate: brace it
+        return "{" + name + "}"
+    raise TypeError(f"unexpected author item type: {type(a).__name__}: {a!r}")
+
+
 def format_authors(author_field: Any) -> str:
-    """Join a Hayagriva author list ('Last, First') into BibTeX form."""
+    """Join a Hayagriva author list into BibTeX form."""
     if author_field is None:
         return ""
-    if isinstance(author_field, str):
-        authors = [author_field]
+    if isinstance(author_field, (str, dict)):
+        items = [author_field]
     elif isinstance(author_field, list):
-        authors = [str(a) for a in author_field]
+        items = author_field
     else:
         raise TypeError(
             f"unexpected author field type: {type(author_field).__name__}"
         )
-    # BibTeX joins co-authors with literal ' and '.
-    return " and ".join(authors)
+    return " and ".join(format_one_author(a) for a in items)
 
 
 def year_from_date(date_field: Any) -> str:
@@ -111,21 +150,42 @@ def render_entry(key: str, entry: dict) -> str:
 
     doi = extract_doi(entry)
     if doi:
-        fields.append(("doi", escape_bibtex(doi)))
+        # DOIs may contain underscores (e.g. mulligan2017's
+        # 10.1007/978-1-4939-6427-7_4). BibTeX/citeproc treats the doi
+        # field as URL-like, so do NOT escape special chars here.
+        fields.append(("doi", doi))
 
     url = extract_url(entry)
     if url:
-        fields.append(("url", escape_bibtex(url)))
+        # URLs likewise must not be backslash-escaped, or pandoc emits
+        # literal \_ in the rendered hyperlink.
+        fields.append(("url", url))
 
     page_range = entry.get("page-range")
     if page_range is not None:
         fields.append(("pages", escape_bibtex(str(page_range))))
 
     parent = entry.get("parent") or {}
+    parent_title = ""
     if isinstance(parent, dict):
-        parent_title = parent.get("title")
-        if parent_title:
-            fields.append(("journal", escape_bibtex(str(parent_title))))
+        parent_title = str(parent.get("title") or "")
+        # For chapters, parent.title is the BOOK title -> goes in 'booktitle'.
+        # For everything else, parent.title is the JOURNAL/venue -> goes in 'journal'.
+        if etype == "chapter":
+            if parent_title:
+                # Brace-wrap booktitle so BibTeX/citeproc preserves capitals.
+                fields.append(("booktitle", "{" + escape_bibtex(parent_title) + "}"))
+            editors = parent.get("editor")
+            if editors:
+                fields.append(("editor", escape_bibtex(format_authors(editors))))
+            pub = parent.get("publisher")
+            if pub:
+                fields.append(("publisher", escape_bibtex(str(pub))))
+        else:
+            if parent_title:
+                # Brace-wrap journal name so multi-word journals (e.g.
+                # "Cell Host & Microbe") keep their case.
+                fields.append(("journal", "{" + escape_bibtex(parent_title) + "}"))
         if parent.get("volume") is not None:
             fields.append(("volume", escape_bibtex(str(parent["volume"]))))
         if parent.get("issue") is not None:
@@ -137,11 +197,21 @@ def render_entry(key: str, entry: dict) -> str:
         if publisher:
             fields.append(("school", escape_bibtex(str(publisher))))
     elif etype == "web":
-        bib_type = "misc"
+        # BibLaTeX @online maps cleanly to CSL "webpage" so pandoc renders
+        # the URL. (@misc maps to a generic type that the Springer CSL
+        # silently drops the URL from.)
+        bib_type = "online"
         if url and not any(k == "howpublished" for k, _ in fields):
-            fields.append(
-                ("howpublished", "\\url{" + escape_bibtex(url) + "}")
-            )
+            fields.append(("howpublished", "\\url{" + url + "}"))
+        # Hayagriva web entries carry an access date inside the url block;
+        # surface it as urldate for BibLaTeX/CSL.
+        url_field = entry.get("url")
+        if isinstance(url_field, dict):
+            access = url_field.get("date")
+            if access:
+                fields.append(("urldate", escape_bibtex(str(access))))
+    elif etype == "chapter":
+        bib_type = "incollection"
     else:
         bib_type = "article"
 
@@ -176,7 +246,7 @@ def main() -> int:
     log.info("entry types: %s", type_counts)
 
     print("% Auto-generated from references.yml by yaml2bib.py")
-    print("% DO NOT EDIT by hand — edit references.yml and regenerate.")
+    print("% DO NOT EDIT by hand. Edit references.yml and regenerate.")
     print()
     for key, entry in data.items():
         try:

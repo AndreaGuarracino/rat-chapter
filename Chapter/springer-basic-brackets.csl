@@ -22,6 +22,7 @@
   <locale>
     <terms>
       <term name="et-al">et al</term>
+      <term name="page-range-delimiter">-</term>
     </terms>
   </locale>
   <macro name="author">
@@ -64,7 +65,7 @@
       <date-part name="year"/>
     </date>
   </macro>
-  <citation collapse="citation-number">
+  <citation>
     <sort>
       <key variable="citation-number"/>
     </sort>

@@ -4,10 +4,10 @@ For: Springer Methods in Molecular Biology (MiMB).
 
 ## Prerequisites
 
-- [Typst](https://typst.app/) >= 0.14 — PDF build
-- Python 3 with PyYAML (`pip install pyyaml`) — for `yaml2bib.py` (Word build) and `doi2hayagriva.py` (regenerating references)
-- [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`) — only needed to regenerate references from DOIs
-- [pandoc](https://pandoc.org/) >= 3.1.2 — only needed to produce the Word file for Springer submission
+- [Typst](https://typst.app/) >= 0.14 (PDF build).
+- Python 3 with PyYAML (`pip install pyyaml`) for `yaml2bib.py` (Word build) and `doi2hayagriva.py` (regenerating references).
+- [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`), only needed to regenerate references from DOIs.
+- [pandoc](https://pandoc.org/) >= 3.1.2, only needed to produce the Word file for Springer submission.
 
 ## Build the PDF file
 
@@ -37,10 +37,10 @@ Open `chapter.docx` and diff it against `chapter.pdf` before submitting. Figures
 Chapter/
   main.typ                    # Master document (includes all sections)
   00-frontmatter.typ          # Title, authors, abstract, keywords
-  01-introduction.typ         # Introduction (sections 1.1–1.6)
-  02-materials.typ            # Materials (sections 2.1–2.3)
-  03-methods.typ              # Methods (sections 3.1–3.9, Docker-first)
-  04-notes.typ                # Notes (1–16)
+  01-introduction.typ         # Introduction (sections 1.1-1.6)
+  02-materials.typ            # Materials (sections 2.1-2.3)
+  03-methods.typ              # Methods (sections 3.1-3.9, Docker-first)
+  04-notes.typ                # Notes (1-16)
   05-backmatter.typ           # Competing interests, acknowledgments
   references.yml              # Hayagriva YAML bibliography (NLM-abbreviated journals)
   springer-basic-brackets.csl # Springer citation style (CSL)
@@ -70,7 +70,7 @@ python3 doi2hayagriva.py dois.tsv > references_auto.yml
 Then review the output for:
 - **Date mismatches**: doi2bib may return the epub date instead of the print year. Check that dates match the citation keys (e.g., `hickey2024` should show `date: 2024`).
 - **Title artifacts**: some BibTeX entries contain residual LaTeX or multi-line formatting (e.g., the `cingolani2012` and `wick2015` titles).
-- **Missing journal names**: bioRxiv/openRxiv preprints may lack a journal field — add `title: "bioRxiv"` or `title: "openRxiv"` under `parent:`.
+- **Missing journal names**: bioRxiv/openRxiv preprints may lack a journal field; add `title: "bioRxiv"` or `title: "openRxiv"` under `parent:`.
 - **Journal abbreviations**: the script outputs full journal names. Abbreviate to NLM standard (e.g., "Nature Biotechnology" → "Nat Biotechnol").
 
 After review, append the manual entries (pravenec1989, guarracino2021wfmash, arends_bxdtools, hall_lab, villani2025thesis, guarracino2025impg) to produce the final `references.yml`.
@@ -89,7 +89,7 @@ Citations appear as numbered brackets [1], [2], etc., ordered by first appearanc
 ## To do
 
 - [ ] **Author Agreement Form**: complete `Guide/Rat Genomics_AUTHOR AGREEMENT.docx` with all authors, addresses, ORCIDs, title, corresponding author signature
-- [ ] **Figure EPS conversion**: once SVG is available from Google Slides, convert to EPS (`inkscape Figure1.svg --export-filename=Figure1.eps --export-type=eps`) and verify lettering is 8–12pt at 160mm print width
+- [ ] **Figure EPS conversion**: once SVG is available from Google Slides, convert to EPS (`inkscape Figure1.svg --export-filename=Figure1.eps --export-type=eps`) and verify lettering is 8-12pt at 160mm print width
 - [ ] **Final checks**: verify all tool installation instructions and code/command examples are correct and runnable
 - [ ] **Final checks**: verify all references have correct title, author, year, journal (spot-check rendered PDF)
 

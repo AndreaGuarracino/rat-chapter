@@ -48,7 +48,7 @@ for ASSEMBLY in assemblies/*.fa.gz; do
 done
 ```
 
-On an HPC cluster, each strain can be submitted as an independent job. We treat ≥95% complete single-copy BUSCOs as the bar for a high-quality assembly, and 90–95% as acceptable for inclusion in the pangenome. Below 90% we take a closer look before adding the assembly to the graph, since the drop is usually a sign of fragmentation or contamination. A useful cross-check is to lift the GRCr8 gene annotation @li2024grcr8 onto each assembly with LiftOff @shumate2021 and count how many genes transfer cleanly. This gene-content metric is often easier to reason about than a BUSCO score, because it compares each assembly to a current, fully annotated rat reference rather than to a distant ortholog set.
+On an HPC cluster, each strain can be submitted as an independent job. Treat ≥95% complete single-copy BUSCOs as the bar for a high-quality assembly, and 90-95% as acceptable for inclusion in the pangenome. Below 90%, look more closely before adding the assembly to the graph, since the drop is usually a sign of fragmentation or contamination. A useful cross-check is to lift the GRCr8 gene annotation @li2024grcr8 onto each assembly with LiftOff @shumate2021 and count how many genes transfer cleanly. This gene-content metric is often easier to reason about than a BUSCO score, because it compares each assembly to a current, fully annotated rat reference rather than to a distant ortholog set.
 
 *3. Evaluate heterozygosity and genome characteristics.* Use K-mer counting with Meryl @rhie2020 and GenomeScope @vurture2017 to estimate genome size, heterozygosity, and repeat content:
 
@@ -156,7 +156,7 @@ GFAFFIX collapses walk-preserving redundant nodes (nodes that share identical se
 
 === Running PGGB chromosome by chromosome
 
-As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.4), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (_see_ *Note 14*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
+As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.5), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (_see_ *Note 14*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
 *Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1-3.2.2. Map each assembly against the reference genome using WFMASH:
 
@@ -235,7 +235,7 @@ Each chromosome can be submitted as an independent job on an HPC cluster. Using 
 
 ```bash
 bcftools concat -Oz -o genome_wide.vcf.gz \
-    output/chr*//*.vcf.gz
+    output/chr*/*.vcf.gz
 tabix genome_wide.vcf.gz
 ```
 
@@ -489,7 +489,7 @@ export PATH_OG_FASTA=$DIR_BASE/assemblies/pan.fa.gz
 export PAV=/opt/pav
 ```
 
-*1.Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph. 
+*1. Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph. 
 
 ```bash
 mkdir -p $DIR_BASE/assemblies
@@ -800,11 +800,11 @@ Note that PGGB's graph-based method typically reports fewer SVs than assembly-ba
 
 *6. Complex SV inspection.* For complex SVs, extract the local subgraph using ODGI and visualize with Bandage (#link("https://rrwick.github.io/Bandage/")) or ODGI to reveal all realized haplotypes. For example, a complex insertion in the _Cd209c_ gene was resolved into multiple variable blocks forming distinct haplotypes across the RI panel (_see_ *Note 11*).
 
-*7.* Annotate SV content with RepeatMasker @tarailo2009 to identify retrotransposon content (LINEs, SINEs) within structural variants.
+*7. Repeat annotation.* Annotate SV content with RepeatMasker @tarailo2009 to identify retrotransposon content (LINEs, SINEs) within structural variants.
 
 == Phenome-Wide Association Study (PheWAS)
 
-The pangenome enables discovery of novel variants that can be immediately tested for phenotypic associations using the extensive HXB/BXH phenotype database (_see_ *Note 16* for a broader discussion of how pangenomics is poised to reshape genotype-phenotype discovery in model organisms).
+PheWAS uses the pangenome variants to test associations against the extensive HXB/BXH phenotype database (_see_ *Note 16*).
 
 *1. Prepare the genotype file.* Extract genotypes for validated pangenome-only variants and convert to a BXDtools-compatible format:
 

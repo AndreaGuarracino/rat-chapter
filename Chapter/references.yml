@@ -46,6 +46,7 @@ siren2021:
   date: 2021
   serial-number:
     doi: "10.1126/science.abg8871"
+  page-range: "abg8871"
   parent:
     type: periodical
     title: "Science"
@@ -339,9 +340,10 @@ garrison2023:
   author:
     - "Garrison, Erik"
     - "Guarracino, Andrea"
-  date: 2022
+  date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btac743"
+  page-range: "btac743"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -374,7 +376,8 @@ garrison2024:
     - "Nobrega, Franklin L."
     - "Wu, Yi"
     - "Chen, Hao"
-    - "de Ligt, Joep"
+    - name: "de Ligt"
+      given-name: "Joep"
     - "Sudmant, Peter H."
     - "Huang, Sanwen"
     - "Weigel, Detlef"
@@ -408,7 +411,7 @@ shoer2024:
   page-range: "1744-1757.e2"
   parent:
     type: periodical
-    title: "Cell Host &amp; Microbe"
+    title: "Cell Host & Microbe"
     volume: 32
     issue: 10
 
@@ -456,7 +459,7 @@ bolognini2024:
 
 printz2003:
   type: article
-  title: "Invited Review: HXB/BXH rat recombinant inbred strain platform: a newly enhanced tool for cardiovascular, behavioral, and developmental genetics and genomics"
+  title: "Genetic Models in Applied Physiology. HXB/BXH rat recombinant inbred strain platform: a newly enhanced tool for cardiovascular, behavioral, and developmental genetics and genomics"
   author:
     - "Printz, Morton P."
     - "Jirout, Martin"
@@ -474,25 +477,32 @@ printz2003:
     issue: 6
 
 mulligan2017:
-  type: article
+  type: chapter
   title: "GeneNetwork: A Toolbox for Systems Genetics"
   author:
     - "Mulligan, Megan K."
     - "Mozhui, Khyobeni"
     - "Prins, Pjotr"
     - "Williams, Robert W."
-  date: 2016
+  date: 2017
   serial-number:
     doi: "10.1007/978-1-4939-6427-7_4"
   page-range: "75-120"
   parent:
-    type: periodical
+    type: book
+    title: "Systems Genetics: Methods and Protocols"
+    editor:
+      - "Schughart, Klaus"
+      - "Williams, Robert W."
+    publisher: "Springer New York"
+    volume: 1488
 
 dejong2024:
   type: article
   title: "A revamped rat reference genome improves the discovery of genetic diversity in laboratory rats"
   author:
-    - "de Jong, Tristan V."
+    - name: "de Jong"
+      given-name: "Tristan V."
     - "Pan, Yanchao"
     - "Rastas, Pasi"
     - "Munro, Daniel"
@@ -653,7 +663,7 @@ martin2023:
     - "Harrison, Peter W"
     - "Yates, Andrew D"
     - "Flicek, Paul"
-  date: 2022
+  date: 2023
   serial-number:
     doi: "10.1093/nar/gkac958"
   page-range: "D933-D941"
@@ -700,6 +710,7 @@ danecek2021:
   date: 2021
   serial-number:
     doi: "10.1093/gigascience/giab008"
+  page-range: "giab008"
   parent:
     type: periodical
     title: "GigaScience"
@@ -722,18 +733,18 @@ cleary2015:
     - "Ware, David"
     - "Zook, Justin M."
     - "Trigg, Len"
-    - "De La Vega, Francisco M."
+    - name: "De La Vega"
+      given-name: "Francisco M."
   date: 2015
   serial-number:
     doi: "10.1101/023754"
   parent:
     type: periodical
+    title: "bioRxiv"
 
 cingolani2012:
   type: article
-  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w
-                    1118
-                    ; iso-2; iso-3"
+  title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w1118; iso-2; iso-3"
   author:
     - "Cingolani, Pablo"
     - "Platts, Adrian"
@@ -842,6 +853,7 @@ ebert2021:
   date: 2021
   serial-number:
     doi: "10.1126/science.abf7117"
+  page-range: "abf7117"
   parent:
     type: periodical
     title: "Science"
@@ -854,7 +866,7 @@ heller2020:
   author:
     - "Heller, David"
     - "Vingron, Martin"
-  date: 2020
+  date: 2021
   serial-number:
     doi: "10.1093/bioinformatics/btaa1034"
   page-range: "5519-5521"
@@ -862,7 +874,7 @@ heller2020:
     type: periodical
     title: "Bioinformatics"
     volume: 36
-    issue: 22–23
+    issue: "22-23"
 
 jeffares2017:
   type: article
@@ -881,6 +893,7 @@ jeffares2017:
   date: 2017
   serial-number:
     doi: "10.1038/ncomms14061"
+  page-range: "14061"
   parent:
     type: periodical
     title: "Nature Communications"
@@ -891,11 +904,12 @@ tarailo2009:
   type: article
   title: "Using RepeatMasker to Identify Repetitive Elements in Genomic Sequences"
   author:
-    - "Tarailo‐Graovac, Maja"
+    - "Tarailo-Graovac, Maja"
     - "Chen, Nansheng"
   date: 2009
   serial-number:
     doi: "10.1002/0471250953.bi0410s25"
+  page-range: "4.10.1-4.10.14"
   parent:
     type: periodical
     title: "Current Protocols in Bioinformatics"
@@ -911,6 +925,7 @@ huang2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad595"
+  page-range: "btad595"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -949,6 +964,7 @@ heumos2024:
   date: 2024
   serial-number:
     doi: "10.1093/bioinformatics/btae609"
+  page-range: "btae609"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -966,6 +982,7 @@ rhie2020:
   date: 2020
   serial-number:
     doi: "10.1186/s13059-020-02134-9"
+  page-range: "245"
   parent:
     type: periodical
     title: "Genome Biology"
@@ -1003,7 +1020,7 @@ yun2021:
     - "Lin, Michael F"
     - "Carroll, Andrew"
     - "McLean, Cory Y"
-  date: 2020
+  date: 2021
   serial-number:
     doi: "10.1093/bioinformatics/btaa1081"
   page-range: "5582-5589"
@@ -1052,12 +1069,15 @@ smith2020:
     - "Kwitek, Anne E"
     - "Dwinell, Melinda R"
     - "Shimoyama, Mary E"
-  date: 2019
+  date: 2020
   serial-number:
     doi: "10.1093/nar/gkz1041"
+  page-range: "D731-D742"
   parent:
     type: periodical
     title: "Nucleic Acids Research"
+    volume: 48
+    issue: D1
 
 hickey2024:
   type: article
@@ -1184,7 +1204,7 @@ hickey2024:
     - "Marschall, Tobias"
     - "Li, Heng"
     - "Paten, Benedict"
-  date: 2023
+  date: 2024
   serial-number:
     doi: "10.1038/s41587-023-01793-w"
   page-range: "663-673"
@@ -1384,7 +1404,7 @@ gonnella2019:
     - "Gonnella, Giorgio"
     - "Niehus, Niklas"
     - "Kurtz, Stefan"
-  date: 2018
+  date: 2019
   serial-number:
     doi: "10.1093/bioinformatics/bty1046"
   page-range: "2853-2855"
@@ -1474,6 +1494,7 @@ heumos2024pgsgd:
   date: 2024
   serial-number:
     doi: "10.1093/bioinformatics/btae363"
+  page-range: "btae363"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -1504,6 +1525,7 @@ mastromatteo2025:
     doi: "10.1101/2025.10.31.684064"
   parent:
     type: periodical
+    title: "bioRxiv"
 
 lee2002:
   type: article
@@ -1524,11 +1546,7 @@ lee2002:
 
 marcosola2023:
   type: article
-  title: "Optimal gap-affine alignment in
-                    O
-                    (
-                    s
-                    ) space"
+  title: "Optimal gap-affine alignment in O(s) space"
   author:
     - "Marco-Sola, Santiago"
     - "Eizenga, Jordan M"
@@ -1539,6 +1557,7 @@ marcosola2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad074"
+  page-range: "btad074"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -1647,6 +1666,7 @@ deorowicz2023:
   date: 2023
   serial-number:
     doi: "10.1093/bioinformatics/btad097"
+  page-range: "btad097"
   parent:
     type: periodical
     title: "Bioinformatics"
@@ -1667,6 +1687,7 @@ kaushan2026:
     doi: "10.64898/2026.02.16.706236"
   parent:
     type: periodical
+    title: "bioRxiv"
 
 cheng2021:
   type: article
@@ -1724,6 +1745,7 @@ kurtz2004:
   date: 2004
   serial-number:
     doi: "10.1186/gb-2004-5-2-r12"
+  page-range: "R12"
   parent:
     type: periodical
     title: "Genome Biology"
@@ -1735,8 +1757,10 @@ pravenec1989:
   title: "An analysis of spontaneous hypertension in spontaneously hypertensive rats by means of new recombinant inbred strains"
   author:
     - "Pravenec, Michal"
-    - "Klir, Petr"
-    - "Kren, Vladimir"
+    - "Klír, Pavel"
+    - "Křen, Vladimír"
+    - "Zicha, Josef"
+    - "Kuneš, Jaroslav"
   date: 1989
   serial-number:
     doi: "10.1097/00004872-198903000-00008"
@@ -1875,7 +1899,7 @@ gfa_spec:
   type: web
   title: "GFA (Graphical Fragment Assembly) format specification"
   author:
-    - "GFA-spec contributors"
+    - name: "GFA-spec contributors"
   date: 2024
   url:
     value: "https://github.com/GFA-spec/GFA-spec"

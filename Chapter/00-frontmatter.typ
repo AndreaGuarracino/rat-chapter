@@ -1,4 +1,4 @@
-// Title — unnumbered
+// Title (unnumbered)
 
 #let fixme(txt) = text(red,"Fixme:" + txt)
 

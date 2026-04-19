@@ -5,7 +5,7 @@ pangenome protocol described in the methods chapter.
 
 ## Included tools
 
-### §3.1 — Assembly quality assessment
+### §3.1 Assembly quality assessment
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -16,7 +16,7 @@ pangenome protocol described in the methods chapter.
 | seqtk | 1.5-r133 | Telomere repeat detection |
 | NCBI datasets | 18.23.0 | Reference genome download |
 
-### §3.2 — PGGB pangenome construction
+### §3.2 PGGB pangenome construction
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -28,26 +28,26 @@ pangenome protocol described in the methods chapter.
 | gfaffix | commit 460e0dd | Redundancy removal (pggb stage 4) |
 | bcftools | 1.19 | VCF/BCF processing (concat per-chromosome VCFs) |
 
-### §3.3 — Graph quality assessment
+### §3.3 Graph quality assessment
 
 | Tool | Version | Purpose |
 |------|---------|---------|
 | odgi | v0.8.6 | Graph statistics, 1D/2D visualization, extraction |
 
-### §3.4 — Variant calling and read mapping to the pangenome
+### §3.4 Variant calling and read mapping to the pangenome
 
 | Tool | Version | Purpose |
 |------|---------|---------|
 | vg | v1.71.0 | Graph indexing (autoindex), read mapping (Giraffe), variant calling (deconstruct), surjection |
 
-### §3.5 — Variant annotation
+### §3.5 Variant annotation
 
 | Tool | Version | Purpose |
 |------|---------|---------|
 | SnpEff | 5.0 | Functional variant annotation |
 | SnpSift | 5.0 | VCF filtering and manipulation |
 
-### §3.6 — Validation strategies
+### §3.6 Validation strategies
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -55,7 +55,7 @@ pangenome protocol described in the methods chapter.
 | MUMmer4 (nucmer) | 3.1 | Pairwise genome alignment and SNP calling |
 | bedtools | v2.30.0 | Genome arithmetic (complement for callable regions) |
 
-### §3.7 — Structural variant analysis
+### §3.7 Structural variant analysis
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -69,7 +69,7 @@ pangenome protocol described in the methods chapter.
 | vcfwave | (vcflib) | Complex variant decomposition |
 | SURVIVOR | 1.0.7 | Multi-caller SV merging |
 
-### §3.8 — PheWAS
+### §3.8 PheWAS
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -94,7 +94,7 @@ docker build -t rat-pangenome-tools .
 
 ### 2. Run interactively with your data mounted
 
-Replace each `/path/to/your/...` with the actual path on your machine. Only mount the directories you need — all four mounts are optional.
+Replace each `/path/to/your/...` with the actual path on your machine. Only mount the directories you need; all four mounts are optional.
 
 ```bash
 docker run -it --rm \
