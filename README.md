@@ -22,14 +22,22 @@ Typst does not export to Word directly. Use pandoc (≥ 3.1.2), which reads Typs
 
 ```bash
 cd Chapter
+python3 make_reference_docx.py
 python3 yaml2bib.py references.yml > references.bib
 pandoc main.typ -o chapter.docx \
     --citeproc \
     --csl=springer-basic-brackets.csl \
-    --bibliography=references.bib
+    --bibliography=references.bib \
+    --number-sections \
+    --lua-filter=unnumber-backmatter.lua \
+    --reference-doc=reference.docx
 ```
 
-Open `chapter.docx` and diff it against `chapter.pdf` before submitting. Figures are not embedded (MiMB wants them separate anyway), and cross-references to `*Note N*` / `Fig. N` render as literal text rather than hyperlinks.
+- `make_reference_docx.py` patches pandoc's default Word template: Consolas 10pt code blocks, justified body, left-aligned headings/captions/bibliography. Full rule list in the script docstring. Skip it and pandoc falls back to Cambria code with left-aligned body, which is wrong for MiMB.
+- `--number-sections` restores the hierarchical section numbering (1, 1.1, 2.2.1) that Typst auto-generates and pandoc otherwise drops.
+- `unnumber-backmatter.lua` keeps Title, Summary, Competing Interests, Acknowledgments, and Figure Captions unnumbered, and left-aligns the affiliations block.
+
+Figures are not embedded (MiMB wants them separate anyway), and cross-references to `*Note N*` / `Fig. N` render as literal text rather than hyperlinks.
 
 ## File structure
 
