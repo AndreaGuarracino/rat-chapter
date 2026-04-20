@@ -44,12 +44,15 @@ log = logging.getLogger(__name__)
 
 OUT = Path(__file__).parent / "reference.docx"
 
-JUSTIFY_STYLES = ("Normal", "BodyText", "FirstParagraph", "Compact", "Abstract")
+JUSTIFY_STYLES = (
+    "Normal", "BodyText", "FirstParagraph", "Compact", "Abstract",
+    "Heading1", "Bibliography",
+)
 LEFT_STYLES = (
     "SourceCode",
-    "Heading1", "Heading2", "Heading3", "Heading4", "Heading5", "Heading6",
+    "Heading2", "Heading3", "Heading4", "Heading5", "Heading6",
     "Caption", "TableCaption", "ImageCaption", "Figure", "CaptionedFigure",
-    "Bibliography", "Author", "Title", "Subtitle", "AbstractTitle", "Date",
+    "Author", "Title", "Subtitle", "AbstractTitle", "Date",
     "DefinitionTerm", "Definition", "BlockText",
 )
 # SourceCode rPr to inject (Consolas 10pt). pandoc's default has no rPr,

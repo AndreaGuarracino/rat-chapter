@@ -36,7 +36,7 @@
 #include "04-notes.typ"
 #include "05-backmatter.typ"
 
-#bibliography("references.yml", style: "springer-basic-brackets.csl")
+#bibliography("references.yml", title: [References], style: "springer-basic-brackets.csl")
 
 // Figure captions (figures submitted as separate files per MiMB instructions)
 #heading(numbering: none, level: 1)[Figure Captions]
