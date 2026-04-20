@@ -2,11 +2,9 @@
 
 The chapter describes a practical protocol for building a rat pangenome graph from the HXB/BXH family of recombinant inbred strains with PGGB, validating it, calling small variants and structural variants against it, and using the resulting genotypes for phenome-wide association mapping in GeneNetwork.
 
-This repository provides the Docker image with every tool needed to reproduce the protocol.
-
 ## Citation
 
-> Villani F, ..., Guarracino A. Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel. In: *Methods in Molecular Biology*. Springer; TBD.
+> Villani F, Isaac A, Colonna V, Garrison E, Duggan D, Trent JM, Ashbrook DG, Williams RW, Chen H, Prins P, Guarracino A. Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel. In: *Methods in Molecular Biology*. Springer; TBD.
 >
 > DOI: _to be assigned upon publication_
 
@@ -14,13 +12,13 @@ Until then, please cite this repository: https://github.com/AndreaGuarracino/rat
 
 ## Docker
 
-A single Docker image bundles every tool used in the protocol (PGGB, vg, odgi, SVIM-asm, PAV, Hall-lab `paftools`, SURVIVOR, GEMMA, and supporting utilities). Pinned versions and commits live in [`Docker/Dockerfile`](Docker/Dockerfile).
+A single Docker image with every tool needed to reproduce the protocol. Pinned versions and commits live in [`Docker/Dockerfile`](Docker/Dockerfile).
 
 ### Requirements
 
 - Docker >= 20.10
 - ~10 GB disk space for the image
-- Sufficient RAM for your dataset (>= 64 GB recommended for whole-genome pangenome)
+- Enough RAM for your dataset (>= 64 GB recommended for whole-genome pangenome)
 
 ### Build the image
 
