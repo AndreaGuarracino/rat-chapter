@@ -1,0 +1,89 @@
+cff-version: 1.2.0
+message: >-
+  If you use this protocol or the accompanying Docker image, please cite the
+  Methods in Molecular Biology chapter listed under "preferred-citation".
+title: >-
+  Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association
+  in the HXB/BXH Rat Panel (companion repository)
+type: software
+repository-code: "https://github.com/AndreaGuarracino/rat-chapter"
+authors:
+  - family-names: Villani
+    given-names: Flavia
+    orcid: "https://orcid.org/0000-0003-3633-0610"
+  - family-names: Isaac
+    given-names: Arun
+    orcid: "https://orcid.org/0000-0002-6810-8195"
+  - family-names: Colonna
+    given-names: Vincenza
+    orcid: "https://orcid.org/0000-0002-3966-0474"
+  - family-names: Garrison
+    given-names: Erik
+    orcid: "https://orcid.org/0000-0003-3821-631X"
+  - family-names: Duggan
+    given-names: David
+    orcid: "https://orcid.org/0000-0002-4696-3940"
+  - family-names: Trent
+    given-names: Jeffrey M.
+    orcid: "https://orcid.org/0000-0003-0183-4202"
+  - family-names: Ashbrook
+    given-names: David G.
+    orcid: "https://orcid.org/0000-0002-7397-8910"
+  - family-names: Williams
+    given-names: Robert W.
+    orcid: "https://orcid.org/0000-0001-8924-4447"
+  - family-names: Chen
+    given-names: Hao
+    orcid: "https://orcid.org/0000-0002-2680-6921"
+  - family-names: Prins
+    given-names: Pjotr
+    orcid: "https://orcid.org/0000-0002-8021-9162"
+  - family-names: Guarracino
+    given-names: Andrea
+    orcid: "https://orcid.org/0000-0001-9744-131X"
+    email: aguarracino@tgen.org
+preferred-citation:
+  type: generic
+  title: >-
+    Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association
+    in the HXB/BXH Rat Panel
+  authors:
+    - family-names: Villani
+      given-names: Flavia
+      orcid: "https://orcid.org/0000-0003-3633-0610"
+    - family-names: Isaac
+      given-names: Arun
+      orcid: "https://orcid.org/0000-0002-6810-8195"
+    - family-names: Colonna
+      given-names: Vincenza
+      orcid: "https://orcid.org/0000-0002-3966-0474"
+    - family-names: Garrison
+      given-names: Erik
+      orcid: "https://orcid.org/0000-0003-3821-631X"
+    - family-names: Duggan
+      given-names: David
+      orcid: "https://orcid.org/0000-0002-4696-3940"
+    - family-names: Trent
+      given-names: Jeffrey M.
+      orcid: "https://orcid.org/0000-0003-0183-4202"
+    - family-names: Ashbrook
+      given-names: David G.
+      orcid: "https://orcid.org/0000-0002-7397-8910"
+    - family-names: Williams
+      given-names: Robert W.
+      orcid: "https://orcid.org/0000-0001-8924-4447"
+    - family-names: Chen
+      given-names: Hao
+      orcid: "https://orcid.org/0000-0002-2680-6921"
+    - family-names: Prins
+      given-names: Pjotr
+      orcid: "https://orcid.org/0000-0002-8021-9162"
+    - family-names: Guarracino
+      given-names: Andrea
+      orcid: "https://orcid.org/0000-0001-9744-131X"
+  collection-title: "Methods in Molecular Biology"
+  collection-type: series
+  publisher:
+    name: Springer
+  year: 2026
+  notes: "In press. DOI to be assigned upon publication."
