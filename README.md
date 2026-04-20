@@ -8,7 +8,7 @@ The chapter describes a practical protocol for building a rat pangenome graph fr
 >
 > DOI: _to be assigned upon publication_
 
-Until then, please cite this repository: https://github.com/AndreaGuarracino/rat-chapter
+Until then, please cite this repository.
 
 ## Docker
 
