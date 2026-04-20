@@ -50,12 +50,14 @@ Chapter/
   03-methods.typ              # Methods (sections 3.1-3.9, Docker-first)
   04-notes.typ                # Notes (1-16)
   05-backmatter.typ           # Competing interests, acknowledgments
-  references.yml              # Hayagriva YAML bibliography (NLM-abbreviated journals)
+  references.yml              # Hayagriva YAML bibliography (single source of truth, NLM-abbreviated journals)
   springer-basic-brackets.csl # Springer citation style (CSL)
-  dois.tsv                    # DOI → citation key mapping (source of truth)
-  doi2hayagriva.py            # Script: converts DOIs to Hayagriva YAML (full author lists)
+  doi2hayagriva.py            # Script: re-fetches DOI metadata for entries in references.yml
   yaml2bib.py                 # Script: converts references.yml → references.bib for pandoc
-  references.bib              # BibTeX sidecar for pandoc Word build (regenerated from references.yml)
+  make_reference_docx.py      # Script: builds the Word style template (Consolas code, justified body)
+  unnumber-backmatter.lua     # Pandoc Lua filter: unnumbered Title/Summary/backmatter, left-aligned affiliations
+  references.bib              # BibTeX sidecar for pandoc Word build (regenerated, gitignored)
+  reference.docx              # Pandoc style template for Word build (regenerated, gitignored)
   Figures/
     Figure1.pdf               # Figure 1 (submitted separately per MiMB)
     alt-text.xlsx             # Alternative text for figures (EU Accessibility Act)
@@ -66,28 +68,26 @@ Docker/
 
 ## Regenerate references from DOIs
 
-The `dois.tsv` file maps each citation key to its DOI. Lines marked `MANUAL` have no DOI (web resources, theses, preprints without standard DOI) and are maintained by hand at the bottom of `references.yml`.
-
-To regenerate the DOI-based entries:
+`references.yml` is the single source of truth for the bibliography. To re-fetch metadata from CrossRef for every DOI-bearing entry and diff against the current file:
 
 ```bash
 cd Chapter
-python3 doi2hayagriva.py dois.tsv > references_auto.yml
+python3 doi2hayagriva.py references.yml | diff - references.yml | less
 ```
 
-Then review the output for:
+The script reads each entry, fetches fresh metadata via doi2bib for any entry that has a `serial-number.doi` field, and prints the regenerated YAML to stdout. Edit `references.yml` to apply any wanted changes. Common fixes after a fresh regeneration:
 - **Date mismatches**: doi2bib may return the epub date instead of the print year. Check that dates match the citation keys (e.g., `hickey2024` should show `date: 2024`).
 - **Title artifacts**: some BibTeX entries contain residual LaTeX or multi-line formatting (e.g., the `cingolani2012` and `wick2015` titles).
 - **Missing journal names**: bioRxiv/openRxiv preprints may lack a journal field; add `title: "bioRxiv"` or `title: "openRxiv"` under `parent:`.
 - **Journal abbreviations**: the script outputs full journal names. Abbreviate to NLM standard (e.g., "Nature Biotechnology" → "Nat Biotechnol").
 
-After review, append the manual entries (pravenec1989, guarracino2021wfmash, arends_bxdtools, hall_lab, villani2025thesis, guarracino2025impg) to produce the final `references.yml`.
+Entries without a `serial-number.doi` are MANUAL (web resources, theses, preprints without standard DOI). They are maintained by hand at the bottom of `references.yml` and are skipped during regeneration; they will appear in the diff as "missing from the new run", which is expected.
 
 ### Adding a new reference
 
-1. Add a line to `dois.tsv`: `key<TAB>DOI` (or `key<TAB>MANUAL` if no DOI)
-2. Regenerate and review as above
-3. Cite in `.typ` files with `@key`
+1. Add a stub entry to `references.yml`: `mykey:\n  serial-number:\n    doi: "10.xxxx/yyyy"` (or hand-write a full MANUAL entry at the bottom for non-DOI sources)
+2. Regenerate and diff to fill in title/authors/journal/etc., then merge into the stub
+3. Cite in `.typ` files with `@mykey`
 4. Rebuild the PDF
 
 ### Citation style

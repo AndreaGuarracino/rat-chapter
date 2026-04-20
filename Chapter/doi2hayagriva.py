@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 """
-Convert a list of DOIs to Hayagriva YAML for Typst bibliography.
+Re-fetch Hayagriva YAML entries for every DOI-bearing reference in
+references.yml. Manual entries (no `serial-number.doi`) are skipped.
 
 Usage:
-    python3 doi2hayagriva.py dois.tsv > references.yml
+    python3 doi2hayagriva.py references.yml | diff - references.yml | less
 
-Input: TSV with columns: key<TAB>doi
-  Lines starting with # are comments.
-  Lines with key<TAB>MANUAL are skipped (for entries without DOIs).
+The script reads DOIs directly from references.yml (the build's single
+source of truth), fetches fresh metadata via doi2bib, and prints the
+regenerated YAML to stdout. Pipe through diff to see what would change
+since the last regeneration; merge wanted changes by editing
+references.yml directly.
 
-Requires: doi2bib (pip install doi2bib)
+Requires: doi2bib (pip install doi2bib), pyyaml (pip install pyyaml)
 """
 
 import subprocess
 import sys
 import re
 import time
+
+import yaml
 
 
 def fetch_bibtex(doi: str) -> str:
@@ -112,20 +117,22 @@ def main():
     entries = []
 
     with open(input_file) as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            parts = line.split("\t")
-            if len(parts) < 2:
-                print(f"WARNING: skipping malformed line: {line}",
-                      file=sys.stderr)
-                continue
-            key, doi = parts[0], parts[1]
-            if doi == "MANUAL":
-                print(f"SKIP: {key} (manual entry)", file=sys.stderr)
-                continue
-            entries.append((key, doi))
+        data = yaml.safe_load(f)
+    if not isinstance(data, dict):
+        print(f"ERROR: {input_file} is not a YAML mapping", file=sys.stderr)
+        sys.exit(1)
+
+    for key, entry in data.items():
+        if not isinstance(entry, dict):
+            print(f"WARNING: skipping non-mapping entry {key!r}",
+                  file=sys.stderr)
+            continue
+        serial = entry.get("serial-number") or {}
+        doi = serial.get("doi") if isinstance(serial, dict) else None
+        if not doi:
+            print(f"SKIP: {key} (no DOI; MANUAL entry)", file=sys.stderr)
+            continue
+        entries.append((key, str(doi).strip()))
 
     for i, (key, doi) in enumerate(entries):
         print(f"Fetching {key}: {doi}", file=sys.stderr)
@@ -135,8 +142,8 @@ def main():
                 print(f"ERROR: no BibTeX for {doi}", file=sys.stderr)
                 continue
             fields = parse_bibtex(bib)
-            yaml = bibtex_to_hayagriva(key, fields, doi)
-            print(yaml)
+            entry_yaml = bibtex_to_hayagriva(key, fields, doi)
+            print(entry_yaml)
             print()
         except Exception as e:
             print(f"ERROR: {key}: {e}", file=sys.stderr)
