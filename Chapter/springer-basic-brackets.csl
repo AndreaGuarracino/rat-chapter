@@ -106,6 +106,7 @@
               <text variable="page"/>
             </group>
           </group>
+          <text prefix=". https://doi.org/" variable="DOI"/>
         </if>
         <else-if type="article-journal">
           <choose>
@@ -171,6 +172,7 @@
             <text variable="genre" text-case="capitalize-first"/>
             <text variable="publisher"/>
           </group>
+          <text prefix=". https://doi.org/" variable="DOI"/>
         </else-if>
         <else>
           <!--    None of the provided formats need to add manually (some data provided) -->

@@ -408,7 +408,7 @@ shoer2024:
   date: 2024
   serial-number:
     doi: "10.1016/j.chom.2024.08.017"
-  page-range: "1744-1757.e2"
+  page-range: "1744-1757.E2"
   parent:
     type: periodical
     title: "Cell Host & Microbe"
@@ -866,7 +866,7 @@ heller2020:
   author:
     - "Heller, David"
     - "Vingron, Martin"
-  date: 2021
+  date: 2020
   serial-number:
     doi: "10.1093/bioinformatics/btaa1034"
   page-range: "5519-5521"
@@ -1043,7 +1043,7 @@ marcais2018:
   date: 2018
   serial-number:
     doi: "10.1371/journal.pcbi.1005944"
-  page-range: "e1005944"
+  page-range: "1005944"
   parent:
     type: periodical
     title: "PLOS Computational Biology"
@@ -1595,7 +1595,7 @@ garrison2022vcflib:
   date: 2022
   serial-number:
     doi: "10.1371/journal.pcbi.1009123"
-  page-range: "e1009123"
+  page-range: "1009123"
   parent:
     type: periodical
     title: "PLOS Computational Biology"
@@ -1767,7 +1767,7 @@ pravenec1989:
   page-range: "217-221"
   parent:
     type: periodical
-    title: "J Hypertens"
+    title: "Journal of Hypertension"
     volume: 7
     issue: 3
 
@@ -1809,6 +1809,8 @@ villani2025thesis:
   author:
     - "Villani, Flavia"
   date: 2025
+  serial-number:
+    doi: "10.21007/aetd.cghs.2025.0019"
   genre: "PhD dissertation"
   publisher: "University of Tennessee Health Science Center"
   organization: "University of Tennessee Health Science Center"
