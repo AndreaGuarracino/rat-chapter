@@ -4,10 +4,11 @@ Run everything in this protocol from inside the `rat-pangenome-tools` Docker con
 
 == Docker set-up
 
-All tools are bundled in a single Docker image built from `Docker/Dockerfile`. The build is a one-time step that produces a self-contained image with PGGB, VG, ODGI, the SV callers, and the rest of the toolchain. Build and launch the container, mounting your local data directories into `/workspace`:
+All tools are bundled in a single Docker image built from the `Docker/Dockerfile` in the chapter's companion repository at #link("https://github.com/AndreaGuarracino/rat-chapter")[github.com/AndreaGuarracino/rat-chapter]. The build is a one-time step that produces a self-contained image with PGGB, VG, ODGI, the SV callers, and the rest of the toolchain. Clone the repository, build the image, and launch the container with your local data directories mounted into `/workspace`:
 
 ```bash
-cd /path/to/rat-chapter/Docker
+git clone https://github.com/AndreaGuarracino/rat-chapter.git
+cd rat-chapter/Docker
 docker build -t rat-pangenome-tools .
 docker run -it --rm \
     -v /path/to/your/assemblies:/workspace/assemblies \

@@ -1,87 +1,126 @@
-# Rat Pangenome Chapter
+# Rat Pangenome Docker container
 
-For: Springer Methods in Molecular Biology (MiMB).
+A single Docker image containing all tools required to reproduce the HXB/BXH rat
+pangenome protocol described in the methods chapter.
 
-## Prerequisites
+For instructions on building the chapter PDF and Word manuscript, see [`Chapter/README.md`](Chapter/README.md).
 
-- [Typst](https://typst.app/) >= 0.14 (PDF build).
-- Python 3 with PyYAML (`pip install pyyaml`) for `yaml2bib.py` (Word build) and `doi2hayagriva.py` (regenerating references).
-- [doi2bib](https://pypi.org/project/doi2bib/) (`pip install doi2bib`), only needed to regenerate references from DOIs.
-- [pandoc](https://pandoc.org/) >= 3.1.2, only needed to produce the Word file for Springer submission.
+## Included tools
 
-## Build the PDF file
+### §3.1 Assembly quality assessment
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| compleasm | 0.2.7 | Assembly completeness (BUSCO Mammalia) |
+| meryl | 1.4 | K-mer counting and histogram |
+| samtools | 1.19 | Contig filtering, indexing, BAM/CRAM processing |
+| htslib (bgzip / tabix) | 1.19 | Compression and indexing |
+| seqtk | 1.5-r133 | Telomere repeat detection |
+| NCBI datasets | 18.23.0 | Reference genome download |
+
+### §3.2 PGGB pangenome construction
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| fastix | 0.1.0 | PanSN-spec sequence renaming |
+| pggb | v0.7.0 | Pangenome graph construction (orchestrator) |
+| wfmash | v0.14.1 | All-to-all sequence alignment (pggb stage 1) |
+| seqwish | commit 90dc76e1 | Graph induction from alignments (pggb stage 2) |
+| smoothxg | commit 0ea0470a | Graph normalization via POA (pggb stage 3) |
+| gfaffix | commit 460e0dd | Redundancy removal (pggb stage 4) |
+| bcftools | 1.19 | VCF/BCF processing (concat per-chromosome VCFs) |
+
+### §3.3 Graph quality assessment
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| odgi | v0.8.6 | Graph statistics, 1D/2D visualization, extraction |
+
+### §3.4 Variant calling and read mapping to the pangenome
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| vg | v1.71.0 | Graph indexing (autoindex), read mapping (Giraffe), variant calling (deconstruct), surjection |
+
+### §3.5 Variant annotation
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| SnpEff | 5.0 | Functional variant annotation |
+| SnpSift | 5.0 | VCF filtering and manipulation |
+
+### §3.6 Validation strategies
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| RTG Tools | 3.12.1 | VCF evaluation (vcfeval) |
+| MUMmer4 (nucmer) | 3.1 | Pairwise genome alignment and SNP calling |
+| bedtools | v2.30.0 | Genome arithmetic (complement for callable regions) |
+
+### §3.7 Structural variant analysis
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| minimap2 | 2.26 | Assembly-to-reference alignment |
+| svim-asm | 1.0.3 | Assembly-based SV calling (haploid mode) |
+| PAV | 2.4.6 | Haplotype-resolved SV calling |
+| snakemake | 7.32.4 | Workflow management (PAV pipeline) |
+| paftools.js (k8) | 2.30 / 1.2 | Hall-lab assembly-based SV calling |
+| pafplot | 0.1.0 | PAF alignment visualization |
+| vcfbub | 0.1.0 | Nested allele removal from pangenome VCF |
+| vcfwave | (vcflib) | Complex variant decomposition |
+| SURVIVOR | 1.0.7 | Multi-caller SV merging |
+
+### §3.8 PheWAS
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| GEMMA | 0.98.5 | Linear mixed model association (LOCO kinship) |
+
+## Requirements
+
+- Docker ≥ 20.10
+- ~10 GB disk space for the image
+- Sufficient RAM for your dataset (≥ 64 GB recommended for whole-genome pangenome)
+
+## Quick start
+
+### 1. Pull or build the image
+
+Build from this directory:
 
 ```bash
-cd rat-chapter
-typst compile Chapter/main.typ Chapter/chapter.pdf
+cd /path/to/rat-chapter/Docker
+docker build -t rat-pangenome-tools .
 ```
 
-## Build the Word file (for Springer submission)
+### 2. Run interactively with your data mounted
 
-Typst does not export to Word directly. Use pandoc (≥ 3.1.2), which reads Typst natively. The build regenerates two intermediate files first: `references.bib` (from `references.yml` via `yaml2bib.py`, because pandoc cannot read Hayagriva YAML) and `reference.docx` (the Word style template, via `make_reference_docx.py`).
+Replace each `/path/to/your/...` with the actual path on your machine. Only mount the directories you need; all four mounts are optional.
 
 ```bash
-cd Chapter
-python3 make_reference_docx.py
-python3 yaml2bib.py references.yml > references.bib
-pandoc main.typ -o chapter.docx \
-    --citeproc \
-    --csl=springer-basic-brackets.csl \
-    --bibliography=references.bib \
-    --number-sections \
-    --lua-filter=unnumber-backmatter.lua \
-    --reference-doc=reference.docx
+docker run -it --rm \
+    -v /path/to/your/assemblies:/workspace/assemblies \
+    -v /path/to/your/reads:/workspace/reads \
+    -v /path/to/your/output:/workspace/output \
+    -v /path/to/your/input:/workspace/input \
+    rat-pangenome-tools \
+    bash
 ```
 
-- `make_reference_docx.py` patches pandoc's default Word template: Consolas 10pt code blocks, justified body, left-aligned headings/captions/bibliography. Full rule list in the script docstring. Skip it and pandoc falls back to Cambria code with left-aligned body, which is wrong for MiMB.
-- `--number-sections` restores the hierarchical section numbering (1, 1.1, 2.2.1) that Typst auto-generates and pandoc otherwise drops.
-- `unnumber-backmatter.lua` keeps Title, Summary, Competing Interests, Acknowledgments, and Figure Captions unnumbered, and left-aligns the affiliations block.
+You will land in `/workspace` with all tools on `$PATH`.
 
-Figures are not embedded (MiMB wants them separate anyway), and cross-references to `*Note N*` / `Fig. N` render as literal text rather than hyperlinks.
-
-## Prepare figures for submission
-
-MiMB requires figures as separate EPS files (with embedded fonts, lettering 8-12pt at 160mm print width). The figure source is maintained as SVG (exported from Google Slides) and converted to EPS in two steps. Going via a high-DPI PDF preserves embedded raster content (e.g. the ODGI visualization) at full fidelity; Inkscape's (>= 1.2) direct `--export-type=eps` rasterizes at 96 DPI regardless of `--export-dpi` and produces a low-quality file.
-
-```bash
-cd Chapter/Figures
-# 1. SVG -> PDF at 1200 DPI, with text outlined for portability.
-inkscape Figure1.svg --export-filename=Figure1.pdf --export-type=pdf \
-    --export-text-to-path --export-dpi=1200
-# 2. PDF -> EPS preserving the embedded raster at 1200 DPI.
-pdftops -eps -level3 -r 1200 Figure1.pdf Figure1.eps
-```
-
-## File structure
+### 3. Typical directory layout inside the container
 
 ```
-Chapter/
-  main.typ                    # Master document (includes all sections)
-  00-frontmatter.typ          # Title, authors, abstract, keywords
-  01-introduction.typ         # Introduction (sections 1.1-1.6)
-  02-materials.typ            # Materials (sections 2.1-2.3)
-  03-methods.typ              # Methods (sections 3.1-3.9, Docker-first)
-  04-notes.typ                # Notes (1-16)
-  05-backmatter.typ           # Competing interests, acknowledgments
-  references.yml              # Hayagriva YAML bibliography (single source of truth, NLM-abbreviated journals)
-  springer-basic-brackets.csl # Springer citation style (CSL)
-  doi2hayagriva.py            # Script: re-fetches DOI metadata for entries in references.yml
-  yaml2bib.py                 # Script: converts references.yml → references.bib for pandoc
-  make_reference_docx.py      # Script: builds the Word style template (Consolas code, justified body)
-  unnumber-backmatter.lua     # Pandoc Lua filter: unnumbered Title/Summary/backmatter, left-aligned affiliations
-  references.bib              # BibTeX sidecar for pandoc Word build (regenerated, gitignored)
-  reference.docx              # Pandoc style template for Word build (regenerated, gitignored)
-  Figures/
-    Figure1.svg               # Figure 1 source (exported from Google Slides)
-    Figure1.eps               # Figure 1 for Springer submission (converted via Inkscape)
-    alt-text.xlsx             # Alternative text for figures (EU Accessibility Act)
-Docker/
-  Dockerfile                  # Single image with every tool used in the protocol
-  README.md                   # Build/run instructions and tool version table
+/workspace/
+├── assemblies/      ← mount your bgzipped FASTA assemblies here
+│   ├── rn7.fa.gz
+│   ├── SHR.fa.gz
+│   └── BXH2.fa.gz
+├── reads/           ← mount paired-end FASTQ files here
+│   ├── SHR_1.fq.gz
+│   └── SHR_2.fq.gz
+├── output/          ← results written here (persists after container exits)
+└── input/           ← additional reference files (e.g., rn7.fa.gz)
 ```
-
-## Docker
-
-A reproducible Docker image bundling every tool used in the protocol is defined in `Docker/Dockerfile`. Tool versions are defined in `Chapter/02-materials.typ`.
-
-See [`Docker/README.md`](Docker/README.md) for the full tool version table and build/run instructions.
