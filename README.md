@@ -18,7 +18,7 @@ typst compile Chapter/main.typ Chapter/chapter.pdf
 
 ## Build the Word file (for Springer submission)
 
-Typst does not export to Word directly. Use pandoc (≥ 3.1.2), which reads Typst natively. Pandoc cannot read Hayagriva YAML, so `references.bib` is regenerated from `references.yml` on each build via `yaml2bib.py`.
+Typst does not export to Word directly. Use pandoc (≥ 3.1.2), which reads Typst natively. The build regenerates two intermediate files first: `references.bib` (from `references.yml` via `yaml2bib.py`, because pandoc cannot read Hayagriva YAML) and `reference.docx` (the Word style template, via `make_reference_docx.py`).
 
 ```bash
 cd Chapter
@@ -38,6 +38,19 @@ pandoc main.typ -o chapter.docx \
 - `unnumber-backmatter.lua` keeps Title, Summary, Competing Interests, Acknowledgments, and Figure Captions unnumbered, and left-aligns the affiliations block.
 
 Figures are not embedded (MiMB wants them separate anyway), and cross-references to `*Note N*` / `Fig. N` render as literal text rather than hyperlinks.
+
+## Prepare figures for submission
+
+MiMB requires figures as separate EPS files (with embedded fonts, lettering 8-12pt at 160mm print width). The figure source is maintained as SVG (exported from Google Slides) and converted to EPS in two steps. Going via a high-DPI PDF preserves embedded raster content (e.g. the ODGI visualization) at full fidelity; Inkscape's (>= 1.2) direct `--export-type=eps` rasterizes at 96 DPI regardless of `--export-dpi` and produces a low-quality file.
+
+```bash
+cd Chapter/Figures
+# 1. SVG -> PDF at 1200 DPI, with text outlined for portability.
+inkscape Figure1.svg --export-filename=Figure1.pdf --export-type=pdf \
+    --export-text-to-path --export-dpi=1200
+# 2. PDF -> EPS preserving the embedded raster at 1200 DPI.
+pdftops -eps -level3 -r 1200 Figure1.pdf Figure1.eps
+```
 
 ## File structure
 
@@ -59,47 +72,13 @@ Chapter/
   references.bib              # BibTeX sidecar for pandoc Word build (regenerated, gitignored)
   reference.docx              # Pandoc style template for Word build (regenerated, gitignored)
   Figures/
-    Figure1.pdf               # Figure 1 (submitted separately per MiMB)
+    Figure1.svg               # Figure 1 source (exported from Google Slides)
+    Figure1.eps               # Figure 1 for Springer submission (converted via Inkscape)
     alt-text.xlsx             # Alternative text for figures (EU Accessibility Act)
 Docker/
   Dockerfile                  # Single image with every tool used in the protocol
   README.md                   # Build/run instructions and tool version table
 ```
-
-## Regenerate references from DOIs
-
-`references.yml` is the single source of truth for the bibliography. To re-fetch metadata from CrossRef for every DOI-bearing entry and diff against the current file:
-
-```bash
-cd Chapter
-python3 doi2hayagriva.py references.yml | diff - references.yml | less
-```
-
-The script reads each entry, fetches fresh metadata via doi2bib for any entry that has a `serial-number.doi` field, and prints the regenerated YAML to stdout. Edit `references.yml` to apply any wanted changes. Common fixes after a fresh regeneration:
-- **Date mismatches**: doi2bib may return the epub date instead of the print year. Check that dates match the citation keys (e.g., `hickey2024` should show `date: 2024`).
-- **Title artifacts**: some BibTeX entries contain residual LaTeX or multi-line formatting (e.g., the `cingolani2012` and `wick2015` titles).
-- **Missing journal names**: bioRxiv/openRxiv preprints may lack a journal field; add `title: "bioRxiv"` or `title: "openRxiv"` under `parent:`.
-- **Journal abbreviations**: the script outputs full journal names. Abbreviate to NLM standard (e.g., "Nature Biotechnology" → "Nat Biotechnol").
-
-Entries without a `serial-number.doi` are MANUAL (web resources, theses, preprints without standard DOI). They are maintained by hand at the bottom of `references.yml` and are skipped during regeneration; they will appear in the diff as "missing from the new run", which is expected.
-
-### Adding a new reference
-
-1. Add a stub entry to `references.yml`: `mykey:\n  serial-number:\n    doi: "10.xxxx/yyyy"` (or hand-write a full MANUAL entry at the bottom for non-DOI sources)
-2. Regenerate and diff to fill in title/authors/journal/etc., then merge into the stub
-3. Cite in `.typ` files with `@mykey`
-4. Rebuild the PDF
-
-### Citation style
-
-Citations appear as numbered brackets [1], [2], etc., ordered by first appearance in the text, per Springer MiMB guidelines. This is handled automatically by Typst + the `springer-basic-brackets.csl` file.
-
-## To do
-
-- [ ] **Author Agreement Form**: complete `Guide/Rat Genomics_AUTHOR AGREEMENT.docx` with all authors, addresses, ORCIDs, title, corresponding author signature
-- [ ] **Figure EPS conversion**: once SVG is available from Google Slides, convert to EPS (`inkscape Figure1.svg --export-filename=Figure1.eps --export-type=eps`) and verify lettering is 8-12pt at 160mm print width
-- [ ] **Final checks**: verify all tool installation instructions and code/command examples are correct and runnable
-- [ ] **Final checks**: verify all references have correct title, author, year, journal (spot-check rendered PDF)
 
 ## Docker
 
