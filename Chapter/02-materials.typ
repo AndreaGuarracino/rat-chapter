@@ -22,7 +22,7 @@ All software required for this protocol is bundled in a single Docker container 
 + *meryl* (v1.4) @rhie2020: k-mer counting and histogram generation for GenomeScope @vurture2017.
 + *samtools/htslib* (v1.19) @danecek2021: contig filtering, indexing, BAM/CRAM processing, compression, and indexing.
 + *seqtk* (v1.5-r133): telomere repeat detection.
-+ *NCBI datasets CLI* (v18.23.0): reference genome download from NCBI.
++ *NCBI datasets CLI* (v18.23.0): linear reference genome download from NCBI.
 
 === PGGB pangenome construction
 

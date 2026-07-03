@@ -1,6 +1,6 @@
 = Methods
 
-Run everything in this protocol from inside the `rat-pangenome-tools` Docker container (Section 3.1). Once the container is launched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
+Run everything in this protocol from inside the `rat-pangenome-tools` Docker container (Section 3.1). Once the container is launched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the linear reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
 == Docker set-up
 
@@ -22,7 +22,7 @@ The container starts an interactive shell in `/workspace` with all tools availab
 
 == Assembly quality assessment
 
-Before constructing the pangenome, verify the quality and suitability of each de novo assembly. When pre-built assemblies are not available from public repositories, de novo genome assemblies can be generated from PacBio HiFi or Oxford Nanopore long reads using assemblers such as hifiasm @cheng2021 or Verkko @rautiainen2023, or from 10x Genomics Linked-Read data using Supernova @weisenfeld2017. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 reference genome @dejong2024.
+Before constructing the pangenome, verify the quality and suitability of each de novo assembly. When pre-built assemblies are not available from public repositories, de novo genome assemblies can be generated from PacBio HiFi or Oxford Nanopore long reads using assemblers such as hifiasm @cheng2021 or Verkko @rautiainen2023, or from 10x Genomics Linked-Read data using Supernova @weisenfeld2017. Assembly quality is evaluated using Compleasm @huang2023 to assess the representation of universal single-copy orthologs expected across mammals using the BUSCO Mammalia gene set. Each assembly is benchmarked against the mRatBN7.2 linear reference genome @dejong2024.
 
 *1. Download the Mammalia BUSCO gene set* (one-time, inside the container):
 
@@ -31,7 +31,7 @@ mkdir -p busco/databases
 compleasm download -L busco/databases mammalia_odb12
 ```
 
-*2. Run Compleasm on each assembly and the reference genome:*
+*2. Run Compleasm on each assembly and the linear reference genome:*
 
 ```bash
 mkdir -p busco/results
@@ -74,7 +74,7 @@ The BED output (stdout) lists telomeric repeat intervals; the count summary (std
 
 === Input preparation
 
-The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include the reference genome in the graph (_see_ *Note 3*). Although PGGB is reference-free, including the reference is essential for downstream variant calling relative to an established coordinate system and for comparison with existing datasets.
+The PGGB pipeline outputs a pangenome graph in GFA format (version 1). Include the linear reference genome in the graph (_see_ *Note 3*). Although PGGB is reference-free, including the reference is essential for downstream variant calling relative to an established coordinate system and for comparison with existing datasets.
 
 *1. Combine all haploid assemblies and the mRatBN7.2 reference* into a single multi-FASTA file:
 
@@ -159,7 +159,7 @@ GFAFFIX collapses walk-preserving redundant nodes (nodes that share identical se
 
 As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.5), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (_see_ *Note 14*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
-*Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1-3.2.2. Map each assembly against the reference genome using WFMASH:
+*Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1-3.2.2. Map each assembly against the linear reference genome using WFMASH:
 
 ```bash
 # a. List non-reference haplotypes from the PanSN-named FASTA
@@ -252,7 +252,7 @@ After construction, evaluate graph quality using ODGI and diagnostic visualizati
 odgi stats -i graph.og -S
 ```
 
-For a well-constructed pangenome of 32 closely related haplotypes, the total graph length should modestly exceed a single reference genome size, and all paths should cover close to 100% of the input sequences. For MultiQC-compatible YAML output, use the `-m` flag (which produces a comprehensive set of statistics in a format compatible with MultiQC):
+For a well-constructed pangenome of 32 closely related haplotypes, the total graph length should modestly exceed a single linear reference genome size, and all paths should cover close to 100% of the input sequences. For MultiQC-compatible YAML output, use the `-m` flag (which produces a comprehensive set of statistics in a format compatible with MultiQC):
 
 ```bash
 odgi stats -i graph.og -m
@@ -885,6 +885,6 @@ Although the BXDtools function names contain "BXD" (the package was originally d
 
 *3. Confirm associations.* Validate significant PheWAS hits using a linear mixed model (LMM) corrected for kinship, as implemented in GeneNetwork or GEMMA @zhou2012. Use a leave-one-chromosome-out (LOCO) kinship matrix to avoid proximal contamination (inflated statistics caused by including the test locus in the kinship estimate). This LMM step is essential for controlling false positives arising from the shared relatedness structure among RI strains (_see_ *Note 12*).
 
-*4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 reference genome @dejong2024.
+*4. Functional annotation.* Cross-reference significant associations with previously mapped QTLs using the Rat Genome Database (RGD; #link("https://rgd.mcw.edu")[rgd.mcw.edu]) @smith2020 and the Ensembl Genome Browser @martin2023 selecting the mRatBN7.2 linear reference genome @dejong2024.
 
 *Expected results.* Applying this workflow to the HXB/BXH panel, the following associations were identified @villani2025: (a) A variant (chr12\_4347739) within a long non-coding RNA gene was associated with blood glucose concentration and located on the same chromosome as a previously mapped QTL controlling insulin/glucose ratio (Insglur6, logarithm of odds (LOD) score 18.97). (b) An intronic variant (chr12\_18797475) within a locus similar to the paired immunoglobulin-like type 2 receptor was associated with both blood insulin concentration and hippocampal chromogranin A (CGA) expression. Validated SVs were also found in disease-relevant genes including _Lmtk2_ (implicated in neurodegeneration, including Alzheimer's disease) and _Mcemp1_ (a critical factor in allergic and inflammatory lung diseases).
