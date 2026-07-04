@@ -20,12 +20,14 @@
 #set heading(numbering: "1.")
 
 // Code block styling
-#show raw.where(block: true): set text(size: 9pt)
+#show raw.where(block: true): set text(size: 7pt)
 #show raw.where(block: true): block.with(
   fill: white,
   inset: 8pt,
-  radius: 3pt,
+  radius: 8pt,
   width: 100%,
+  above: 0.5em,
+  below: 0.5em,
 )
 
 
