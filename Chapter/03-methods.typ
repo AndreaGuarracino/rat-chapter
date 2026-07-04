@@ -157,7 +157,7 @@ GFAFFIX collapses walk-preserving redundant nodes (nodes that share identical se
 
 === Running PGGB chromosome by chromosome
 
-As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.5), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (_see_ *Note 14*). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
+As an alternative to running PGGB on the whole genome at once (Sections 3.2.1-3.2.5), large genomes can be partitioned by chromosome and processed independently (_see_ *Note 8*). For scaling beyond chromosomal partitioning to hundreds or thousands of genomes, implicit pangenome graph approaches offer a complementary paradigm (see Discussion). This approach reduces peak memory requirements and enables parallel execution on a cluster. Use WFMASH to map assembly contigs against the reference to assign contigs to chromosomes, then run PGGB on each chromosome subset separately.
 
 *Sequence partitioning.* This section uses the PanSN-renamed and indexed `in.fa.gz` from Sections 3.2.1-3.2.2. Map each assembly against the linear reference genome using WFMASH:
 
@@ -284,7 +284,7 @@ odgi extract -i graph.og -r rn7#1#chr12:1000000-2000000 \
     -o subgraph.og
 ```
 
-The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control; for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (_see_ *Note 13* for further discussion of visualization challenges and limitations). For a different angle on the same graph, Panacus @parmigiani2024panacus reads the GFA directly and produces pangenome growth curves along with core, shell, and private genome size estimates.
+The 1D visualization produces a horizontal image in which each row represents a path (genome) through the graph; colored segments show how each path traverses graph nodes, with gaps indicating sequence absent from that path. The 2D layout reveals the topological structure of the graph: linear stretches appear as straight lines, while bubbles (variant sites) and complex rearrangements produce visible branching patterns. Both views are useful for quality control; for example, a large inversion will appear as a red (reverse-strand) segment in the 1D view and as a loop in the 2D view (see Discussion for visualization challenges and limitations). For a different angle on the same graph, Panacus @parmigiani2024panacus reads the GFA directly and produces pangenome growth curves along with core, shell, and private genome size estimates.
 
 == Read mapping to the pangenome
 
@@ -805,7 +805,7 @@ Note that PGGB's graph-based method typically reports fewer SVs than assembly-ba
 
 == Phenome-Wide Association Study (PheWAS)
 
-PheWAS uses the pangenome variants to test associations against the extensive HXB/BXH phenotype database (_see_ *Note 16*).
+PheWAS uses the pangenome variants to test associations against the extensive HXB/BXH phenotype database (_see_ *Note 12*).
 
 *1. Prepare the genotype file.* Extract genotypes for validated pangenome-only variants and convert to a BXDtools-compatible format:
 
