@@ -19,6 +19,25 @@ robinson2011:
     volume: 29
     issue: 1
 
+hla:
+  type: article
+  title: "HLA-DR Haplotype Diversity Revealed by Pangenome Sequence Analysis"
+  author:
+    - Alexandrov, Nickolai
+    - Blair, Lindley
+    - Wang, Ting
+    - Lowe, Dave
+    - Sayer, David C.
+  date: 2026
+  serial-number:
+    doi: https://doi.org/10.1111/tan.70757
+  page-range: "24-26"
+  parent:
+    type: periodical
+    title: "HLA"
+    volume: 107
+    issue: 6
+
 siren2021:
   type: article
   title: "Pangenomics enables genotyping of known structural variants in 5202 diverse genomes"
@@ -1782,6 +1801,17 @@ guarracino2021wfmash:
   url:
     value: "https://github.com/waveygang/wfmash"
     date: 2026-03-16
+
+ccwl:
+  type: web
+  title: "pggb.cwl: a PGGB workflow written in the conscise common workflow language (CCWL)"
+  author:
+    - "Isaac, Arun"
+    - "Prins, Pjotr"
+  date: 2025
+  url:
+    value: "https://github.com/arunisaac/pggb.cwl"
+    date: 2026-03-24
 
 arends_bxdtools:
   type: web
