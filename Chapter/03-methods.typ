@@ -1,6 +1,6 @@
 = Methods
 
-Run everything in this protocol from inside the `rat-pangenome-tools` Docker container (Section 3.1). Once the container is launched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the linear reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
+To run everything in this protocol we provide the `rat-pangenome-tools` Docker container (Section 3.1). Once the container is launched, every tool listed in Section 2 is on `$PATH`. Adjust the `-t` thread count in the commands below to match your available CPU cores. Inside the container, assembly files live in `/workspace/assemblies/`, raw sequencing reads in `/workspace/reads/`, and outputs in `/workspace/output/`. Each genome assembly should be a bgzip-compressed FASTA file named `<strain>.fa.gz` (e.g., `rn7.fa.gz`, `SHR.fa.gz`, `BXH2.fa.gz`), including the linear reference genome as `rn7.fa.gz`. For steps that require raw sequencing reads (Sections 3.2 and 3.5), paired-end FASTQ files should be available as `reads/<strain>_1.fq.gz` and `reads/<strain>_2.fq.gz`.
 
 == Docker set-up
 
@@ -473,7 +473,7 @@ Optionally, filter the `.delta` file with `delta-filter -1` before `show-snps` t
 
 == Structural variant analysis
 
-Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson2011. For the full pipeline and detailed analysis, see @villani2025. 
+Structural variants (≥50 bp) are called from the pangenome using a multi-method approach to maximize sensitivity and specificity. Candidate SVs can be validated with Oxford Nanopore Adaptive Sampling, which provides targeted long-read coverage by specifying target loci in the run configuration, mapping validated reads against the reference with minimap2 @li2018, and inspecting breakpoints in IGV @robinson2011. For the full pipeline and detailed analysis, see @villani2025.
 
 *0. Environment setup.*
 
@@ -490,7 +490,7 @@ export PATH_OG_FASTA=$DIR_BASE/assemblies/pan.fa.gz
 export PAV=/opt/pav
 ```
 
-*1. Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph. 
+*1. Prepare assemblies.* Extract per-sample FASTA files from the pangenome graph.
 
 ```bash
 mkdir -p $DIR_BASE/assemblies
@@ -602,7 +602,7 @@ snakemake -s /opt/pav/Snakefile \
     --rerun-incomplete \
     2>&1 | tee pav.log
 
-# Normalize outputs 
+# Normalize outputs
 while read SAMPLE; do
     echo ">>> $SAMPLE"
     [[ -f $SAMPLE.pav.vcf.gz ]] && { echo "skip $SAMPLE"; continue; }
