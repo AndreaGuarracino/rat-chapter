@@ -1708,6 +1708,47 @@ kaushan2026:
     type: periodical
     title: "bioRxiv"
 
+fastga:
+  type: article
+  title: "FastGA: fast genome alignment"
+  author:
+    - "Myers, Gene"
+    - "Durbin, Richard"
+    - "Zhou, Chenxi"
+  date: 2025
+  serial-number:
+    doi: "10.1093/bioadv/vbaf238"
+  page-range: "vbaf238"
+  parent:
+    type: periodical
+    title: "Bioinform Adv"
+    volume: 5
+    issue: 1
+
+karyoscope:
+  type: article
+  title: "KaryoScope: rapid, alignment-free sequence annotation for the pangenome era"
+  author:
+    - "Ranallo-Benavidez, T. Rhyker"
+    - "Chen, Yi-An"
+    - "Potapova, Tamara"
+    - "Alanko, Jarno"
+    - "Loucks, Hailey"
+    - "Lucas, Julian"
+    - name: "Human Pangenome Reference Consortium (HPRC)"
+    - "Guarracino, Andrea"
+    - "Puglisi, Simon J."
+    - "Marchet, Camille"
+    - "Miga, Karen"
+    - "Gerton, Jennifer L."
+    - "Barthel, Floris P."
+  date: 2026
+  serial-number:
+    doi: "10.64898/2026.05.15.725544"
+  parent:
+    type: periodical
+    title: "bioRxiv"
+
 cheng2021:
   type: article
   title: "Haplotype-resolved de novo assembly using phased assembly graphs with hifiasm"
@@ -1804,7 +1845,7 @@ guarracino2021wfmash:
 
 ccwl:
   type: web
-  title: "pggb.cwl: a PGGB workflow written in the conscise common workflow language (CCWL)"
+  title: "pggb.cwl: a PGGB workflow written in the concise common workflow language (CCWL)"
   author:
     - "Isaac, Arun"
     - "Prins, Pjotr"
