@@ -23,6 +23,9 @@ authors:
   - family-names: Duggan
     given-names: David
     orcid: "https://orcid.org/0000-0002-4696-3940"
+  - family-names: Barthel
+    given-names: Floris P.
+    orcid: "https://orcid.org/0000-0002-7425-4180"
   - family-names: Trent
     given-names: Jeffrey M.
     orcid: "https://orcid.org/0000-0003-0183-4202"
@@ -63,6 +66,9 @@ preferred-citation:
     - family-names: Duggan
       given-names: David
       orcid: "https://orcid.org/0000-0002-4696-3940"
+    - family-names: Barthel
+      given-names: Floris P.
+      orcid: "https://orcid.org/0000-0002-7425-4180"
     - family-names: Trent
       given-names: Jeffrey M.
       orcid: "https://orcid.org/0000-0003-0183-4202"
