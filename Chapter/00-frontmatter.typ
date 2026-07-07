@@ -7,7 +7,7 @@
 // Authors and affiliations
 #v(0.5em)
 #text(size: 10pt)[
-  Flavia Villani#super[1,2], Arun Isaac#super[3], Vincenza Colonna#super[2], Erik Garrison#super[2], David Duggan#super[4], Jeffrey M. Trent#super[1], David G. Ashbrook#super[2,5], Robert W. Williams#super[2], Hao Chen#super[6], Pjotr Prins#super[2], Andrea Guarracino#super[1,2,\*]
+  Flavia Villani#super[1,2], Arun Isaac#super[3], Vincenza Colonna#super[2], Erik Garrison#super[2], David Duggan#super[4], Floris P. Barthel#super[1], Jeffrey M. Trent#super[1], David G. Ashbrook#super[2,5], Robert W. Williams#super[2], Hao Chen#super[6], Pjotr Prins#super[2], Andrea Guarracino#super[1,2,\*]
 ]
 #v(0.3em)
 #text(size: 9pt)[

@@ -4,7 +4,7 @@ The chapter describes a practical protocol for building a rat pangenome graph fr
 
 ## Citation
 
-> Villani F, Isaac A, Colonna V, Garrison E, Duggan D, Trent JM, Ashbrook DG, Williams RW, Chen H, Prins P, Guarracino A. Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel. In: *Methods in Molecular Biology*. Springer; TBD.
+> Villani F, Isaac A, Colonna V, Garrison E, Duggan D, Barthel F, Trent JM, Ashbrook DG, Williams RW, Chen H, Prins P, Guarracino A. Pangenome Graph Construction, Variant Calling, and Phenome-Wide Association in the HXB/BXH Rat Panel. In: *Methods in Molecular Biology*. Springer; TBD.
 >
 > DOI: _to be assigned upon publication_
 
